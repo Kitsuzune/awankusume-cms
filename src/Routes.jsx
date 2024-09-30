@@ -1,27 +1,16 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Dashboard from "./pages/Dashboard/Dashboard";
-import { FaBell } from "react-icons/fa";
+import { FaFire, FaList } from "react-icons/fa";
 import { IoArchive, IoAttach, IoBasket, IoBicycle, IoCodeSlashSharp, IoDocumentText, IoLogOut } from "react-icons/io5";
-import { IoGrid } from "react-icons/io5";
-import { IoTabletPortrait } from "react-icons/io5";
-import { IoWallet } from "react-icons/io5";
-import { IoCodeSlash } from "react-icons/io5";
 import { IoDocument } from "react-icons/io5";
-import { IoAlertCircle } from "react-icons/io5";
-import { IoCalendar } from "react-icons/io5";
-import { IoArrowRedo } from "react-icons/io5";
 import { IoPerson } from "react-icons/io5";
-import { IoSettings } from "react-icons/io5";
 import { IoFlash } from "react-icons/io5";
-import { IoBarChart } from "react-icons/io5";
-import { IoCash } from "react-icons/io5";
-import { IoPeople } from "react-icons/io5";
-import { IoKey } from "react-icons/io5";
-import { IoCopy } from "react-icons/io5";
 import Tracking from "./pages/Tracking/Tracking";
 import Post from "./pages/Post/Post";
 import PengajuanOnGoing from "./pages/Pengajuan/OnGoing/PengajuanOnGoing";
 import PengajuanCompleted from "./pages/Pengajuan/OnGoing/PengajuanCompleted";
+import { CiBoxList } from "react-icons/ci";
+import { SiReadthedocs } from "react-icons/si";
 
 const iconClasses = `h-6 w-6`;
 const submenuIconClasses = `h-5 w-5`;
@@ -29,17 +18,17 @@ const submenuIconClasses = `h-5 w-5`;
 export const routes = [
   {
     path: '/app/dashboard',
-    icon: <IoGrid className={iconClasses} />,
+    icon: <FaFire className={iconClasses} />,
     name: 'Dashboard',
     component: Dashboard,
   },
   {
-    group: 'Content',
+    group: 'Landing Page',
     components: [
       {
         path: '/app/content',
-        icon: <IoDocumentText className={iconClasses} />,
-        name: 'Thumbnail',
+        icon: <FaList className={iconClasses} />,
+        name: 'Content',
         component: Post,
       },
     ],
@@ -63,7 +52,7 @@ export const routes = [
       },
       {
         path: '/app/share-auth',
-        icon: <IoDocumentText className={iconClasses} />,
+        icon: <SiReadthedocs className={iconClasses} />,
         name: 'Share Auth',
         component: Dashboard,
       },
@@ -81,14 +70,8 @@ export const routes = [
     ],
   },
   {
-    group: 'Points',
+    group: 'Commission',
     components: [
-      {
-        path: '/app/points',
-        icon: <IoFlash className={iconClasses} />,
-        name: 'Points',
-        component: Dashboard,
-      },
       {
         name: 'Pengajuan',
         icon: <IoBicycle className={iconClasses} />,
@@ -106,7 +89,13 @@ export const routes = [
             component: PengajuanCompleted,
           },
         ]
-      }
+      },
+      {
+        path: '/app/commission-setting',
+        icon: <IoFlash className={iconClasses} />,
+        name: 'Commission Setting',
+        component: Dashboard,
+      },
     ],
   },
   {

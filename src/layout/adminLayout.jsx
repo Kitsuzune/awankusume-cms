@@ -1,16 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Sidebar from './sidebar';
+import Header from './header';
 
 const AdminLayout = ({ children }) => {
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+
+  const toggleSidebarCollapse = () => {
+    setIsSidebarCollapsed(!isSidebarCollapsed);
+  };
+
   return (
     <div className="flex">
-      <Sidebar />
+      <Sidebar isCollapsed={isSidebarCollapsed} toggleSidebarCollapse={toggleSidebarCollapse} />
       <div className="flex-1 flex flex-col">
-        <header className="bg-white p-4 shadow-md flex items-center justify-between">
-          <div className="text-lg font-semibold">Admin Panel</div>
-          <div className="flex items-center space-x-4">
-            {/* Add header items like profile, notifications, etc. */}
-          </div>
+        <header>
+          <Header toggleSidebarCollapse={toggleSidebarCollapse} />
         </header>
         <main className="flex-1 bg-gray-100 p-6">
           {children}

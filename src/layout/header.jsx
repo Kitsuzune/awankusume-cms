@@ -1,56 +1,57 @@
-import React from 'react'
-import { FaBars } from "react-icons/fa";
-import { FaBell } from "react-icons/fa";
-import { NavLink,  Routes, Link , useLocation} from 'react-router-dom'
-import { FaUser } from "react-icons/fa";
+import React, { useState } from 'react'
+import { FaBars, FaBell, FaUser } from "react-icons/fa";
+import { Link } from 'react-router-dom';
 
-const Header = () => {
+const Header = ({ toggleSidebarCollapse }) => {
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+    const toggleDropdown = () => {
+        setIsDropdownOpen(!isDropdownOpen);
+    };
+
     return (
-        // navbar fixed  flex-none justify-between bg-base-300  z-10 shadow-md
-
         <>
-            <div className="navbar sticky top-0 bg-main z-10 shadow-md">
+            <div className="navbar sticky top-0 bg-main z-10 shadow-md flex justify-between items-center p-4">
 
-
-                {/* Menu toogle for mobile view or small screen */}
-                <div className="drawer flex-1">
-                    <label htmlFor="left-sidebar-drawer" className="btn btn-main drawer-button">
+                {/* Menu toggle for mobile view or small screen */}
+                <div className="flex-1">
+                    <button className="text-white" onClick={toggleSidebarCollapse}>
                         <FaBars className="h-5 w-5" />
-                    </label>
+                    </button>
                 </div>
 
-
-
-                <div className="flex-none ">
+                <div className="flex items-center space-x-4">
 
                     {/* Notification icon */}
-                    <button className="btn btn-ghost ml-4  btn-circle">
-                        <div className="indicator">
-                            <FaBell className="h-6 w-6 text-white" />
-                            {/* {noOfNotifications > 0 ? <span className="indicator-item badge badge-secondary badge-sm">{noOfNotifications}</span> : null} */}
-                        </div>
+                    <button className="relative text-white">
+                        <FaBell className="h-6 w-6" />
+                        {/* {noOfNotifications > 0 ? <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full text-xs w-4 h-4 flex items-center justify-center">{noOfNotifications}</span> : null} */}
                     </button>
 
-
                     {/* Profile icon, opening menu on click */}
-                    <div className="dropdown dropdown-end ml-4">
-                        <label tabIndex={0} className="btn btn-ghost btn-circle avatar text-white">
+                    <div className="relative">
+                        <button className="text-white" onClick={toggleDropdown}>
                             <FaUser className="h-6 w-6" />
-                        </label>
-                        <ul tabIndex={0} className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
-                            <li className="justify-between">
-                                <Link to={'/app/settings-profile'}>
-                                    Profile Settings
-                                </Link>
-                            </li>
-                            <li className=''><Link to={'/app/settings-billing'}>Bill History</Link></li>
-                            <div className="divider mt-0 mb-0"></div>
-                            <li><a>Logout</a></li>
-                        </ul>
+                        </button>
+                        {isDropdownOpen && (
+                            <ul className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg py-2">
+                                <li className="px-4 py-2 hover:bg-gray-100">
+                                    <Link to={'/app/settings-profile'}>
+                                        Profile Settings
+                                    </Link>
+                                </li>
+                                <li className="px-4 py-2 hover:bg-gray-100">
+                                    <Link to={'/app/settings-billing'}>Bill History</Link>
+                                </li>
+                                <div className="border-t my-2"></div>
+                                <li className="px-4 py-2 hover:bg-gray-100">
+                                    <a>Logout</a>
+                                </li>
+                            </ul>
+                        )}
                     </div>
                 </div>
             </div>
-
         </>
     )
 }
