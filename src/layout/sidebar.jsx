@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { routes } from '../Routes';
+import { routes } from '../FormattedRoutes';
 import { IoChevronDown, IoChevronUp } from "react-icons/io5";
 
 const Sidebar = ({ isCollapsed, toggleSidebarCollapse }) => {
@@ -52,7 +52,7 @@ const Sidebar = ({ isCollapsed, toggleSidebarCollapse }) => {
     }, [isCollapsed]);
 
     return (
-        <div className={`h-screen bg-white ${isCollapsed ? 'w-20' : 'w-64'} pt-10 px-3 shadow-lg border-r border-gray-200 transition-width duration-300`}>
+        <div className={`h-screen bg-white ${isCollapsed ? 'w-20' : 'w-64'} pt-10 px-3 shadow-lg border-r border-gray-200 transition-width duration-300 overflow-y-auto`}>
             <div className="flex justify-between items-center mb-8">
                 <div className={`text-xl font-semibold text-center ${isCollapsed ? 'hidden' : 'block'}`}>
                     AWAN KUSUMA
@@ -100,7 +100,7 @@ const Sidebar = ({ isCollapsed, toggleSidebarCollapse }) => {
                                     ) : (
                                         <Link
                                             to={subRoute.path}
-                                            className={`flex py-2 pl-4 rounded-lg items-center my-2 ${isActive(subRoute.path) ? 'bg-main text-white' : 'text-gray-600 hover:text-black hover:bg-blue-100 transition-all duration-300'}`}
+                                            className={`flex py-2 pl-4 rounded-lg items-center ${isActive(subRoute.path) ? 'bg-main text-white' : 'text-gray-600 hover:text-black hover:bg-blue-100 transition-all duration-300'}`}
                                         >
                                             {isActive(subRoute.path) && <div className='absolute w-6 h-11 -left-7 bg-blue-400 rounded-lg' />}
                                             {React.cloneElement(subRoute.icon, { className: `text-[18px] ${isActive(subRoute.path) ? 'text-white' : ''}` })}
@@ -112,12 +112,12 @@ const Sidebar = ({ isCollapsed, toggleSidebarCollapse }) => {
                         </div>
                     ) : (
                         <li key={index}>
-                            <div>
+                            <div className='relative'>
                                 <Link
                                     to={route.path}
                                     className={`flex py-2 pl-4 rounded-lg items-center ${isActive(route.path) ? 'bg-main text-white' : 'text-gray-600 hover:text-black hover:bg-blue-100 transition-all duration-300'}`}
                                 >
-                                    {isActive(route.path) && <div className='absolute w-6 h-11 -left-4 bg-blue-400 rounded-lg' />}
+                                    {isActive(route.path) && <div className='absolute w-6 h-11 -left-7 bg-blue-400 rounded-lg' />}
                                     {React.cloneElement(route.icon, { className: `text-[18px] ${isActive(route.path) ? 'text-white' : ''}` })}
                                     <span className={`ml-4 ${isCollapsed ? 'hidden' : 'block'}`}>{route.name}</span>
                                 </Link>

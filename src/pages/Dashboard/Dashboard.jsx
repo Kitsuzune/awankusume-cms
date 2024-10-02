@@ -3,6 +3,7 @@ import { Bar, Line, Pie } from 'react-chartjs-2';
 import { Chart, CategoryScale, LinearScale, BarElement, LineElement, PointElement, ArcElement, Title, Tooltip, Legend } from 'chart.js';
 import { Col, Row } from 'antd';
 import { BiArrowToRight } from 'react-icons/bi';
+import Button from '../../components/ui/Button/Button';
 
 Chart.register(CategoryScale, LinearScale, BarElement, LineElement, PointElement, ArcElement, Title, Tooltip, Legend);
 
@@ -84,21 +85,95 @@ const Dashboard = () => {
                             </div>
                             <BiArrowToRight className='inline-block ml-3 text-[20px]' />
                           </div>
-                          
+
                         </div>
 
                       </div>
                     </Col>
+
                   </Row>
                 </div>
 
                 <div className='mt-5'>
-                  <Row>
+                  <Row gutter={16}>
                     <Col span={8}>
-                      <div className='bg-white rounded-lg border border-gray-200 flex-grow'>
-                        <div className='text-center border-b border-gray-200 p-5'>
-                          <span className='text-[23px] inline-block'>Sales Overview</span>
+                      <div className='bg-white rounded-lg border border-gray-200 flex-grow pb-2'>
+                        <div className='border-b border-gray-200 p-5 flex items-center justify-between'>
+                          <span className='text-[18px] inline-block'>Recent Post Article</span>
+                          <Button>
+                            View All
+                          </Button>
                         </div>
+
+                        {[1, 2, 3, 4].map((index) => (
+                        <div className="flex items-center px-4 py-3 bg-white">
+                          <img src={"https://stationers.pk/cdn/shop/articles/c1.gif?v=1715370502"} alt={"Tes"} className="w-10 h-10 rounded-md mr-4" />
+                          <div>
+                            <h3 className="text-md font-semibold">Lorem ipsum dolor sit amet</h3>
+                            <p className="text-sm text-gray-500">Published By {"Lorem"}, {"Lorem"}</p>
+                          </div>
+                        </div>
+                        ))}
+
+                      </div>
+                    </Col>
+
+                    <Col span={8}>
+                      <div className='bg-white rounded-lg border border-gray-200 flex-grow pb-2'>
+                        <div className='border-b border-gray-200 p-5 flex items-center justify-between'>
+                          <span className='text-[18px] inline-block'>Recent Post Article</span>
+                          <Button>
+                            View All
+                          </Button>
+                        </div>
+
+                        {[1, 2, 3, 4].map((index) => (
+                        <div className="flex items-center px-4 py-3 bg-white">
+                          <img src={"https://stationers.pk/cdn/shop/articles/c1.gif?v=1715370502"} alt={"Tes"} className="w-10 h-10 rounded-md mr-4" />
+                          <div>
+                            <h3 className="text-md font-semibold">Lorem ipsum dolor sit amet</h3>
+                            <p className="text-sm text-gray-500">Published By {"Lorem"}, {"Lorem"}</p>
+                          </div>
+                        </div>
+                        ))}
+
+                      </div>
+                    </Col>
+
+                    <Col span={8} className='flex flex-col'>
+                      <div className='bg-white rounded-lg border border-gray-200 flex-grow'>
+                        <div className='border-b border-gray-200 px-5 py-3'>
+                          <span className='text-[13px] inline-block'>
+                            Completed Projects
+                          </span>
+                          <br />
+                          <span className='text-[18px] font-bold inline-block'>
+                            100
+                          </span>
+                        </div>
+
+                        {[1, 2, 3, 4].map((index) => (
+                          <div key={index} className='px-5 py-2 border-b border-gray-200'>
+                            <span className='text-[13px] inline-block'>
+                              Lorem ipsum dolor sit amet
+                            </span>
+                            <br />
+                            <span className='text-[13px] inline-block text-second'>
+                              Published, 22 Mei 2024
+                            </span>
+                          </div>
+                        ))}
+
+                        <div className='px-5 py-4 border-b border-gray-200 hover:bg-gray-100 cursor-pointer'>
+                          <div className='flex items-center'>
+                            <div className='text-[13px]'>
+                              See More ...
+                            </div>
+                            <BiArrowToRight className='inline-block ml-3 text-[20px]' />
+                          </div>
+
+                        </div>
+
                       </div>
                     </Col>
                   </Row>

@@ -1,48 +1,50 @@
-import { Col, Input, Row, Select, Table, Typography } from 'antd'
+import { Col, Input, Row, Select, Table } from 'antd'
 import React from 'react'
-import { CustomPagination } from '../../../components/ui/Table/CustomPagination';
-import Button from '../../../components/ui/Button/Button';
+import { CustomPagination } from '../../../components/ui/Table/CustomPagination'
+import { trackingColumns } from '../../../components/ui/Table/columns/tracking';
 import { PlusOutlined } from '@ant-design/icons';
-import { pengajuanOnGoingColumns } from '../../../components/ui/Table/columns/pengajuanOnGoing';
-import { IoIosSearch } from 'react-icons/io';
+import Button from '../../../components/ui/Button/Button';
 
-const PengajuanOnGoing = () => {
+const TrackingFailed = () => {
     const { Option } = Select;
-    const { Text } = Typography;
 
     const dataSource = [
         {
             key: '1',
             number: '1',
             nama: 'Tes',
-            date: '2024-01-01',
-            komisi: '100000',
+            serialCode: 'Tes',
+            badanUsaha: 'Lorem',
+            jenisLegalitas: 'Lorem',
         },
         {
             key: '2',
             number: '2',
             nama: 'Tes',
-            date: '2024-01-01',
-            komisi: '100000',
+            serialCode: 'Tes',
+            badanUsaha: 'Lorem',
+            jenisLegalitas: 'Lorem',
         },
         {
             key: '3',
             number: '3',
             nama: 'Tes',
-            date: '2024-01-01',
-            komisi: '100000',
+            serialCode: 'Tes',
+            badanUsaha: 'Lorem',
+            jenisLegalitas: 'Lorem',
         },
         {
             key: '4',
             number: '4',
             nama: 'Tes',
-            date: '2024-01-01',
-            komisi: '100000',
-        }
+            serialCode: 'Tes',
+            badanUsaha: 'Lorem',
+            jenisLegalitas: 'Lorem',
+        },
     ];
 
     const columnsWithActions = [
-        ...pengajuanOnGoingColumns,
+        ...trackingColumns,
         {
             title: 'Action',
             key: 'action',
@@ -50,33 +52,31 @@ const PengajuanOnGoing = () => {
             render: (text, record) => (
                 <span>
                     <Button type="link">Approve</Button>
+                    <Button type="link">Reject</Button>
+                    <Button type="link">Edit</Button>
                 </span>
             ),
         },
     ];
 
-
     return (
         <Row className="w-full">
             <Col span={24}>
-                <div className=" rounded-lg">
+                <div className="p-5 rounded-lg">
                     <Row>
                         <Col span={24}>
                             <div className="flex flex-col">
                                 <div className="mt-5 md:mt-10 mx-5 md:mx-10">
-
-                                    <Row align="middle" className="mb-4">
-                                        <Col span={12}>
-                                            <div className='flex items-center bg-white p-2 rounded-lg w-full'>
-                                                <IoIosSearch className='text-2xl mr-2' />
-                                                <input placeholder='Search...' className='border-none focus:outline-none bg-transparent' />
-                                            </div>
-                                        </Col>
-                                    </Row>
-
-                                    <Row align="middle" className="mb-4">
+                                    <Row justify="space-between" align="middle" className="mb-4">
                                         <Col>
-                                            <Text className='text-2xl font-bold'>On Going</Text>
+                                            <span className='text-2xl font-bold'>Failed</span>
+                                        </Col>
+                                        <Col className="flex gap-2">
+                                            <Input.Search placeholder="Search..." />
+                                            <Button type="primary">
+                                                Add New
+                                                <PlusOutlined />
+                                            </Button>
                                         </Col>
                                     </Row>
 
@@ -104,4 +104,4 @@ const PengajuanOnGoing = () => {
     )
 }
 
-export default PengajuanOnGoing
+export default TrackingFailed

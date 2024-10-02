@@ -1,11 +1,12 @@
 import { Col, Input, Row, Select, Table } from 'antd'
 import React from 'react'
-import { CustomPagination } from '../../components/ui/Table/CustomPagination'
-import { trackingColumns } from '../../components/ui/Table/columns/tracking';
 import { PlusOutlined } from '@ant-design/icons';
 import Button from '../../components/ui/Button/Button';
+import { trackingColumns } from '../../components/ui/Table/columns/tracking';
+import { CustomPagination } from '../../components/ui/Table/CustomPagination';
+import { MdOutlineContentCopy } from 'react-icons/md';
 
-const Tracking = () => {
+const ShareAuth = () => {
     const { Option } = Select;
 
     const dataSource = [
@@ -48,12 +49,9 @@ const Tracking = () => {
         {
             title: 'Action',
             key: 'action',
-            width: 300,
             render: (text, record) => (
                 <span>
-                    <Button type="link">Approve</Button>
-                    <Button type="link">Reject</Button>
-                    <Button type="link">Edit</Button>
+                    <MdOutlineContentCopy className='text-2xl text-center text-second cursor-pointer hover:text-main' />
                 </span>
             ),
         },
@@ -69,18 +67,14 @@ const Tracking = () => {
                                 <div className="mt-5 md:mt-10 mx-5 md:mx-10">
                                     <Row justify="space-between" align="middle" className="mb-4">
                                         <Col>
-                                            <Select defaultValue="10" style={{ width: 120 }}>
-                                                <Option value="10">On Going</Option>
-                                                <Option>Complete</Option>
-                                                <Option>Pending</Option>
-                                            </Select>
+                                            <span className='text-2xl font-bold'>Auth</span>
                                         </Col>
                                         <Col className="flex gap-2">
-                                            <Input.Search placeholder="Search..." />
-                                            <Button type="primary">
-                                                Add New
-                                                <PlusOutlined />
-                                            </Button>
+                                            <Select placeholder="Select column" className="w-64">
+                                                <Option value="column1">Column 1</Option>
+                                                <Option value="column2">Column 2</Option>
+                                            </Select>
+                                            <Input.Search placeholder="Search list..." className="w-64" />
                                         </Col>
                                     </Row>
 
@@ -108,4 +102,4 @@ const Tracking = () => {
     )
 }
 
-export default Tracking
+export default ShareAuth

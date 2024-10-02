@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@ant-design/icons": "^5.4.0",
+    "@ant-design/pro-components": "^2.7.19",
     "antd": "^5.20.5",
     "axios": "^1.7.4",
     "chart.js": "^4.4.4",

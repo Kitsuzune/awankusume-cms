@@ -5,12 +5,21 @@ import { IoArchive, IoAttach, IoBasket, IoBicycle, IoCodeSlashSharp, IoDocumentT
 import { IoDocument } from "react-icons/io5";
 import { IoPerson } from "react-icons/io5";
 import { IoFlash } from "react-icons/io5";
-import Tracking from "./pages/Tracking/Tracking";
 import Post from "./pages/Post/Post";
 import PengajuanOnGoing from "./pages/Pengajuan/OnGoing/PengajuanOnGoing";
-import PengajuanCompleted from "./pages/Pengajuan/OnGoing/PengajuanCompleted";
+import PengajuanCompleted from "./pages/Pengajuan/Completed/PengajuanCompleted";
 import { CiBoxList } from "react-icons/ci";
-import { SiReadthedocs } from "react-icons/si";
+import { SiDocsdotrs, SiReadthedocs } from "react-icons/si";
+import { GiTransform } from "react-icons/gi";
+import { MdIncompleteCircle, MdOutlineSmsFailed } from "react-icons/md";
+import { GrInProgress } from "react-icons/gr";
+import FormOrder from "./pages/Tracking/FormOrder/FormOrder";
+import TrackingCompleted from "./pages/Tracking/Completed/TrackingCompleted";
+import TrackingOnGoing from "./pages/Tracking/OnGoing/TrackingOnGoing";
+import TrackingFailed from "./pages/Tracking/Failed/TrackingFailed";
+import ShareAuth from "./pages/ShareAuth/ShareAuth";
+import AdminLayout from "./layout/adminLayout";
+import Login from "./pages/CMS-Auth/Login";
 
 const iconClasses = `h-6 w-6`;
 const submenuIconClasses = `h-5 w-5`;
@@ -48,13 +57,38 @@ export const routes = [
         path: '/app/tracking',
         icon: <IoDocument className={iconClasses} />,
         name: 'Tracking',
-        component: Tracking,
+        submenu: [
+          {
+            path: '/app/tracking/failed',
+            icon: <MdOutlineSmsFailed className={iconClasses} />,
+            name: 'Failed',
+            component: TrackingFailed,
+          },
+          {
+            path: '/app/tracking/on-going',
+            icon: <GrInProgress className={iconClasses} />,
+            name: 'OnGoing',
+            component: TrackingOnGoing,
+          },
+          {
+            path: '/app/tracking/completed',
+            icon: <MdIncompleteCircle className={iconClasses} />,
+            name: 'Completed',
+            component: TrackingCompleted,
+          },
+          {
+            path: '/app/tracking/form-order',
+            icon: <GiTransform className={iconClasses} />,
+            name: 'Form Order',
+            component: FormOrder,
+          }
+        ]
       },
       {
         path: '/app/share-auth',
         icon: <SiReadthedocs className={iconClasses} />,
         name: 'Share Auth',
-        component: Dashboard,
+        component: ShareAuth,
       },
     ],
   },
@@ -74,7 +108,7 @@ export const routes = [
     components: [
       {
         name: 'Pengajuan',
-        icon: <IoBicycle className={iconClasses} />,
+        icon: <SiDocsdotrs className={iconClasses} />,
         submenu: [
           {
             path: '/app/points/ongoing',
@@ -126,19 +160,23 @@ export const routes = [
 export default function AppRootRoutes() {
   return (
     <Routes>
+
+      <Route path="/web/login" element={<Login />} />
+
+
       {routes.map((route, index) => (
         route.group ? (
           route.components.map((subRoute, subIndex) => (
             subRoute.submenu ? (
               subRoute.submenu.map((nestedRoute, nestedIndex) => (
-                <Route key={`${index}-${subIndex}-${nestedIndex}`} path={nestedRoute.path} element={<nestedRoute.component />} />
+                <Route key={`${index}-${subIndex}-${nestedIndex}`} path={nestedRoute.path} element={<AdminLayout><nestedRoute.component /></AdminLayout>} />
               ))
             ) : (
-              <Route key={`${index}-${subIndex}`} path={subRoute.path} element={<subRoute.component />} />
+              <Route key={`${index}-${subIndex}`} path={subRoute.path} element={<AdminLayout><subRoute.component /></AdminLayout>} />
             )
           ))
         ) : (
-          <Route key={index} path={route.path} element={<route.component />} />
+          <Route key={index} path={route.path} element={<AdminLayout><route.component /></AdminLayout>} />
         )
       ))}
     </Routes>
