@@ -20,6 +20,7 @@ import TrackingFailed from "./pages/Tracking/Failed/TrackingFailed";
 import ShareAuth from "./pages/ShareAuth/ShareAuth";
 import AdminLayout from "./layout/adminLayout";
 import Login from "./pages/CMS-Auth/Login";
+import UserList from "./pages/Users/UserList";
 
 const iconClasses = `h-6 w-6`;
 const submenuIconClasses = `h-5 w-5`;
@@ -139,7 +140,7 @@ export const routes = [
         path: '/app/users',
         icon: <IoPerson className={iconClasses} />,
         name: 'Users',
-        component: Dashboard,
+        component: UserList,
       },
       {
         path: '/app/logout',
