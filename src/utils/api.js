@@ -24,12 +24,16 @@ export async function apiRequest(
 
 		const isFileUpload = Object.values(data).some(value => value instanceof File);
 
-		console.log(data);
-
 		if (isFileUpload) {
 			const formData = new FormData();
 			for (const key in data) {
-				formData.append(key, data[key]);
+				if (Array.isArray(data[key])) {
+					data[key].forEach((item, index) => {
+						formData.append(`${key}[${index}]`, item);
+					});
+				} else {
+					formData.append(key, data[key]);
+				}
 			}
 			config.data = formData;
 			config.headers['Content-Type'] = 'multipart/form-data';
@@ -58,12 +62,18 @@ export async function apiRequest(
 						responseType,
 					};
 
-					const isFileUpload = data.file instanceof File;
+					const isFileUpload = Object.values(data).some(value => value instanceof File);
 
 					if (isFileUpload) {
 						const formData = new FormData();
 						for (const key in data) {
-							formData.append(key, data[key]);
+							if (Array.isArray(data[key])) {
+								data[key].forEach((item, index) => {
+									formData.append(`${key}[${index}]`, item);
+								});
+							} else {
+								formData.append(key, data[key]);
+							}
 						}
 						config.data = formData;
 						config.headers['Content-Type'] = 'multipart/form-data';
@@ -81,7 +91,7 @@ export async function apiRequest(
 			} catch (refreshError) {
 				if (window.location.pathname !== '/web/login') {
 					window.location.href = '/web/login';
-				}else{
+				} else {
 					message.error(refreshError.response.data.message);
 				}
 			}

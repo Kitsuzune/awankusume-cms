@@ -16,18 +16,10 @@ const IDAK = ({ customerId, makelarId }) => {
         nomorTelp: '',
         nibOssRba: '',
         ruko: '',
-        responsible: [],
-        officeEquipment: [],
+        responsible: [''], // Array of string
+        officeEquipment: [''], // Array of string
     });
     const [files, setFiles] = useState({});
-
-    const addPenanggungJawab = () => {
-        setPenanggungJawabCount(penanggungJawabCount + 1);
-    };
-
-    const addPeralatanKantor = () => {
-        setPeralatanKantorCount(peralatanKantorCount + 1);
-    };
 
     const handleFileChange = (name, file) => {
         setFiles(prevFiles => ({ ...prevFiles, [name]: file }));
@@ -35,21 +27,25 @@ const IDAK = ({ customerId, makelarId }) => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        const [field, index] = name.split('[');
-        if (index) {
-            const idx = parseInt(index.replace(']', ''), 10);
-            setData(prevData => {
-                const updatedArray = [...prevData[field]];
-                updatedArray[idx - 1] = { ...updatedArray[idx - 1], [field === 'officeEquipment' ? 'peralatanKantor' : field]: value };
-                return { ...prevData, [field]: updatedArray };
-            });
-        } else {
-            setData(prevData => ({ ...prevData, [name]: value }));
-        }
+        setData(prevData => ({ ...prevData, [name]: value }));
     };
 
-    const handleSelectChange = (value, name) => {
-        setData(prevData => ({ ...prevData, [name]: value }));
+    const handleResponsibleChange = (index, field, value) => {
+        setData(prevData => {
+            const updatedResponsible = [...prevData.responsible];
+            const responsibleObj = JSON.parse(updatedResponsible[index] || '{}');
+            responsibleObj[field] = value;
+            updatedResponsible[index] = JSON.stringify(responsibleObj);
+            return { ...prevData, responsible: updatedResponsible };
+        });
+    };
+
+    const handleOfficeEquipmentChange = (index, value) => {
+        setData(prevData => {
+            const updatedOfficeEquipment = [...prevData.officeEquipment];
+            updatedOfficeEquipment[index] = JSON.stringify({ peralatanKantor: value });
+            return { ...prevData, officeEquipment: updatedOfficeEquipment };
+        });
     };
 
     const handleSubmit = async () => {
@@ -64,33 +60,32 @@ const IDAK = ({ customerId, makelarId }) => {
             await apiRequest('post', 'order/1', filesAndData);
             message.success('Order created successfully');
         } catch (error) {
-            console.log(error);
             message.error('Failed to create order');
         }
     };
 
     const renderPenanggungJawab = () => {
         const forms = [];
-        for (let i = 1; i <= penanggungJawabCount; i++) {
+        for (let i = 0; i < penanggungJawabCount; i++) {
             forms.push(
                 <div key={i}>
                     <Row gutter={16}>
                         <Col span={12}>
                             <Form.Item
-                                name={`namaPenanggungJawab${i}`}
-                                label={`Nama Penanggung Jawab ${i} :`}
-                                rules={[{ required: true, message: `Please enter the name of Penanggung Jawab ${i}` }]}
+                                name={`name${i}`}
+                                label={`Nama Penanggung Jawab ${i + 1} :`}
+                                rules={[{ required: true, message: `Please enter the name of Penanggung Jawab ${i + 1}` }]}
                             >
-                                <Input name={`namaPenanggungJawab${i}`} placeholder={`Enter the name of Penanggung Jawab ${i}`} />
+                                <Input name={`name`} placeholder={`Enter the name of Penanggung Jawab ${i + 1}`} onChange={(e) => handleResponsibleChange(i, 'name', e.target.value)} />
                             </Form.Item>
                         </Col>
                         <Col span={12}>
                             <Form.Item
-                                name={`jabatanPenanggungJawab${i}`}
-                                label={`Jabatan Penanggung Jawab ${i} :`}
-                                rules={[{ required: true, message: `Please enter the position of Penanggung Jawab ${i}` }]}
+                                name={`jabatan${i}`}
+                                label={`Jabatan Penanggung Jawab ${i + 1} :`}
+                                rules={[{ required: true, message: `Please enter the position of Penanggung Jawab ${i + 1}` }]}
                             >
-                                <Input name={`jabatanPenanggungJawab${i}`} placeholder={`Enter the position of Penanggung Jawab ${i}`} />
+                                <Input name={`jabatan`} placeholder={`Enter the position of Penanggung Jawab ${i + 1}`} onChange={(e) => handleResponsibleChange(i, 'jabatan', e.target.value)} />
                             </Form.Item>
                         </Col>
                     </Row>
@@ -102,17 +97,17 @@ const IDAK = ({ customerId, makelarId }) => {
 
     const renderPeralatanKantor = () => {
         const forms = [];
-        for (let i = 1; i <= peralatanKantorCount; i++) {
+        for (let i = 0; i < peralatanKantorCount; i++) {
             forms.push(
                 <div key={i}>
                     <Row gutter={16}>
                         <Col span={24}>
                             <Form.Item
-                                name={`officeEquipment[${i}]`}
-                                label={`Peralatan Kantor ${i} :`}
-                                rules={[{ required: true, message: `Please enter the peralatan kantor ${i}` }]}
+                                name={`peralatanKantor${i}`}
+                                label={`Peralatan Kantor ${i + 1} :`}
+                                rules={[{ required: true, message: `Please enter the peralatan kantor ${i + 1}` }]}
                             >
-                                <Input name={`officeEquipment[${i}]`} placeholder={`Enter the peralatan kantor ${i}`} onChange={handleChange} />
+                                <Input name={`peralatanKantor`} placeholder={`Enter the peralatan kantor ${i + 1}`} onChange={(e) => handleOfficeEquipmentChange(i, e.target.value)} />
                             </Form.Item>
                         </Col>
                     </Row>
@@ -270,13 +265,13 @@ const IDAK = ({ customerId, makelarId }) => {
 
             {renderPenanggungJawab()}
 
-            <Button type="primary" onClick={addPenanggungJawab} className="w-full my-4 bg-main">
+            <Button type="primary" onClick={() => setPenanggungJawabCount(penanggungJawabCount + 1)} className="w-full my-4 bg-main">
                 Tambahkan Penanggung Jawab +
             </Button>
 
             {renderPeralatanKantor()}
 
-            <Button type="primary" onClick={addPeralatanKantor} className="w-full my-4 bg-main">
+            <Button type="primary" onClick={() => setPeralatanKantorCount(peralatanKantorCount + 1)} className="w-full my-4 bg-main">
                 Tambahkan Peralatan Kantor +
             </Button>
 
