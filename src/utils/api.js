@@ -1,7 +1,8 @@
+import { message } from 'antd';
 import axios from 'axios';
 
 const apiClient = axios.create({
-	baseURL: process.env.NEXT_PUBLIC_API_URL,
+	baseURL: process.env.REACT_APP_API_URL_CSM,
 	withCredentials: true,
 });
 
@@ -76,7 +77,11 @@ export async function apiRequest(
 					}
 				}
 			} catch (refreshError) {
-				window.location.href = '/login';
+				if (window.location.pathname !== '/web/login') {
+					window.location.href = '/web/login';
+				}else{
+					message.error(refreshError.response.data.message);
+				}
 			}
 		}
 

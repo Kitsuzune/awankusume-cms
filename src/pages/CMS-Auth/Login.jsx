@@ -16,6 +16,7 @@ import {
 } from '@ant-design/pro-components';
 import { Button, Divider, Space, Tabs, message, theme } from 'antd';
 import { useState } from 'react';
+import { apiRequest } from '../../utils/api';
 
 const iconStyles = {
     color: 'rgba(0, 0, 0, 0.2)',
@@ -25,7 +26,35 @@ const iconStyles = {
 };
 
 const Page = () => {
-    const [loginType, setLoginType] = useState('phone');
+    const [data, setData] = useState({
+        email: '',
+        password: '',
+        remember: false,
+    });
+
+    const [error, setError] = useState({
+        email: '',
+        password: '',
+    });
+
+    const handleLogin = async () => {
+        try {
+            const response = await apiRequest('post', '/auth/login', data);
+            if (response.status === 200) {
+                message.success('Login success');
+                window.location.href = '/app/dashboard';
+            }
+        } catch (error) {
+            setError({
+                email: 'Email is Wrong',
+                password: 'Password is Wrong',
+            });
+            // message.error('Login failed');
+        }
+    };
+
+
+
     const { token } = theme.useToken();
     return (
         <div
@@ -85,20 +114,25 @@ const Page = () => {
                     searchConfig: {
                         submitText: 'Login',
                     },
-                    render: (_, dom) => dom.pop(),
-                    submitButtonProps: {
-                        style: {
-                            width: '100%',
-                            backgroundColor: '#1677FF',
-                            borderColor: '#1677FF',
-                            color: '#fff',
-                        },
-                    },
+                    render: (_, dom) => (
+                        <Button
+                            type="primary"
+                            onClick={handleLogin}
+                            style={{
+                                width: '100%',
+                                backgroundColor: '#1677FF',
+                                borderColor: '#1677FF',
+                                color: '#fff',
+                            }}
+                        >
+                            Login
+                        </Button>
+                    ),
                 }}
             >
                 <>
                     <ProFormText
-                        name="username"
+                        name="email"
                         fieldProps={{
                             size: 'large',
                             prefix: (
@@ -110,13 +144,16 @@ const Page = () => {
                                 />
                             ),
                         }}
-                        placeholder={'Username'}
+                        placeholder={'Email'}
                         rules={[
                             {
                                 required: true,
-                                message: 'Username is required',
+                                message: 'Email is required',
                             },
                         ]}
+                        value={data.email}
+                        onChange={(e) => setData({ ...data, email: e.target.value })}
+                        error={error.email}
                     />
                     <ProFormText.Password
                         name="password"
@@ -138,6 +175,9 @@ const Page = () => {
                                 message: 'Password is required',
                             },
                         ]}
+                        value={data.password}
+                        onChange={(e) => setData({ ...data, password: e.target.value })}
+                        error={error.password}
                     />
                 </>
 
@@ -146,7 +186,12 @@ const Page = () => {
                         marginBlockEnd: 24,
                     }}
                 >
-                    <ProFormCheckbox noStyle name="autoLogin">
+                    <ProFormCheckbox 
+                    noStyle 
+                    name="autoLogin"
+                    onChange={(e) => setData({ ...data, remember: e.target.checked })}
+                    value={data.remember}
+                    >
                         Remember me
                     </ProFormCheckbox>
                 </div>
