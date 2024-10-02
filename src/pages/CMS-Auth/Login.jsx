@@ -36,9 +36,8 @@ const Page = () => {
         >
             <LoginFormPage
                 backgroundImageUrl="https://mdn.alipayobjects.com/huamei_gcee1x/afts/img/A*y0ZTS6WLwvgAAAAAAAAAAAAADml6AQ/fmt.webp"
-                logo="https://github.githubassets.com/favicons/favicon.png"
                 backgroundVideoUrl="https://gw.alipayobjects.com/v/huamei_gcee1x/afts/video/jXRBRK_VAwoAAAAAAAAAAAAAK4eUAQBr"
-                title="Github"
+                title="AWAN KUSUMA"
                 containerStyle={{
                     backgroundColor: 'rgba(0, 0, 0,0.65)',
                     backdropFilter: 'blur(4px)',
