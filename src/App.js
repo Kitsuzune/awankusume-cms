@@ -6,10 +6,11 @@ import AppRootRoutes from './FormattedRoutes';
 import ExpandedRoutes from './ExpandedRoutes';
 
 function App() {
+  
   return (
     <Router>
       <AppRootRoutes />
-      {/* <ExpandedRoutes /> */}
+      <ExpandedRoutes />
     </Router>
   );
 }

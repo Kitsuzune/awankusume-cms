@@ -161,9 +161,7 @@ export const routes = [
 export default function AppRootRoutes() {
   return (
     <Routes>
-
-      <Route path="/web/login" element={<Login />} />
-
+      <Route path="/app/users/add" element={<AdminLayout><UserList /></AdminLayout>} />
 
       {routes.map((route, index) => (
         route.group ? (

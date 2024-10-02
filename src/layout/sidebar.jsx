@@ -8,7 +8,7 @@ const Sidebar = ({ isCollapsed, toggleSidebarCollapse }) => {
     const [expandedMenus, setExpandedMenus] = useState({});
 
     const isActive = (path) => {
-        return location.pathname === path;
+        return location.pathname.startsWith(path);
     };
 
     const toggleExpand = (index) => {
