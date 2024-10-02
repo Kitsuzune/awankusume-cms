@@ -9,6 +9,8 @@ import IzinBisnis from './FormGrouping/IzinBisnis/IzinBisnis';
 const FormOrder = () => {
   const { Option } = Select;
   const [serviceType, setServiceType] = useState(null);
+  const [customerId, setCustomerId] = useState(null);
+  const [makelarId, setMakelarId] = useState(null);
 
   const handleServiceTypeChange = (value) => {
     setServiceType(value);
@@ -17,8 +19,6 @@ const FormOrder = () => {
   return (
     <Row className="w-full">
       <Col span={24}>
-
-
         <Row>
           <Col span={24}>
             <div className="flex flex-col">
@@ -49,7 +49,7 @@ const FormOrder = () => {
                         label="Customer :"
                         rules={[{ required: true, message: 'Please enter the customer name' }]}
                       >
-                        <Input placeholder="Enter the customer name" />
+                        <Input placeholder="Enter the customer name" onChange={(e) => setCustomerId(e.target.value)} />
                       </Form.Item>
                     </Col>
                   </Row>
@@ -61,7 +61,7 @@ const FormOrder = () => {
                         label="Makelar :"
                         rules={[{ required: true, message: 'Please enter the makelar name' }]}
                       >
-                        <Input placeholder="Enter the makelar name" />
+                        <Input placeholder="Enter the makelar name" onChange={(e) => setMakelarId(e.target.value)} />
                       </Form.Item>
                     </Col>
                   </Row>
@@ -71,7 +71,7 @@ const FormOrder = () => {
                   )}
 
                   {serviceType === 'izinBisnis' && (
-                    <IzinBisnis />
+                    <IzinBisnis customerId={customerId} makelarId={makelarId} />
                   )}
 
                   {serviceType && (
@@ -93,8 +93,6 @@ const FormOrder = () => {
             </div>
           </Col>
         </Row>
-
-
       </Col>
     </Row>
   )

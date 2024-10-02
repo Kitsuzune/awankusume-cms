@@ -1,14 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { InboxOutlined } from '@ant-design/icons';
 import { message, Upload } from 'antd';
 
 const { Dragger } = Upload;
 
-const Draggable = ({ icon = <InboxOutlined />, topText = "Click or drag file to this area to upload", bottomText = "Support for a single or bulk upload. Strictly prohibited from uploading company data or other banned files." }) => {
+const Draggable = ({ icon = <InboxOutlined />, topText = "Click or drag file to this area to upload", bottomText = "Support for a single or bulk upload. Strictly prohibited from uploading company data or other banned files.", onFileChange }) => {
+  const [fileList, setFileList] = useState([]);
+
   const props = {
     name: 'file',
-    multiple: true,
-    action: 'https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload',
+    multiple: false,
+    beforeUpload: (file) => {
+      setFileList([file]);
+      onFileChange(file); 
+      return false;
+    },
     onChange(info) {
       const { status } = info.file;
       if (status !== 'uploading') {
@@ -26,10 +32,7 @@ const Draggable = ({ icon = <InboxOutlined />, topText = "Click or drag file to 
   };
 
   return (
-    <Dragger {...props}>
-      {/* <p className="ant-upload-drag-icon">
-        {icon}
-      </p> */}
+    <Dragger {...props} fileList={fileList}>
       <div className="flex flex-col items-center justify-center text-[60px]">
         {icon}
       </div>

@@ -1,13 +1,15 @@
 import React, { useState } from 'react'
-import { Col, Input, Row, Select, Form, Typography, Button, Radio } from 'antd'
+import { Col, Input, Row, Select, Form, Typography, Button, Radio, message } from 'antd'
 import Draggable from '../../../../../../components/ui/File Upload/Draggable';
 import { PiBuildingOfficeDuotone, PiCalendarDuotone, PiCardholderDuotone, PiIdentificationBadgeDuotone } from 'react-icons/pi';
+import { apiRequest } from '../../../../../../utils/api';
 
 const { Option } = Select;
 
-const IDAK = () => {
+const IDAK = ({ customerId, makelarId }) => {
     const [penanggungJawabCount, setPenanggungJawabCount] = useState(1);
     const [peralatanKantorCount, setPeralatanKantorCount] = useState(1);
+    const [form] = Form.useForm();
 
     const addPenanggungJawab = () => {
         setPenanggungJawabCount(penanggungJawabCount + 1);
@@ -15,6 +17,85 @@ const IDAK = () => {
 
     const addPeralatanKantor = () => {
         setPeralatanKantorCount(peralatanKantorCount + 1);
+    };
+
+    // const files = {
+    //     // file1: new File(["content"], "file1.txt"),
+    //     // file2: new File(["content"], "file2.txt"),
+    //     akta: new File(["content"], "akta.jpg"),
+    //     sk: new File(["content"], "sk.jpg"),
+    //     npwp: new File(["content"], "npwp.jpg"),
+    //     fotoRuko: new File(["content"], "fotoRuko.jpg"),
+    // };
+    const values = form.validateFields();
+    const filesAndData = {
+        akta: new File(["content"], values.akta),
+        sk: new File(["content"], values.sk),
+        npwp: new File(["content"], values.npwp),
+        fotoRuko: new File(["content"], values.fotoRuko),
+        customerId: customerId,
+        makelarId: makelarId,
+        fullName: values.fullName,
+        email: values.email,
+        nomorTelp: values.phone,
+        nibOssRba: values.nibOss,
+        ruko: values.rukoType,
+        responsible: [],
+        officeEquipment: []
+    }
+
+   
+
+    const handleSubmit = async () => {
+        try {
+            const values = await form.validateFields();
+            // const data = {
+            //     customerId,
+            //     makelarId,
+            //     fullName: values.fullName,
+            //     email: values.email,
+            //     nomorTelp: values.phone,
+            //     nibOssRba: values.nibOss,
+            //     ruko: values.rukoType,
+            //     responsible: [],
+            //     officeEquipment: []
+            // };
+
+            // for (let i = 1; i <= penanggungJawabCount; i++) {
+            //     data.responsible.push({
+            //         name: values[`namaPenanggungJawab${i}`],
+            //         jabatan: values[`jabatanPenanggungJawab${i}`]
+            //     });
+            // }
+
+            // for (let i = 1; i <= peralatanKantorCount; i++) {
+            //     data.officeEquipment.push({
+            //         peralatanKantor: values[`peralatanKantor${i}`]
+            //     });
+            // }
+
+
+
+            for (let i = 1; i <= penanggungJawabCount; i++) {
+                filesAndData.responsible.push({
+                    name: values[`namaPenanggungJawab${i}`],
+                    jabatan: values[`jabatanPenanggungJawab${i}`]
+                });
+            }
+
+            for (let i = 1; i <= peralatanKantorCount; i++) {
+                filesAndData.officeEquipment.push({
+                    peralatanKantor: values[`peralatanKantor${i}`]
+                });
+            }
+
+            await apiRequest('post', 'order/1', filesAndData);
+            message.success('Order created successfully');
+        } catch (error) {
+            console.log(filesAndData);
+            console.log(error);
+            message.error('Failed to create order');
+        }
     };
 
     const renderPenanggungJawab = () => {
@@ -71,8 +152,7 @@ const IDAK = () => {
     }
 
     return (
-        <Form layout="vertical">
-
+        <Form layout="vertical" form={form}>
 
             <Row gutter={16}>
                 <Col span={24}>
@@ -222,6 +302,10 @@ const IDAK = () => {
 
             <Button type="primary" onClick={addPeralatanKantor} className="w-full my-4 bg-main">
                 Tambahkan Peralatan Kantor +
+            </Button>
+
+            <Button type="primary" onClick={handleSubmit} className="w-full my-4 bg-main">
+                Submit
             </Button>
 
         </Form>

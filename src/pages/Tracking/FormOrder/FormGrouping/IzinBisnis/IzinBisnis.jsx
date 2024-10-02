@@ -14,7 +14,7 @@ import AKL from './bussinessType/AKL';
 
 
 
-const IzinBisnis = () => {
+const IzinBisnis = ({ customerId, makelarId }) => {
     const { Option } = Select;
     const [businessType, setBusinessType] = useState(null);
 
@@ -48,7 +48,7 @@ const IzinBisnis = () => {
             </Row>
 
             {businessType == 'IDAK' && (
-                <IDAK />
+                <IDAK customerId={customerId} makelarId={makelarId} />
             )}
 
             {businessType === 'BPOM' && (
