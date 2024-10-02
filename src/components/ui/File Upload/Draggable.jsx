@@ -15,6 +15,7 @@ const Draggable = ({ icon = <InboxOutlined />, topText = "Click or drag file to 
       onFileChange(file); 
       return false;
     },
+    fileList, 
     onChange(info) {
       const { status } = info.file;
       if (status !== 'uploading') {
@@ -32,7 +33,7 @@ const Draggable = ({ icon = <InboxOutlined />, topText = "Click or drag file to 
   };
 
   return (
-    <Dragger {...props} fileList={fileList}>
+    <Dragger {...props}>
       <div className="flex flex-col items-center justify-center text-[60px]">
         {icon}
       </div>

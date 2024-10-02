@@ -45,7 +45,7 @@ const FormOrder = () => {
                   <Row gutter={16}>
                     <Col span={24}>
                       <Form.Item
-                        name="customer"
+                        name="customerId"
                         label="Customer :"
                         rules={[{ required: true, message: 'Please enter the customer name' }]}
                       >
@@ -57,7 +57,7 @@ const FormOrder = () => {
                   <Row gutter={16}>
                     <Col span={24}>
                       <Form.Item
-                        name="makelar"
+                        name="makelarId"
                         label="Makelar :"
                         rules={[{ required: true, message: 'Please enter the makelar name' }]}
                       >

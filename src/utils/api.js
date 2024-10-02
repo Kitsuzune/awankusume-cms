@@ -24,6 +24,8 @@ export async function apiRequest(
 
 		const isFileUpload = Object.values(data).some(value => value instanceof File);
 
+		console.log(data);
+
 		if (isFileUpload) {
 			const formData = new FormData();
 			for (const key in data) {

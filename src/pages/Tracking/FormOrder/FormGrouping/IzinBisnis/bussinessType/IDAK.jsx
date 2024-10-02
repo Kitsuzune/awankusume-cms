@@ -10,6 +10,16 @@ const IDAK = ({ customerId, makelarId }) => {
     const [penanggungJawabCount, setPenanggungJawabCount] = useState(1);
     const [peralatanKantorCount, setPeralatanKantorCount] = useState(1);
     const [form] = Form.useForm();
+    const [data, setData] = useState({
+        fullName: '',
+        email: '',
+        nomorTelp: '',
+        nibOssRba: '',
+        ruko: '',
+        responsible: [],
+        officeEquipment: [],
+    });
+    const [files, setFiles] = useState({});
 
     const addPenanggungJawab = () => {
         setPenanggungJawabCount(penanggungJawabCount + 1);
@@ -19,80 +29,41 @@ const IDAK = ({ customerId, makelarId }) => {
         setPeralatanKantorCount(peralatanKantorCount + 1);
     };
 
-    // const files = {
-    //     // file1: new File(["content"], "file1.txt"),
-    //     // file2: new File(["content"], "file2.txt"),
-    //     akta: new File(["content"], "akta.jpg"),
-    //     sk: new File(["content"], "sk.jpg"),
-    //     npwp: new File(["content"], "npwp.jpg"),
-    //     fotoRuko: new File(["content"], "fotoRuko.jpg"),
-    // };
-    const values = form.validateFields();
-    const filesAndData = {
-        akta: new File(["content"], values.akta),
-        sk: new File(["content"], values.sk),
-        npwp: new File(["content"], values.npwp),
-        fotoRuko: new File(["content"], values.fotoRuko),
-        customerId: customerId,
-        makelarId: makelarId,
-        fullName: values.fullName,
-        email: values.email,
-        nomorTelp: values.phone,
-        nibOssRba: values.nibOss,
-        ruko: values.rukoType,
-        responsible: [],
-        officeEquipment: []
-    }
+    const handleFileChange = (name, file) => {
+        setFiles(prevFiles => ({ ...prevFiles, [name]: file }));
+    };
 
-   
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        const [field, index] = name.split('[');
+        if (index) {
+            const idx = parseInt(index.replace(']', ''), 10);
+            setData(prevData => {
+                const updatedArray = [...prevData[field]];
+                updatedArray[idx - 1] = { ...updatedArray[idx - 1], [field === 'officeEquipment' ? 'peralatanKantor' : field]: value };
+                return { ...prevData, [field]: updatedArray };
+            });
+        } else {
+            setData(prevData => ({ ...prevData, [name]: value }));
+        }
+    };
+
+    const handleSelectChange = (value, name) => {
+        setData(prevData => ({ ...prevData, [name]: value }));
+    };
 
     const handleSubmit = async () => {
         try {
-            const values = await form.validateFields();
-            // const data = {
-            //     customerId,
-            //     makelarId,
-            //     fullName: values.fullName,
-            //     email: values.email,
-            //     nomorTelp: values.phone,
-            //     nibOssRba: values.nibOss,
-            //     ruko: values.rukoType,
-            //     responsible: [],
-            //     officeEquipment: []
-            // };
-
-            // for (let i = 1; i <= penanggungJawabCount; i++) {
-            //     data.responsible.push({
-            //         name: values[`namaPenanggungJawab${i}`],
-            //         jabatan: values[`jabatanPenanggungJawab${i}`]
-            //     });
-            // }
-
-            // for (let i = 1; i <= peralatanKantorCount; i++) {
-            //     data.officeEquipment.push({
-            //         peralatanKantor: values[`peralatanKantor${i}`]
-            //     });
-            // }
-
-
-
-            for (let i = 1; i <= penanggungJawabCount; i++) {
-                filesAndData.responsible.push({
-                    name: values[`namaPenanggungJawab${i}`],
-                    jabatan: values[`jabatanPenanggungJawab${i}`]
-                });
-            }
-
-            for (let i = 1; i <= peralatanKantorCount; i++) {
-                filesAndData.officeEquipment.push({
-                    peralatanKantor: values[`peralatanKantor${i}`]
-                });
-            }
+            const filesAndData = {
+                ...files,
+                ...data,
+                makelarId: makelarId,
+                customerId: customerId,
+            };
 
             await apiRequest('post', 'order/1', filesAndData);
             message.success('Order created successfully');
         } catch (error) {
-            console.log(filesAndData);
             console.log(error);
             message.error('Failed to create order');
         }
@@ -101,30 +72,30 @@ const IDAK = ({ customerId, makelarId }) => {
     const renderPenanggungJawab = () => {
         const forms = [];
         for (let i = 1; i <= penanggungJawabCount; i++) {
-          forms.push(
-            <div key={i}>
-              <Row gutter={16}>
-                <Col span={12}>
-                  <Form.Item
-                    name={`namaPenanggungJawab${i}`}
-                    label={`Nama Penanggung Jawab ${i} :`}
-                    rules={[{ required: true, message: `Please enter the name of Penanggung Jawab ${i}` }]}
-                  >
-                    <Input placeholder={`Enter the name of Penanggung Jawab ${i}`} />
-                  </Form.Item>
-                </Col>
-                <Col span={12}>
-                  <Form.Item
-                    name={`jabatanPenanggungJawab${i}`}
-                    label={`Jabatan Penanggung Jawab ${i} :`}
-                    rules={[{ required: true, message: `Please enter the position of Penanggung Jawab ${i}` }]}
-                  >
-                    <Input placeholder={`Enter the position of Penanggung Jawab ${i}`} />
-                  </Form.Item>
-                </Col>
-              </Row>
-            </div>
-          );
+            forms.push(
+                <div key={i}>
+                    <Row gutter={16}>
+                        <Col span={12}>
+                            <Form.Item
+                                name={`namaPenanggungJawab${i}`}
+                                label={`Nama Penanggung Jawab ${i} :`}
+                                rules={[{ required: true, message: `Please enter the name of Penanggung Jawab ${i}` }]}
+                            >
+                                <Input name={`namaPenanggungJawab${i}`} placeholder={`Enter the name of Penanggung Jawab ${i}`} />
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item
+                                name={`jabatanPenanggungJawab${i}`}
+                                label={`Jabatan Penanggung Jawab ${i} :`}
+                                rules={[{ required: true, message: `Please enter the position of Penanggung Jawab ${i}` }]}
+                            >
+                                <Input name={`jabatanPenanggungJawab${i}`} placeholder={`Enter the position of Penanggung Jawab ${i}`} />
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                </div>
+            );
         }
         return forms;
     }
@@ -137,11 +108,11 @@ const IDAK = ({ customerId, makelarId }) => {
                     <Row gutter={16}>
                         <Col span={24}>
                             <Form.Item
-                                name={`peralatanKantor${i}`}
+                                name={`officeEquipment[${i}]`}
                                 label={`Peralatan Kantor ${i} :`}
                                 rules={[{ required: true, message: `Please enter the peralatan kantor ${i}` }]}
                             >
-                                <Input placeholder={`Enter the peralatan kantor ${i}`} />
+                                <Input name={`officeEquipment[${i}]`} placeholder={`Enter the peralatan kantor ${i}`} onChange={handleChange} />
                             </Form.Item>
                         </Col>
                     </Row>
@@ -154,7 +125,7 @@ const IDAK = ({ customerId, makelarId }) => {
     return (
         <Form layout="vertical" form={form}>
 
-            <Row gutter={16}>
+            {/* <Row gutter={16}>
                 <Col span={24}>
                     <Form.Item
                         name="customerField"
@@ -162,6 +133,7 @@ const IDAK = ({ customerId, makelarId }) => {
                     >
                         <Select
                             placeholder="Select Customer"
+                            onChange={(value) => handleSelectChange(value, 'customerField')}
                         >
                             <Option value="Customer 1">Customer 1</Option>
                             <Option value="Customer 2">Customer 2</Option>
@@ -169,7 +141,7 @@ const IDAK = ({ customerId, makelarId }) => {
                         </Select>
                     </Form.Item>
                 </Col>
-            </Row>
+            </Row> */}
 
             <Row gutter={16}>
                 <Col span={24}>
@@ -178,7 +150,7 @@ const IDAK = ({ customerId, makelarId }) => {
                         label="Full name :"
                         rules={[{ required: true, message: 'Please enter your full name' }]}
                     >
-                        <Input placeholder="Enter your full name" />
+                        <Input name="fullName" placeholder="Enter your full name" onChange={handleChange} />
                     </Form.Item>
                 </Col>
             </Row>
@@ -190,16 +162,16 @@ const IDAK = ({ customerId, makelarId }) => {
                         label="Email :"
                         rules={[{ required: true, message: 'Please enter your email' }]}
                     >
-                        <Input placeholder="Enter your email" />
+                        <Input name="email" placeholder="Enter your email" onChange={handleChange} />
                     </Form.Item>
                 </Col>
                 <Col span={12}>
                     <Form.Item
-                        name="phone"
+                        name="nomorTelp"
                         label="No.Phone :"
                         rules={[{ required: true, message: 'Please enter your phone number' }]}
                     >
-                        <Input placeholder="Enter your phone number" />
+                        <Input name="nomorTelp" placeholder="Enter your phone number" onChange={handleChange} />
                     </Form.Item>
                 </Col>
             </Row>
@@ -215,6 +187,7 @@ const IDAK = ({ customerId, makelarId }) => {
                             icon={<PiCalendarDuotone />}
                             topText="Click or drag file Akta to this area to upload"
                             bottomText="Supported Format : PDF, Max Size : 10 MB"
+                            onFileChange={(file) => handleFileChange('akta', file)}
                         />
                     </Form.Item>
                 </Col>
@@ -228,6 +201,7 @@ const IDAK = ({ customerId, makelarId }) => {
                             icon={<PiCardholderDuotone />}
                             topText="Click or drag file SK to this area to upload"
                             bottomText="Supported Format : PDF, Max Size : 10 MB"
+                            onFileChange={(file) => handleFileChange('sk', file)}
                         />
                     </Form.Item>
                 </Col>
@@ -244,6 +218,7 @@ const IDAK = ({ customerId, makelarId }) => {
                             icon={<PiIdentificationBadgeDuotone />}
                             topText="Click or drag file NPWP to this area to upload"
                             bottomText="Supported Format : PDF, Max Size : 10 MB"
+                            onFileChange={(file) => handleFileChange('npwp', file)}
                         />
                     </Form.Item>
                 </Col>
@@ -252,11 +227,11 @@ const IDAK = ({ customerId, makelarId }) => {
             <Row gutter={16}>
                 <Col span={24}>
                     <Form.Item
-                        name="nibOss"
+                        name="nibOssRba"
                         label="NIB OSS RBA Dengan KBLI 46691"
                         rules={[{ required: true, message: 'Please upload the NIB OSS' }]}
                     >
-                        <Input placeholder="Enter the NIB OSS RBA Dengan KBLI 46691" />
+                        <Input name="nibOssRba" placeholder="Enter the NIB OSS RBA Dengan KBLI 46691" onChange={handleChange} />
                     </Form.Item>
                 </Col>
             </Row>
@@ -264,13 +239,13 @@ const IDAK = ({ customerId, makelarId }) => {
             <Row gutter={16}>
                 <Col span={24}>
                     <Form.Item
-                        name="rukoType"
+                        name="ruko"
                         label="Ruko"
                         rules={[{ required: true, message: 'Please upload the Ruko Type' }]}
                     >
-                        <Radio.Group>
-                            <Radio value="sewa">Sewa</Radio>
-                            <Radio value="milikSendiri">Milik Sendiri</Radio>
+                        <Radio.Group name="ruko" onChange={handleChange}>
+                            <Radio value="SEWA">Sewa</Radio>
+                            <Radio value="MILIK">Milik Sendiri</Radio>
                         </Radio.Group>
                     </Form.Item>
                 </Col>
@@ -279,7 +254,7 @@ const IDAK = ({ customerId, makelarId }) => {
             <Row gutter={16}>
                 <Col span={24}>
                     <Form.Item
-                        name="fotoRuko"
+                        name="rukoImage"
                         label="Foto Ruko"
                         rules={[{ required: true, message: 'Please upload the Foto Ruko' }]}
                     >
@@ -287,6 +262,7 @@ const IDAK = ({ customerId, makelarId }) => {
                             icon={<PiBuildingOfficeDuotone />}
                             topText="Click or drag file Foto Ruko to this area to upload"
                             bottomText="Supported Format : PDF, Max Size : 10 MB"
+                            onFileChange={(file) => handleFileChange('rukoImage', file)}
                         />
                     </Form.Item>
                 </Col>
