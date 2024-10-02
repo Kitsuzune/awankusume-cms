@@ -29,7 +29,7 @@ const KlinikPratamaKecantikan = () => {
                     <Col span={4} className="flex items-center">
                         <Form.Item
                             name={`penanggungJawab${i}`}
-                            valuePropName="checked"
+                            valuePropName={`penanggungJawab${i}`}
                             className="mb-0"
                         >
                             <Checkbox>Penanggung Jawab</Checkbox>
