@@ -1,17 +1,49 @@
 import React, { useState } from 'react'
-import { Col, Input, Row, Select, Form, Typography, Button, Radio } from 'antd'
+import { Col, Input, Row, Select, Form, Typography, Button, Radio, message } from 'antd'
 import Draggable from '../../../../../../components/ui/File Upload/Draggable';
 import { PiAlignBottomDuotone, PiBookBookmarkDuotone, PiBuildingOfficeDuotone, PiCalendarDuotone, PiCardholderDuotone, PiCardsThreeDuotone, PiCashRegisterDuotone, PiDiamondDuotone, PiIdentificationBadgeDuotone } from 'react-icons/pi';
+import { apiRequest } from '../../../../../../utils/api';
 
 const { Option } = Select;
 
-const TrademarkLuarNegeriPerorangan = () => {
+const TrademarkLuarNegeriPerorangan = ({ customerId, makelarId }) => {
+    const [data, setData] = useState({
+        fullName: '',
+        email: '',
+        nomorTelp: '',
+    });
+    const [files, setFiles] = useState({});
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setData(prevData => ({ ...prevData, [name]: value }));
+    };
+
+    const handleFileChange = (name, file) => {
+        setFiles(prevFiles => ({ ...prevFiles, [name]: file }));
+    };
+
+    const handleSubmit = async () => {
+        try {
+            const filesAndData = {
+                ...files,
+                ...data,
+                makelarId: makelarId,
+                customerId: customerId,
+            };
+
+            await apiRequest('post', 'order/5', filesAndData);
+            message.success('Order created successfully');
+        } catch (error) {
+            message.error('Failed to create order');
+        }
+    };
 
     return (
         <Form layout="vertical">
 
 
-            <Row gutter={16}>
+            {/* <Row gutter={16}>
                 <Col span={24}>
                     <Form.Item
                         name="customerField"
@@ -26,7 +58,7 @@ const TrademarkLuarNegeriPerorangan = () => {
                         </Select>
                     </Form.Item>
                 </Col>
-            </Row>
+            </Row> */}
 
             <Row gutter={16}>
                 <Col span={24}>
@@ -35,7 +67,7 @@ const TrademarkLuarNegeriPerorangan = () => {
                         label="Full name :"
                         rules={[{ required: true, message: 'Please enter your full name' }]}
                     >
-                        <Input placeholder="Enter your full name" />
+                        <Input name="fullName" placeholder="Enter your full name" onChange={handleChange} />
                     </Form.Item>
                 </Col>
             </Row>
@@ -47,7 +79,7 @@ const TrademarkLuarNegeriPerorangan = () => {
                         label="Email :"
                         rules={[{ required: true, message: 'Please enter your email' }]}
                     >
-                        <Input placeholder="Enter your email" />
+                        <Input name="email" placeholder="Enter your email" onChange={handleChange} />
                     </Form.Item>
                 </Col>
                 <Col span={12}>
@@ -56,7 +88,7 @@ const TrademarkLuarNegeriPerorangan = () => {
                         label="No.Phone :"
                         rules={[{ required: true, message: 'Please enter your phone number' }]}
                     >
-                        <Input placeholder="Enter your phone number" />
+                        <Input name="nomorTelp" placeholder="Enter your phone number" onChange={handleChange} />
                     </Form.Item>
                 </Col>
             </Row>
@@ -72,6 +104,7 @@ const TrademarkLuarNegeriPerorangan = () => {
                             icon={<PiDiamondDuotone />}
                             topText="Click or drag file Passport Pemohon to this area to upload"
                             bottomText="Supported Format : PDF, Max Size : 10 MB"
+                            onFileChange={(file) => handleFileChange('paspor', file)}
                         />
                     </Form.Item>
                 </Col>
@@ -85,6 +118,7 @@ const TrademarkLuarNegeriPerorangan = () => {
                             icon={<PiBookBookmarkDuotone />}
                             topText="Click or drag file Etiket Logo to this area to upload"
                             bottomText="Supported Format : PDF, Max Size : 10 MB"
+                            onFileChange={(file) => handleFileChange('etiketLogo', file)}
                         />
                     </Form.Item>
                 </Col>
@@ -101,6 +135,7 @@ const TrademarkLuarNegeriPerorangan = () => {
                             icon={<PiCardsThreeDuotone />}
                             topText="Click or drag file Tanda Tangan Pemohon to this area to upload"
                             bottomText="Supported Format : PDF, Max Size : 10 MB"
+                            onFileChange={(file) => handleFileChange('tandaTanganPemohon', file)}
                         />
                     </Form.Item>
                 </Col>
@@ -117,10 +152,15 @@ const TrademarkLuarNegeriPerorangan = () => {
                             icon={<PiCashRegisterDuotone />}
                             topText="Click or drag file Penjelasan Bisnis Yang Dikerjakan to this area to upload"
                             bottomText="Supported Format : PDF, Max Size : 10 MB"
+                            onFileChange={(file) => handleFileChange('penjelasanBisnis', file)}
                         />
                     </Form.Item>
                 </Col>
             </Row>
+
+            <Button type="primary" onClick={handleSubmit} className="w-full my-4 bg-main">
+                Submit
+            </Button>
 
         </Form>
     )

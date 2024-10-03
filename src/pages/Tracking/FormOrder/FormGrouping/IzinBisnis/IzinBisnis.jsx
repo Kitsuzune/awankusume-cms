@@ -52,39 +52,39 @@ const IzinBisnis = ({ customerId, makelarId }) => {
             )}
 
             {businessType === 'BPOM' && (
-                <BPOM />
+                <BPOM customerId={customerId} makelarId={makelarId} />
             )}
 
             {businessType === 'Trademark Untuk Lokal Perorangan' && (
-                <TrademarkLokalPerorangan />
+                <TrademarkLokalPerorangan customerId={customerId} makelarId={makelarId} />
             )}
 
             {businessType === 'Trademark Untuk Badan Usaha' && (
-                <TrademarkBadanUsaha />
+                <TrademarkBadanUsaha customerId={customerId} makelarId={makelarId}/>
             )}
 
             {businessType === 'Trademark Untuk Luar Negeri Perorangan' && (
-                <TrademarkLuarNegeriPerorangan />
+                <TrademarkLuarNegeriPerorangan customerId={customerId} makelarId={makelarId}/>
             )}
 
             {businessType === 'Trademark Untuk Badan Usaha Luar Negeri' && (
-                <TrademarkBadanUsahaLuarNegeri />
+                <TrademarkBadanUsahaLuarNegeri customerId={customerId} makelarId={makelarId}/>
             )}
 
             {businessType === 'SMKPO' && (
-                <SMKPO />
+                <SMKPO customerId={customerId} makelarId={makelarId}/>
             )}
 
             {businessType === 'Klinik Pratama atau Klinik Kecantikan' && (
-                <KlinikPratamaKecantikan />
+                <KlinikPratamaKecantikan customerId={customerId} makelarId={makelarId} />
             )}
 
             {businessType === 'INSW' && (
-                <INSW />
+                <INSW customerId={customerId} makelarId={makelarId}/>
             )}
 
             {businessType === 'AKL' && (
-                <AKL />
+                <AKL customerId={customerId} makelarId={makelarId}/>
             )}
         </Form>
     )
