@@ -21,6 +21,10 @@ import ShareAuth from "./pages/ShareAuth/ShareAuth";
 import AdminLayout from "./layout/adminLayout";
 import Login from "./pages/CMS-Auth/Login";
 import UserList from "./pages/Users/UserList";
+import Content from "./pages/ContentManagement/Showcase/Showcase";
+import { useLocation } from "react-router-dom";
+import ExpandedRoutes from "./routing/ExpandedRoutes";
+import AdditionalRoutes from "./routing/AdditionalRoutes";
 
 const iconClasses = `h-6 w-6`;
 const submenuIconClasses = `h-5 w-5`;
@@ -39,17 +43,16 @@ export const routes = [
         path: '/app/content',
         icon: <FaList className={iconClasses} />,
         name: 'Content',
-        component: Post,
+        submenu: [
+          {
+            path: '/app/content/showcase',
+            icon: <IoDocumentText className={iconClasses} />,
+            name: 'Showcase',
+            component: Content,
+          }
+        ]
       },
     ],
-    compnets: [
-      {
-        path: '/app/post',
-        icon: <IoArchive className={iconClasses} />,
-        name: 'Content',
-        component: Post,
-      },
-    ]
   },
   {
     group: 'Legalitas',
@@ -150,34 +153,38 @@ export const routes = [
       }
     ],
   },
-  // {
-  //   path: '/app/users',
-  //   icon: <IoPerson className={iconClasses} />,
-  //   name: 'Users',
-  //   component: Dashboard, // Add the corresponding component
-  // },
 ];
 
 export default function AppRootRoutes() {
-  return (
-    <Routes>
-      <Route path="/app/users/add" element={<AdminLayout><UserList /></AdminLayout>} />
+  const location = useLocation();
+  const isAdminRoute = location.pathname.startsWith('/app');
 
-      {routes.map((route, index) => (
-        route.group ? (
-          route.components.map((subRoute, subIndex) => (
-            subRoute.submenu ? (
-              subRoute.submenu.map((nestedRoute, nestedIndex) => (
-                <Route key={`${index}-${subIndex}-${nestedIndex}`} path={nestedRoute.path} element={<AdminLayout><nestedRoute.component /></AdminLayout>} />
+  return (
+    isAdminRoute ? (
+      <AdminLayout>
+        <AdditionalRoutes />
+        <Routes>
+          {routes.map((route, index) => (
+            route.group ? (
+              route.components.map((subRoute, subIndex) => (
+                subRoute.submenu ? (
+                  subRoute.submenu.map((nestedRoute, nestedIndex) => (
+                    <Route key={`${index}-${subIndex}-${nestedIndex}`} path={nestedRoute.path} element={<nestedRoute.component />} />
+                  ))
+                ) : (
+                  <Route key={`${index}-${subIndex}`} path={subRoute.path} element={<subRoute.component />} />
+                )
               ))
             ) : (
-              <Route key={`${index}-${subIndex}`} path={subRoute.path} element={<AdminLayout><subRoute.component /></AdminLayout>} />
+              <Route key={index} path={route.path} element={<route.component />} />
             )
-          ))
-        ) : (
-          <Route key={index} path={route.path} element={<AdminLayout><route.component /></AdminLayout>} />
-        )
-      ))}
-    </Routes>
+          ))}
+        </Routes>
+      </AdminLayout>
+    ) : (
+
+      <ExpandedRoutes />
+
+    )
   );
 }
