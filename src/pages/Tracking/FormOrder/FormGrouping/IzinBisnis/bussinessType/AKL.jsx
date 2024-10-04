@@ -1,33 +1,82 @@
 import React, { useState } from 'react'
-import { Col, Input, Row, Select, Form, Button } from 'antd'
+import { Col, Input, Row, Select, Form, Button, message } from 'antd'
 import Draggable from '../../../../../../components/ui/File Upload/Draggable';
 import { PiFileArchiveDuotone, PiFilmScriptDuotone, PiFlowerLotusDuotone, PiFoldersDuotone } from 'react-icons/pi';
+import { apiRequest } from '../../../../../../utils/api';
 
 const { Option } = Select;
 
-const AKL = () => {
+const AKL = ({ customerId, makelarId }) => {
     const [materialMSDSCount, setMaterialMSDSCount] = useState(1);
+
+    const [data, setData] = useState({
+        fullName: '',
+        email: '',
+        nomorTelp: '',
+    });
+    const [files, setFiles] = useState({});
 
     const addMaterialMSDS = () => {
         setMaterialMSDSCount(materialMSDSCount + 1);
     };
 
+    const handleFileChange = (name, file) => {
+        setFiles(prevFiles => ({ ...prevFiles, [name]: file }));
+    };
+
+    const handleFileChangeArray = (name, index, file) => {
+        setFiles(
+            prevFiles => ({
+                ...prevFiles,
+                [name]: {
+                    ...prevFiles[name],
+                    [index]: file
+                }
+            })
+        )
+    };
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setData(prevData => ({ ...prevData, [name]: value }));
+    };
+
+    const handleSubmit = async () => {
+        try {
+            const filesAndData = {
+                ...files,
+                ...data,
+                makelarId: makelarId,
+                customerId: customerId,
+            };
+
+            console.log(filesAndData);
+
+            await apiRequest('post', 'order/10', filesAndData);
+            message.success('Order created successfully');
+        } catch (error) {
+            message.error(error.response.data.message);
+        }
+    };
+
     const renderMaterialMSDS = () => {
         const forms = [];
-        for (let i = 1; i <= materialMSDSCount; i++) {
+        for (let i = 0; i < materialMSDSCount; i++) { // Change loop condition to < instead of <=
             forms.push(
                 <div key={i}>
                     <Row gutter={16}>
                         <Col span={24}>
                             <Form.Item
                                 name={`listMaterialMSDS${i}`}
-                                label={`List Material MSDS ${i} :`}
+                                label={`List Material di dalam dan MSDS ${i + 1} :`}
                                 rules={[{ required: true, message: `Please enter the name of List Material MSDS ${i}` }]}
                             >
                                 <Draggable
                                     icon={<PiFoldersDuotone />}
                                     topText="Click or drag file List Material MSDS to this area to upload"
                                     bottomText="Supported Format : PDF, Max Size : 10 MB"
+                                    onFileChange={(file) => handleFileChangeArray('material', i, file)}
+                                    multiple 
                                 />
                             </Form.Item>
                         </Col>
@@ -40,7 +89,7 @@ const AKL = () => {
 
     return (
         <Form layout="vertical">
-            <Row gutter={16}>
+            {/* <Row gutter={16}>
                 <Col span={24}>
                     <Form.Item
                         name="customerField"
@@ -55,7 +104,7 @@ const AKL = () => {
                         </Select>
                     </Form.Item>
                 </Col>
-            </Row>
+            </Row> */}
 
             <Row gutter={16}>
                 <Col span={24}>
@@ -64,7 +113,7 @@ const AKL = () => {
                         label="Full name :"
                         rules={[{ required: true, message: 'Please enter your full name' }]}
                     >
-                        <Input placeholder="Enter your full name" />
+                        <Input name="fullName" placeholder="Enter your full name" onChange={handleChange} />
                     </Form.Item>
                 </Col>
             </Row>
@@ -76,7 +125,7 @@ const AKL = () => {
                         label="Email :"
                         rules={[{ required: true, message: 'Please enter your email' }]}
                     >
-                        <Input placeholder="Enter your email" />
+                        <Input name="email" placeholder="Enter your email" onChange={handleChange} />
                     </Form.Item>
                 </Col>
                 <Col span={12}>
@@ -85,7 +134,7 @@ const AKL = () => {
                         label="No.Phone :"
                         rules={[{ required: true, message: 'Please enter your phone number' }]}
                     >
-                        <Input placeholder="Enter your phone number" />
+                        <Input name="nomorTelp" placeholder="Enter your phone number" onChange={handleChange} />
                     </Form.Item>
                 </Col>
             </Row>
@@ -101,6 +150,7 @@ const AKL = () => {
                             icon={<PiFoldersDuotone />}
                             topText="Click or drag file LoA to this area to upload"
                             bottomText="Supported Format : PDF, Max Size : 10 MB"
+                            onFileChange={(file) => handleFileChange('loa', file)}
                         />
                     </Form.Item>
                 </Col>
@@ -114,6 +164,7 @@ const AKL = () => {
                             icon={<PiFoldersDuotone />}
                             topText="Click or drag file CFS to this area to upload"
                             bottomText="Supported Format : PDF, Max Size : 10 MB"
+                            onFileChange={(file) => handleFileChange('cfs', file)}
                         />
                     </Form.Item>
                 </Col>
@@ -130,12 +181,13 @@ const AKL = () => {
                             icon={<PiFoldersDuotone />}
                             topText="Click or drag file ISO 13485 to this area to upload"
                             bottomText="Supported Format : PDF, Max Size : 10 MB"
+                            onFileChange={(file) => handleFileChange('iso13485', file)}
                         />
                     </Form.Item>
                 </Col>
             </Row>
 
-            <Row gutter={16}>
+            {/* <Row gutter={16}>
                 <Col span={24}>
                     <Form.Item
                         name="listMaterial"
@@ -149,7 +201,7 @@ const AKL = () => {
                         />
                     </Form.Item>
                 </Col>
-            </Row>
+            </Row> */}
 
             {renderMaterialMSDS()}
 
@@ -168,6 +220,7 @@ const AKL = () => {
                             icon={<PiFoldersDuotone />}
                             topText="Click or drag file Flow Production chart to this area to upload"
                             bottomText="Supported Format : PDF, Max Size : 10 MB"
+                            onFileChange={(file) => handleFileChange('flowProductionChart', file)}
                         />
                     </Form.Item>
                 </Col>
@@ -181,6 +234,7 @@ const AKL = () => {
                             icon={<PiFoldersDuotone />}
                             topText="Click or drag file Clinical Trial to this area to upload"
                             bottomText="Supported Format : PDF, Max Size : 10 MB"
+                            onFileChange={(file) => handleFileChange('clinicalTrial', file)}
                         />
                     </Form.Item>
                 </Col>
@@ -197,6 +251,7 @@ const AKL = () => {
                             icon={<PiFoldersDuotone />}
                             topText="Click or drag file Specification dan Broshure to this area to upload"
                             bottomText="Supported Format : PDF, Max Size : 10 MB"
+                            onFileChange={(file) => handleFileChange('spesificationAndBrosshure', file)}
                         />
                     </Form.Item>
                 </Col>
@@ -210,6 +265,7 @@ const AKL = () => {
                             icon={<PiFoldersDuotone />}
                             topText="Click or drag file Document Verification and Validation to this area to upload"
                             bottomText="Supported Format : PDF, Max Size : 10 MB"
+                            onFileChange={(file) => handleFileChange('documentVerificationAndValidation', file)}
                         />
                     </Form.Item>
                 </Col>
@@ -226,6 +282,7 @@ const AKL = () => {
                             icon={<PiFoldersDuotone />}
                             topText="Click or drag file Biocompatibility to this area to upload"
                             bottomText="Supported Format : PDF, Max Size : 10 MB"
+                            onFileChange={(file) => handleFileChange('biocompatibility', file)}
                         />
                     </Form.Item>
                 </Col>
@@ -239,6 +296,7 @@ const AKL = () => {
                             icon={<PiFoldersDuotone />}
                             topText="Click or drag file Pre Clinical Trial to this area to upload"
                             bottomText="Supported Format : PDF, Max Size : 10 MB"
+                            onFileChange={(file) => handleFileChange('preclinicalTrial', file)}
                         />
                     </Form.Item>
                 </Col>
@@ -255,6 +313,7 @@ const AKL = () => {
                             icon={<PiFoldersDuotone />}
                             topText="Click or drag file Clinical Evaluation to this area to upload"
                             bottomText="Supported Format : PDF, Max Size : 10 MB"
+                            onFileChange={(file) => handleFileChange('clinicalEvaluation', file)}
                         />
                     </Form.Item>
                 </Col>
@@ -271,6 +330,7 @@ const AKL = () => {
                             icon={<PiFoldersDuotone />}
                             topText="Click or drag file ISO 14971 to this area to upload"
                             bottomText="Supported Format : PDF, Max Size : 10 MB"
+                            onFileChange={(file) => handleFileChange('iso14971', file)}
                         />
                     </Form.Item>
                 </Col>
@@ -284,6 +344,7 @@ const AKL = () => {
                             icon={<PiFoldersDuotone />}
                             topText="Click or drag file CoA to this area to upload"
                             bottomText="Supported Format : PDF, Max Size : 10 MB"
+                            onFileChange={(file) => handleFileChange('coa', file)}
                         />
                     </Form.Item>
                 </Col>
@@ -300,6 +361,7 @@ const AKL = () => {
                             icon={<PiFoldersDuotone />}
                             topText="Click or drag file Penanda di luar Indonesia to this area to upload"
                             bottomText="Supported Format : PDF, Max Size : 10 MB"
+                            onFileChange={(file) => handleFileChange('penandaLuarIndonesia', file)}
                         />
                     </Form.Item>
                 </Col>
@@ -313,6 +375,7 @@ const AKL = () => {
                             icon={<PiFoldersDuotone />}
                             topText="Click or drag file Simbol di packaging luar to this area to upload"
                             bottomText="Supported Format : PDF, Max Size : 10 MB"
+                            onFileChange={(file) => handleFileChange('simbolPackagingLuar', file)}
                         />
                     </Form.Item>
                 </Col>
@@ -329,6 +392,7 @@ const AKL = () => {
                             icon={<PiFoldersDuotone />}
                             topText="Click or drag file Tanda Expired Date to this area to upload"
                             bottomText="Supported Format : PDF, Max Size : 10 MB"
+                            onFileChange={(file) => handleFileChange('tandaExpiredDate', file)}
                         />
                     </Form.Item>
                 </Col>
@@ -345,6 +409,7 @@ const AKL = () => {
                             icon={<PiFoldersDuotone />}
                             topText="Click or drag file Manual Guideline to this area to upload"
                             bottomText="Supported Format : PDF, Max Size : 10 MB"
+                            onFileChange={(file) => handleFileChange('manualGuideline', file)}
                         />
                     </Form.Item>
                 </Col>
@@ -358,10 +423,15 @@ const AKL = () => {
                             icon={<PiFoldersDuotone />}
                             topText="Click or drag file Aksesoris to this area to upload"
                             bottomText="Supported Format : PDF, Max Size : 10 MB"
+                            onFileChange={(file) => handleFileChange('aksesorisDisertakan', file)}
                         />
                     </Form.Item>
                 </Col>
             </Row>
+
+            <Button type="primary" onClick={handleSubmit} className="w-full my-4 bg-main">
+                Submit
+            </Button>
         </Form>
     )
 }

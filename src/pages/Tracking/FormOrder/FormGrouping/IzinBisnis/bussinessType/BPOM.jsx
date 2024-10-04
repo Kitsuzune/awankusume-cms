@@ -16,8 +16,8 @@ const BPOM = ({ customerId, makelarId }) => {
         nibOssRba: '',
         ruko: '',
         bentuk: '',
-        responsible: [''], // Array of string
-        officeEquipment: [''], // Array of string
+        responsible: [''], 
+        officeEquipment: [''],
     });
     const [files, setFiles] = useState({});
 

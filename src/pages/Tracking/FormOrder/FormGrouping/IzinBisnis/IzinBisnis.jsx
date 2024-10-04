@@ -23,7 +23,7 @@ const IzinBisnis = ({ customerId, makelarId }) => {
     };
 
     return (
-        <Form layout="vertical">
+        <>
             <Row gutter={16}>
                 <Col span={24}>
                     <Form.Item
@@ -60,19 +60,19 @@ const IzinBisnis = ({ customerId, makelarId }) => {
             )}
 
             {businessType === 'Trademark Untuk Badan Usaha' && (
-                <TrademarkBadanUsaha customerId={customerId} makelarId={makelarId}/>
+                <TrademarkBadanUsaha customerId={customerId} makelarId={makelarId} />
             )}
 
             {businessType === 'Trademark Untuk Luar Negeri Perorangan' && (
-                <TrademarkLuarNegeriPerorangan customerId={customerId} makelarId={makelarId}/>
+                <TrademarkLuarNegeriPerorangan customerId={customerId} makelarId={makelarId} />
             )}
 
             {businessType === 'Trademark Untuk Badan Usaha Luar Negeri' && (
-                <TrademarkBadanUsahaLuarNegeri customerId={customerId} makelarId={makelarId}/>
+                <TrademarkBadanUsahaLuarNegeri customerId={customerId} makelarId={makelarId} />
             )}
 
             {businessType === 'SMKPO' && (
-                <SMKPO customerId={customerId} makelarId={makelarId}/>
+                <SMKPO customerId={customerId} makelarId={makelarId} />
             )}
 
             {businessType === 'Klinik Pratama atau Klinik Kecantikan' && (
@@ -80,13 +80,13 @@ const IzinBisnis = ({ customerId, makelarId }) => {
             )}
 
             {businessType === 'INSW' && (
-                <INSW customerId={customerId} makelarId={makelarId}/>
+                <INSW customerId={customerId} makelarId={makelarId} />
             )}
 
             {businessType === 'AKL' && (
-                <AKL customerId={customerId} makelarId={makelarId}/>
+                <AKL customerId={customerId} makelarId={makelarId} />
             )}
-        </Form>
+        </>
     )
 
 }

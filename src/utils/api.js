@@ -27,11 +27,12 @@ export async function apiRequest(
 		if (isFileUpload) {
 			const formData = new FormData();
 			for (const key in data) {
-				if (Array.isArray(data[key])) {
+				if (Array.isArray(data[key]) && data[key].every(item => typeof item === 'string')) {
 					data[key].forEach((item, index) => {
 						formData.append(`${key}[${index}]`, item);
 					});
 				} else {
+					console.log(key, data[key]);
 					formData.append(key, data[key]);
 				}
 			}
