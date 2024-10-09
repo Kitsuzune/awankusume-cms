@@ -7,7 +7,7 @@ import { MdOutlineContentCopy } from 'react-icons/md';
 import { CiEdit, CiTrash } from 'react-icons/ci';
 import { useNavigate } from 'react-router-dom';
 
-const About = () => {
+const Partnership = () => {
     const navigate = useNavigate();
 
     const dataSource = [
@@ -83,7 +83,7 @@ const About = () => {
                 <div className='flex gap-2'>
                     <CiEdit className='text-2xl text-center text-second cursor-pointer hover:text-main'
                         onClick={() => {
-                            navigate(`/app/content/about/${record.key}`)
+                            navigate(`/app/content/partnership/${record.key}`)
                         }}
                     />
                     <CiTrash className='text-2xl text-center text-second cursor-pointer hover:text-main' />
@@ -102,7 +102,7 @@ const About = () => {
                                 <div className='bg-white p-5 rounded-lg'>
                                     <Row>
                                         <Col span={24}>
-                                            <div className='text-[24px] text-main inline-block'>About</div>
+                                            <div className='text-[24px] text-main inline-block'>Partnership</div>
                                             <br />
                                             <span className='text-[15px] inline-block mt-5'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.</span>
                                         </Col>
@@ -116,10 +116,14 @@ const About = () => {
 
                                                 <Row justify="space-between" align="middle" className="mb-4">
                                                     <Col>
-                                                        <span className='text-[24px] inline-block'>Editable About Section</span>
+                                                        <span className='text-[24px] inline-block'>List Partnership</span>
                                                     </Col>
                                                     <Col className="flex gap-2">
                                                         <Input.Search placeholder="Search..." />
+                                                        <Button type="primary">
+                                                            Add New
+                                                            <PlusOutlined />
+                                                        </Button>
                                                     </Col>
                                                 </Row>
 
@@ -151,4 +155,4 @@ const About = () => {
     )
 }
 
-export default About
+export default Partnership

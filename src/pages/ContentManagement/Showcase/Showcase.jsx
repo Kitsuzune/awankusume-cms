@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Row, Col, Button, Input, Form } from 'antd';
+import { Row, Col, Button, Input, Form, Select } from 'antd';
 import ImagePreviewUploader from '../../../components/ui/File Upload/ImagePreview';
+import Flag from 'react-world-flags';
 
 const Showcase = () => {
   const [image, setImage] = useState(null);
@@ -32,6 +33,51 @@ const Showcase = () => {
                           rules={[{ required: true, message: 'Please upload an image' }]}
                         >
                           <ImagePreviewUploader image={image} setImage={setImage} />
+                        </Form.Item>
+                      </Col>
+                    </Row>
+
+                    <Row>
+                      <Col span={24}>
+                        <Form.Item
+                          name="language"
+                          label="Select Language"
+                          rules={[{ required: true, message: 'Please select a language' }]}
+                        >
+                          <Select
+                            showSearch
+                            placeholder="Select Language"
+                            optionFilterProp="label"
+                            options={[
+                              {
+                                value: 'id',
+                                label: (
+                                  <span>
+                                    <Flag code="ID" className="inline w-[20px] h-[20px] mr-[8px] shadow-2xl" />
+                                    Indonesia
+                                  </span>
+                                ),
+                              },
+                              {
+                                value: 'en',
+                                label: (
+                                  <span>
+                                    <Flag code="GB" className="inline w-[20px] h-[20px] mr-[8px] shadow-2xl" />
+                                    English
+                                  </span>
+                                ),
+                              },
+                              {
+                                value: 'cn',
+                                label: (
+                                  <span>
+                                    <Flag code="CN" className="inline w-[20px] h-[20px] mr-[8px] shadow-2xl" />
+                                    Chinese
+                                  </span>
+                                ),
+                              },
+                            ]}
+                          />
                         </Form.Item>
                       </Col>
                     </Row>

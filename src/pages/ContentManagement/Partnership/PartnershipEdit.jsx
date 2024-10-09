@@ -3,7 +3,7 @@ import { Row, Col, Button, Input, Form, Switch, Select } from 'antd';
 import ImagePreviewUploader from '../../../components/ui/File Upload/ImagePreview';
 import { useParams } from 'react-router-dom';
 import Flag from 'react-world-flags';
-const AboutEdit = () => {
+const PartnershipEdit = () => {
     const { id } = useParams();
     const [image, setImage] = useState(null);
 
@@ -18,7 +18,7 @@ const AboutEdit = () => {
                                     <Row>
                                         <Col span={24}>
                                             <div className='text-[24px] text-main inline-block'>
-                                                About / {id}
+                                                Partnership / {id}
                                             </div>
                                         </Col>
                                     </Row>
@@ -108,11 +108,11 @@ const AboutEdit = () => {
                                         <Row>
                                             <Col span={24}>
                                                 <Form.Item
-                                                    name="subTitle"
-                                                    label="Sub Title"
-                                                    rules={[{ required: true, message: 'Please enter a sub title' }]}
+                                                    name="url"
+                                                    label="URL"
+                                                    rules={[{ required: true, message: 'Please enter a URL' }]}
                                                 >
-                                                    <Input placeholder="Enter subtitle" />
+                                                    <Input placeholder="Enter URL" />
                                                 </Form.Item>
                                             </Col>
                                         </Row>
@@ -133,4 +133,4 @@ const AboutEdit = () => {
     );
 };
 
-export default AboutEdit;
+export default PartnershipEdit;

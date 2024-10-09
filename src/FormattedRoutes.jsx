@@ -8,7 +8,7 @@ import { IoFlash } from "react-icons/io5";
 import Post from "./pages/Post/Post";
 import PengajuanOnGoing from "./pages/Pengajuan/OnGoing/PengajuanOnGoing";
 import PengajuanCompleted from "./pages/Pengajuan/Completed/PengajuanCompleted";
-import { CiBoxList } from "react-icons/ci";
+import { CiBoxList, CiGrid2H } from "react-icons/ci";
 import { SiDocsdotrs, SiReadthedocs } from "react-icons/si";
 import { GiTransform } from "react-icons/gi";
 import { MdIncompleteCircle, MdOutlineSmsFailed } from "react-icons/md";
@@ -25,6 +25,12 @@ import Content from "./pages/ContentManagement/Showcase/Showcase";
 import { useLocation } from "react-router-dom";
 import ExpandedRoutes from "./routing/ExpandedRoutes";
 import AdditionalRoutes from "./routing/AdditionalRoutes";
+import About from "./pages/ContentManagement/About/About";
+import Service from "./pages/ContentManagement/Service/Service";
+import OurClient from "./pages/ContentManagement/OurClient/OurClient";
+import Partnership from "./pages/ContentManagement/Partnership/Partnership";
+import { TfiCommentsSmiley, TfiHandOpen, TfiHome, TfiLayersAlt, TfiLayoutColumn2, TfiUser } from "react-icons/tfi";
+import NotFound from "./404";
 
 const iconClasses = `h-6 w-6`;
 const submenuIconClasses = `h-5 w-5`;
@@ -46,9 +52,39 @@ export const routes = [
         submenu: [
           {
             path: '/app/content/showcase',
-            icon: <IoDocumentText className={iconClasses} />,
+            icon: <TfiLayoutColumn2 className={iconClasses} />,
             name: 'Showcase',
             component: Content,
+          },
+          {
+            path: '/app/content/about',
+            icon: <TfiHome className={iconClasses} />,
+            name: 'About',
+            component: About,
+          },
+          {
+            path: '/app/content/service',
+            icon: <TfiLayersAlt className={iconClasses} />,
+            name: 'Service',
+            component: Service,
+          },
+          {
+            path: '/app/content/our-client',
+            icon: <TfiUser className={iconClasses} />,
+            name: 'Our Client',
+            component: OurClient,
+          },
+          {
+            path: '/app/content/partnership',
+            icon: <TfiCommentsSmiley className={iconClasses} />,
+            name: 'Partnership',
+            component: Partnership,
+          },
+          {
+            path: '/app/content/article',
+            icon: <TfiHandOpen className={iconClasses} />,
+            name: 'Article',
+            component: NotFound,
           }
         ]
       },
@@ -182,7 +218,7 @@ export default function AppRootRoutes() {
         </Routes>
       </AdminLayout>
     ) : (
-
+      
       <ExpandedRoutes />
 
     )

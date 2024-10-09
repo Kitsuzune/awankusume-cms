@@ -3,7 +3,7 @@ import { Row, Col, Button, Input, Form, Switch, Select } from 'antd';
 import ImagePreviewUploader from '../../../components/ui/File Upload/ImagePreview';
 import { useParams } from 'react-router-dom';
 import Flag from 'react-world-flags';
-const AboutEdit = () => {
+const OurClientEdit = () => {
     const { id } = useParams();
     const [image, setImage] = useState(null);
 
@@ -18,7 +18,7 @@ const AboutEdit = () => {
                                     <Row>
                                         <Col span={24}>
                                             <div className='text-[24px] text-main inline-block'>
-                                                About / {id}
+                                                Our Client / {id}
                                             </div>
                                         </Col>
                                     </Row>
@@ -96,11 +96,11 @@ const AboutEdit = () => {
                                         <Row>
                                             <Col span={24}>
                                                 <Form.Item
-                                                    name="title"
-                                                    label="Title"
-                                                    rules={[{ required: true, message: 'Please enter a title' }]}
+                                                    name="description"
+                                                    label="Description"
+                                                    rules={[{ required: true, message: 'Please enter a description' }]}
                                                 >
-                                                    <Input placeholder="Enter title" />
+                                                    <Input.TextArea placeholder="Enter description" />
                                                 </Form.Item>
                                             </Col>
                                         </Row>
@@ -108,11 +108,35 @@ const AboutEdit = () => {
                                         <Row>
                                             <Col span={24}>
                                                 <Form.Item
-                                                    name="subTitle"
-                                                    label="Sub Title"
-                                                    rules={[{ required: true, message: 'Please enter a sub title' }]}
+                                                    name="name"
+                                                    label="Name"
+                                                    rules={[{ required: true, message: 'Please enter a name' }]}
                                                 >
-                                                    <Input placeholder="Enter subtitle" />
+                                                    <Input placeholder="Enter name" />
+                                                </Form.Item>
+                                            </Col>
+                                        </Row>
+
+                                        <Row>
+                                            <Col span={24}>
+                                                <Form.Item
+                                                    name="hashtag"
+                                                    label="Hashtag"
+                                                    rules={[{ required: true, message: 'Please enter a hashtag' }]}
+                                                >
+                                                    <Input placeholder="Enter hashtag" />
+                                                </Form.Item>
+                                            </Col>
+                                        </Row>
+
+                                        <Row>
+                                            <Col span={24}>
+                                                <Form.Item
+                                                    name="url"
+                                                    label="URL"
+                                                    rules={[{ required: true, message: 'Please enter a URL' }]}
+                                                >
+                                                    <Input placeholder="Enter URL" />
                                                 </Form.Item>
                                             </Col>
                                         </Row>
@@ -133,4 +157,4 @@ const AboutEdit = () => {
     );
 };
 
-export default AboutEdit;
+export default OurClientEdit;
