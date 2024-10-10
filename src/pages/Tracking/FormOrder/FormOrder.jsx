@@ -49,7 +49,21 @@ const FormOrder = () => {
                         label="Customer :"
                         rules={[{ required: true, message: 'Please enter the customer name' }]}
                       >
-                        <Input placeholder="Enter the customer name" onChange={(e) => setCustomerId(e.target.value)} />
+                        <Select 
+                          showSearch
+                          placeholder="Select a customer"
+                          options={[
+                            {
+                              value: '1',
+                              label: 'Customer 1'
+                            },
+                            {
+                              value: '2',
+                              label: 'Customer 2'
+                            }
+                          ]}
+                          onChange={(value) => setCustomerId(value)}
+                        />
                       </Form.Item>
                     </Col>
                   </Row>
@@ -61,7 +75,21 @@ const FormOrder = () => {
                         label="Makelar :"
                         rules={[{ required: true, message: 'Please enter the makelar name' }]}
                       >
-                        <Input placeholder="Enter the makelar name" onChange={(e) => setMakelarId(e.target.value)} />
+                        <Select 
+                          showSearch
+                          placeholder="Select a makelar"
+                          options={[
+                            {
+                              value: '1',
+                              label: 'Makelar 1'
+                            },
+                            {
+                              value: '2',
+                              label: 'Makelar 2'
+                            }
+                          ]}
+                          onChange={(value) => setMakelarId(value)}
+                        />
                       </Form.Item>
                     </Col>
                   </Row>

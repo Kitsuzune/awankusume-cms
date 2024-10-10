@@ -17,10 +17,10 @@ const AdminLayout = ({ children }) => {
         <header className="flex-shrink-0">
           <Header toggleSidebarCollapse={toggleSidebarCollapse} />
         </header>
-        <main className="flex-1overflow-auto">
+        <main className="flex-1 overflow-auto bg-gray-100">
           {/* <div className={`${isLoading ? 'opacity-50' : ''} relative`}> */}
           <div className='relative'>
-            <div className='bg-gray-100 p-6'>
+            <div className='p-6'>
               {children}
             </div>
             {/* <Loading isLoading={isLoading} /> */}

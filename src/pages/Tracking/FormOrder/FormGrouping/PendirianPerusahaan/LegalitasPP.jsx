@@ -78,6 +78,34 @@ const LegalitasPP = () => {
               </Form.Item>
             </Col>
           </Row>
+          <Row gutter={16} className="mt-4">
+            <Col span={12}>
+              <Form.Item
+                name={`ktp${i}`}
+                label="KTP"
+                rules={[{ required: true, message: 'Please upload the KTP' }]}
+              >
+                <Draggable
+                  icon={<PiIdentificationCardDuotone />}
+                  topText="Click or drag file KTP to this area to upload"
+                  bottomText="Supported Format : PDF, Max Size : 10 MB"
+                />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                name={`npwp${i}`}
+                label="NPWP"
+                rules={[{ required: true, message: 'Please upload the NPWP' }]}
+              >
+                <Draggable
+                  icon={<PiIdentificationBadgeDuotone />}
+                  topText="Click or drag file NPWP to this area to upload"
+                  bottomText="Supported Format : PDF, Max Size : 10 MB"
+                />
+              </Form.Item>
+            </Col>
+          </Row>
         </div>
       );
     }
@@ -197,36 +225,6 @@ const LegalitasPP = () => {
       <Button type="primary" onClick={addPengurus} className="w-full mt-4 bg-main">
         Tambahkan Pengurus +
       </Button>
-
-      <Row gutter={50} className="mt-4">
-        <Col span={12}>
-          <Form.Item
-            name="ktp"
-            label="KTP"
-            rules={[{ required: true, message: 'Please upload the KTP' }]}
-          >
-            <Draggable
-              icon={<PiIdentificationCardDuotone />}
-              topText="Click or drag file KTP to this area to upload"
-              bottomText="Supported Format : PDF, Max Size : 10 MB"
-            />
-          </Form.Item>
-        </Col>
-        <Col span={12}>
-          <Form.Item
-            name="npwp"
-            label="NPWP"
-            rules={[{ required: true, message: 'Please upload the NPWP' }]}
-          >
-            <Draggable
-              icon={<PiIdentificationBadgeDuotone />}
-              topText="Click or drag file NPWP to this area to upload"
-              bottomText="Supported Format : PDF, Max Size : 10 MB"
-            />
-          </Form.Item>
-        </Col>
-      </Row>
-
 
       <span className='text-center font-bold inline-block w-full text-[20px] py-5 text-second'>Modal Pasar</span>
       <Row gutter={16}>
