@@ -104,7 +104,7 @@ const Partnership = () => {
                                         <Col span={24}>
                                             <div className='text-[24px] text-main inline-block'>Partnership</div>
                                             <br />
-                                            <span className='text-[15px] inline-block mt-5'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.</span>
+                                            <span className='text-[15px] inline-block mt-5'>tell everyone, you have collaborated with a great company</span>
                                         </Col>
                                     </Row>
                                 </div>
