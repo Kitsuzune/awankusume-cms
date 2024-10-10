@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import Sidebar from './sidebar';
 import Header from './header';
+import Loading from '../components/ui/Loading/Loading';
 
 const AdminLayout = ({ children }) => {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
-
+  
   const toggleSidebarCollapse = () => {
     setIsSidebarCollapsed(!isSidebarCollapsed);
   };
@@ -16,8 +17,14 @@ const AdminLayout = ({ children }) => {
         <header className="flex-shrink-0">
           <Header toggleSidebarCollapse={toggleSidebarCollapse} />
         </header>
-        <main className="flex-1 bg-gray-100 p-6 overflow-auto">
-          {children}
+        <main className="flex-1overflow-auto">
+          {/* <div className={`${isLoading ? 'opacity-50' : ''} relative`}> */}
+          <div className='relative'>
+            <div className='bg-gray-100 p-6'>
+              {children}
+            </div>
+            {/* <Loading isLoading={isLoading} /> */}
+          </div>
         </main>
       </div>
     </div>
