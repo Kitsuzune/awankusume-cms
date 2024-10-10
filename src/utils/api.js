@@ -11,7 +11,8 @@ export async function apiRequest(
 	url,
 	data = {},
 	params = {},
-	responseType = 'json' // 'json', 'blob'
+	responseType = 'json', // 'json', 'blob'
+	fileUpload = false
 ) {
 	try {
 		const config = {
@@ -24,7 +25,7 @@ export async function apiRequest(
 
 		const isFileUpload = Object.values(data).some(value => value instanceof File);
 
-		if (isFileUpload) {
+		if (isFileUpload || fileUpload) {
 			const formData = new FormData();
 			for (const key in data) {
 				if (Array.isArray(data[key]) && data[key].every(item => typeof item === 'string')) {

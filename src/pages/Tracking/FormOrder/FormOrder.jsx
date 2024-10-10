@@ -1,5 +1,5 @@
 import { Col, Form, Input, Row, Select } from 'antd'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import Button from '../../../components/ui/Button/Button';
 import { EditOutlined, PlusOutlined } from '@ant-design/icons';
 import { CustomPagination } from '../../../components/ui/Table/CustomPagination';
@@ -117,6 +117,7 @@ const FormOrder = () => {
                       >
                         <Select 
                           showSearch
+                          allowClear
                           placeholder="Select a makelar"
                           options={makelarList.map((makelar) => ({
                             value: makelar.id,

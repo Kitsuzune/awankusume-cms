@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
-import { Col, Input, Row, Select, Form, Typography, Button } from 'antd'
+import React, { useState, useCallback } from 'react'
+import { Col, Input, Row, Select, Form, Typography, Button, message } from 'antd'
 import Draggable from '../../../../../components/ui/File Upload/Draggable';
 import { PiIdentificationBadgeDuotone, PiIdentificationCardDuotone } from 'react-icons/pi';
-import { apiRequest } from '../../../../../../utils/api';
+import { apiRequest } from '../../../../../utils/api';
 
 const { Option } = Select;
 const { Title } = Typography;
@@ -26,14 +26,10 @@ const LegalitasPP = ({ customerId, makelarId }) => {
     emailTambahan: '',
     nomorTelpKantor: '',
     alamat: '',
-    administrator: ['']
+    administrator: [''],
   });
 
   const [files, setFiles] = useState({});
-
-  const handleFileChange = (name, file) => {
-    setFiles(prevFiles => ({ ...prevFiles, [name]: file }));
-  };
 
   const handleFileChangeArray = (name, index, file) => {
     setFiles(
@@ -69,6 +65,7 @@ const LegalitasPP = ({ customerId, makelarId }) => {
 
   const handlePerusahaanTypeClick = (type) => {
     setPerusahaanType(type);
+    setData(prevData => ({ ...prevData, companyType: type }));
   };
 
   const handleSubmit = async () => {
@@ -76,11 +73,13 @@ const LegalitasPP = ({ customerId, makelarId }) => {
       const filesAndData = {
         ...files,
         ...data,
-        ...(makelarId ? { makelarId } : {}),
-        ...(customerId ? { customerId } : {}),
+        ...(makelarId ? { makelarId: makelarId.toString() } : {}),
+        ...(customerId ? { customerId: customerId.toString() } : {}),
       };
 
-      await apiRequest('post', 'order/10', filesAndData);
+      console.log(filesAndData);
+
+      await apiRequest('post', 'order/company-order', filesAndData , {}, 'json', true);
       message.success('Order created successfully');
     } catch (error) {
       message.error(error.response.data.message);
@@ -89,7 +88,7 @@ const LegalitasPP = ({ customerId, makelarId }) => {
 
   const renderPengurusForms = () => {
     const forms = [];
-    for (let i = 0; i <= pengurusCount; i++) {
+    for (let i = 0; i < pengurusCount; i++) {
       forms.push(
         <div key={i}>
           <span className='text-center font-bold inline-block w-full text-[20px] py-5 text-second'>Pengurus {i + 1}</span>
@@ -100,7 +99,7 @@ const LegalitasPP = ({ customerId, makelarId }) => {
                 label={`Nama :`}
                 rules={[{ required: true, message: `Please enter the name of manager ${i + 1}` }]}
               >
-                <Input name={`name`} placeholder={`Enter the name of Penanggung Jawab ${i + 1}`} onChange={(e) => handleResponsibleChange(i, 'name', e.target.value)} />
+                <Input name={`name`} placeholder={`Enter the name of Penanggung Jawab ${i + 1}`} onChange={(e) => handleAdministratorChange(i, 'name', e.target.value)} />
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -109,7 +108,7 @@ const LegalitasPP = ({ customerId, makelarId }) => {
                 label="Jabatan :"
                 rules={[{ required: true, message: 'Please enter the position' }]}
               >
-              <Input name={`jabatan`} placeholder={`Enter the position ${i + 1}`} onChange={(e) => handleResponsibleChange(i, 'jabatan', e.target.value)} />
+                <Input name={`jabatan`} placeholder={`Enter the position ${i + 1}`} onChange={(e) => handleAdministratorChange(i, 'jabatan', e.target.value)} />
               </Form.Item>
             </Col>
           </Row>
@@ -120,30 +119,29 @@ const LegalitasPP = ({ customerId, makelarId }) => {
                 label="Saham :"
                 rules={[{ required: true, message: 'Please enter the shares' }]}
               >
-                <Input placeholder="Enter the shares" />
-                <Input name={`jabatan`} placeholder={`Enter the position ${i + 1}`} onChange={(e) => handleResponsibleChange(i, 'jabatan', e.target.value)} />
+                <Input name={`saham`} placeholder={`Enter the shares ${i + 1}`} onChange={(e) => handleAdministratorChange(i, 'saham', e.target.value)} />
               </Form.Item>
             </Col>
           </Row>
           <Row gutter={16}>
             <Col span={24}>
               <Form.Item
-                name={`noHP${i}`}
+                name={`nomorTelp${i}`}
                 label="No. HP"
                 rules={[{ required: true, message: 'Please enter the phone number' }]}
               >
-                <Input placeholder="Enter the phone number" />
+                <Input name={`nomorTelp`} placeholder={`Enter the phone number ${i + 1}`} onChange={(e) => handleAdministratorChange(i, 'nomorTelp', e.target.value)} />
               </Form.Item>
             </Col>
           </Row>
           <Row gutter={16}>
             <Col span={24}>
               <Form.Item
-                name={`emailPengurus${i}`}
+                name={`email${i}`}
                 label="Email"
                 rules={[{ required: true, message: 'Please enter the email' }]}
               >
-                <Input placeholder="Enter the email" />
+                <Input name={`email`} placeholder={`Enter the email ${i + 1}`} onChange={(e) => handleAdministratorChange(i, 'email', e.target.value)} />
               </Form.Item>
             </Col>
           </Row>
@@ -158,6 +156,7 @@ const LegalitasPP = ({ customerId, makelarId }) => {
                   icon={<PiIdentificationCardDuotone />}
                   topText="Click or drag file KTP to this area to upload"
                   bottomText="Supported Format : PDF, Max Size : 10 MB"
+                  onFileChange={(file) => handleFileChangeArray('ktp', i, file)}
                 />
               </Form.Item>
             </Col>
@@ -171,6 +170,7 @@ const LegalitasPP = ({ customerId, makelarId }) => {
                   icon={<PiIdentificationBadgeDuotone />}
                   topText="Click or drag file NPWP to this area to upload"
                   bottomText="Supported Format : PDF, Max Size : 10 MB"
+                  onFileChange={(file) => handleFileChangeArray('npwp', i, file)}
                 />
               </Form.Item>
             </Col>
@@ -229,7 +229,7 @@ const LegalitasPP = ({ customerId, makelarId }) => {
             label="Full name :"
             rules={[{ required: true, message: 'Please enter your full name' }]}
           >
-            <Input placeholder="Enter your full name" />
+            <Input name="fullName" placeholder="Enter your full name" onChange={handleChange} />
           </Form.Item>
         </Col>
       </Row>
@@ -241,7 +241,7 @@ const LegalitasPP = ({ customerId, makelarId }) => {
             label="Email :"
             rules={[{ required: true, message: 'Please enter your email' }]}
           >
-            <Input placeholder="Enter your email" />
+            <Input name="email" placeholder="Enter your email" onChange={handleChange} />
           </Form.Item>
         </Col>
         <Col span={12}>
@@ -250,7 +250,7 @@ const LegalitasPP = ({ customerId, makelarId }) => {
             label="No.Phone :"
             rules={[{ required: true, message: 'Please enter your phone number' }]}
           >
-            <Input placeholder="Enter your phone number" />
+            <Input name="nomorTelp" placeholder="Enter your phone number" onChange={handleChange} />
           </Form.Item>
         </Col>
       </Row>
@@ -263,7 +263,7 @@ const LegalitasPP = ({ customerId, makelarId }) => {
             label="Nama PT :"
             rules={[{ required: true, message: 'Please enter the name of the PT' }]}
           >
-            <Input placeholder="Enter the name of the PT" />
+            <Input name="namaPt" placeholder="Enter the name of the PT" onChange={handleChange} />
           </Form.Item>
         </Col>
       </Row>
@@ -275,7 +275,7 @@ const LegalitasPP = ({ customerId, makelarId }) => {
             label="Nama Alternatif PT 1 :"
             rules={[{ required: true, message: 'Please enter the first alternative name of the PT' }]}
           >
-            <Input placeholder="Enter the first alternative name of the PT" />
+            <Input name="namaPt1" placeholder="Enter the first alternative name of the PT" onChange={handleChange} />
           </Form.Item>
         </Col>
         <Col span={12}>
@@ -284,7 +284,7 @@ const LegalitasPP = ({ customerId, makelarId }) => {
             label="Nama Alternatif PT 2 :"
             rules={[{ required: true, message: 'Please enter the second alternative name of the PT' }]}
           >
-            <Input placeholder="Enter the second alternative name of the PT" />
+            <Input name="namaPt2" placeholder="Enter the second alternative name of the PT" onChange={handleChange} />
           </Form.Item>
         </Col>
       </Row>
@@ -303,7 +303,7 @@ const LegalitasPP = ({ customerId, makelarId }) => {
             label="Ditempatkan"
             rules={[{ required: true, message: 'Please enter the modal pasar' }]}
           >
-            <Input placeholder="Enter the modal pasar" addonBefore="Rp." />
+            <Input name="modalPasarDitempatkan" placeholder="Enter the modal pasar" onChange={handleChange} addonBefore="Rp." />
           </Form.Item>
         </Col>
         <Col span={12}>
@@ -312,7 +312,7 @@ const LegalitasPP = ({ customerId, makelarId }) => {
             label="Disetor"
             rules={[{ required: true, message: 'Please enter the modal pasar' }]}
           >
-            <Input placeholder="Enter the modal pasar" addonBefore="Rp." />
+            <Input name="modalPasarDisetor" placeholder="Enter the modal pasar" onChange={handleChange} addonBefore="Rp." />
           </Form.Item>
         </Col>
       </Row>
@@ -329,6 +329,7 @@ const LegalitasPP = ({ customerId, makelarId }) => {
               allowClear
               style={{ width: '100%' }}
               placeholder="Select Bidang Usaha"
+              onChange={(value) => setData(prevData => ({ ...prevData, bidangUsaha: value }))}
               options={[
                 { value: '1', label: 'Bidang Usaha 1' },
                 { value: '2', label: 'Bidang Usaha 2' },
@@ -348,7 +349,7 @@ const LegalitasPP = ({ customerId, makelarId }) => {
             label="Email Tambahan :"
             rules={[{ required: true, message: 'Please enter the email' }]}
           >
-            <Input placeholder="Enter the email" />
+            <Input name="emailTambahan" placeholder="Enter the email" onChange={handleChange} />
           </Form.Item>
         </Col>
         <Col span={12}>
@@ -357,7 +358,7 @@ const LegalitasPP = ({ customerId, makelarId }) => {
             label="No. HP Tambahan :"
             rules={[{ required: true, message: 'Please enter the phone number' }]}
           >
-            <Input placeholder="Enter the phone number" />
+            <Input name="nomorTelpKantor" placeholder="Enter the phone number" onChange={handleChange} />
           </Form.Item>
         </Col>
       </Row>
@@ -372,10 +373,17 @@ const LegalitasPP = ({ customerId, makelarId }) => {
             <TextArea
               placeholder="Enter the address"
               autoSize={{ minRows: 6, maxRows: 6 }}
+              name="alamat"
+              onChange={handleChange}
             />
           </Form.Item>
         </Col>
       </Row>
+
+      <Button type="primary" onClick={handleSubmit} className="w-full my-4 bg-main">
+        Submit
+      </Button>
+
 
     </Form>
   )
