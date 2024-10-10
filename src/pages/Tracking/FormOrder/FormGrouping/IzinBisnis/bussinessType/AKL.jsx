@@ -29,9 +29,9 @@ const AKL = ({ customerId, makelarId }) => {
             prevFiles => ({
                 ...prevFiles,
                 [name]: [
-                    ...(prevFiles[name] || []).slice(0, index), // Keep files before the index
-                    file, // Add the new file at the specified index
-                    ...(prevFiles[name] || []).slice(index + 1) // Keep files after the index
+                    ...(prevFiles[name] || []).slice(0, index),
+                    file, 
+                    ...(prevFiles[name] || []).slice(index + 1) 
                 ]
             })
         )
@@ -47,11 +47,9 @@ const AKL = ({ customerId, makelarId }) => {
             const filesAndData = {
                 ...files,
                 ...data,
-                makelarId: makelarId,
-                customerId: customerId,
+                ...(makelarId ? { makelarId } : {}),
+                ...(customerId ? { customerId } : {}),
             };
-
-            console.log(filesAndData);
 
             await apiRequest('post', 'order/10', filesAndData);
             message.success('Order created successfully');

@@ -53,8 +53,8 @@ const BPOM = ({ customerId, makelarId }) => {
             const filesAndData = {
                 ...files,
                 ...data,
-                makelarId: makelarId,
-                customerId: customerId,
+                ...(makelarId ? { makelarId } : {}), 
+                ...(customerId ? { customerId } : {}), 
             };
 
             await apiRequest('post', 'order/2', filesAndData);

@@ -2,14 +2,66 @@ import React, { useState } from 'react'
 import { Col, Input, Row, Select, Form, Typography, Button } from 'antd'
 import Draggable from '../../../../../components/ui/File Upload/Draggable';
 import { PiIdentificationBadgeDuotone, PiIdentificationCardDuotone } from 'react-icons/pi';
+import { apiRequest } from '../../../../../../utils/api';
 
 const { Option } = Select;
 const { Title } = Typography;
 const { TextArea } = Input;
 
-const LegalitasPP = () => {
+const LegalitasPP = ({ customerId, makelarId }) => {
   const [pengurusCount, setPengurusCount] = useState(1);
   const [perusahaanType, setPerusahaanType] = useState(null);
+
+  const [data, setData] = useState({
+    companyType: '',
+    fullName: '',
+    email: '',
+    nomorTelp: '',
+    namaPt: '',
+    namaPt1: '',
+    namaPt2: '',
+    modalPasarDitempatkan: '',
+    modalPasarDisetor: '',
+    bidangUsaha: [''],
+    emailTambahan: '',
+    nomorTelpKantor: '',
+    alamat: '',
+    administrator: ['']
+  });
+
+  const [files, setFiles] = useState({});
+
+  const handleFileChange = (name, file) => {
+    setFiles(prevFiles => ({ ...prevFiles, [name]: file }));
+  };
+
+  const handleFileChangeArray = (name, index, file) => {
+    setFiles(
+      prevFiles => ({
+        ...prevFiles,
+        [name]: [
+          ...(prevFiles[name] || []).slice(0, index),
+          file,
+          ...(prevFiles[name] || []).slice(index + 1)
+        ]
+      })
+    )
+  };
+
+  const handleAdministratorChange = (index, field, value) => {
+    setData(prevData => {
+      const updatedResponsible = [...prevData.administrator];
+      const responsibleObj = JSON.parse(updatedResponsible[index] || '{}');
+      responsibleObj[field] = value;
+      updatedResponsible[index] = JSON.stringify(responsibleObj);
+      return { ...prevData, administrator: updatedResponsible };
+    });
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setData(prevData => ({ ...prevData, [name]: value }));
+  };
 
   const addPengurus = () => {
     setPengurusCount(pengurusCount + 1);
@@ -19,20 +71,36 @@ const LegalitasPP = () => {
     setPerusahaanType(type);
   };
 
+  const handleSubmit = async () => {
+    try {
+      const filesAndData = {
+        ...files,
+        ...data,
+        ...(makelarId ? { makelarId } : {}),
+        ...(customerId ? { customerId } : {}),
+      };
+
+      await apiRequest('post', 'order/10', filesAndData);
+      message.success('Order created successfully');
+    } catch (error) {
+      message.error(error.response.data.message);
+    }
+  };
+
   const renderPengurusForms = () => {
     const forms = [];
-    for (let i = 1; i <= pengurusCount; i++) {
+    for (let i = 0; i <= pengurusCount; i++) {
       forms.push(
         <div key={i}>
-          <span className='text-center font-bold inline-block w-full text-[20px] py-5 text-second'>Pengurus {i}</span>
+          <span className='text-center font-bold inline-block w-full text-[20px] py-5 text-second'>Pengurus {i + 1}</span>
           <Row gutter={16}>
             <Col span={12}>
               <Form.Item
-                name={`namaPengurus${i}`}
-                label={`Nama Pengurus ${i} :`}
-                rules={[{ required: true, message: `Please enter the name of manager ${i}` }]}
+                name={`name${i}`}
+                label={`Nama :`}
+                rules={[{ required: true, message: `Please enter the name of manager ${i + 1}` }]}
               >
-                <Input placeholder={`Enter the name of manager ${i}`} />
+                <Input name={`name`} placeholder={`Enter the name of Penanggung Jawab ${i + 1}`} onChange={(e) => handleResponsibleChange(i, 'name', e.target.value)} />
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -41,7 +109,7 @@ const LegalitasPP = () => {
                 label="Jabatan :"
                 rules={[{ required: true, message: 'Please enter the position' }]}
               >
-                <Input placeholder="Enter the position" />
+              <Input name={`jabatan`} placeholder={`Enter the position ${i + 1}`} onChange={(e) => handleResponsibleChange(i, 'jabatan', e.target.value)} />
               </Form.Item>
             </Col>
           </Row>
@@ -53,6 +121,7 @@ const LegalitasPP = () => {
                 rules={[{ required: true, message: 'Please enter the shares' }]}
               >
                 <Input placeholder="Enter the shares" />
+                <Input name={`jabatan`} placeholder={`Enter the position ${i + 1}`} onChange={(e) => handleResponsibleChange(i, 'jabatan', e.target.value)} />
               </Form.Item>
             </Col>
           </Row>
@@ -136,7 +205,7 @@ const LegalitasPP = () => {
       </Row>
 
 
-      <Row gutter={16}>
+      {/* <Row gutter={16}>
         <Col span={24}>
           <Form.Item
             name="customerField"
@@ -151,7 +220,7 @@ const LegalitasPP = () => {
             </Select>
           </Form.Item>
         </Col>
-      </Row>
+      </Row> */}
 
       <Row gutter={16}>
         <Col span={24}>

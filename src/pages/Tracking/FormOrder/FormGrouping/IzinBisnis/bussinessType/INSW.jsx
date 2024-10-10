@@ -30,8 +30,8 @@ const INSW = ({ customerId, makelarId }) => {
             const filesAndData = {
                 ...files,
                 ...data,
-                makelarId: makelarId,
-                customerId: customerId,
+                ...(makelarId ? { makelarId } : {}), 
+                ...(customerId ? { customerId } : {}), 
             };
 
             await apiRequest('post', 'order/9', filesAndData);

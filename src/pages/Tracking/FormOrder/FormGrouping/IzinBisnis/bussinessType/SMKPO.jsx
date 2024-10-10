@@ -62,8 +62,8 @@ const SMKPO = ({ customerId, makelarId }) => {
             const filesAndData = {
                 ...files,
                 ...data,
-                makelarId: makelarId,
-                customerId: customerId,
+                ...(makelarId ? { makelarId } : {}), 
+                ...(customerId ? { customerId } : {}), 
             };
 
             await apiRequest('post', 'order/7', filesAndData);
