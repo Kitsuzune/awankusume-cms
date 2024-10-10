@@ -31,8 +31,14 @@ export async function apiRequest(
 					data[key].forEach((item, index) => {
 						formData.append(`${key}[${index}]`, item);
 					});
+
+				} else if (Array.isArray(data[key])) {
+					data[key].forEach((item, index) => {
+						formData.append(key, item);
+					});
+
 				} else {
-					console.log(key, data[key]);
+					console.log(key, data[key], 'tunnn');
 					formData.append(key, data[key]);
 				}
 			}
