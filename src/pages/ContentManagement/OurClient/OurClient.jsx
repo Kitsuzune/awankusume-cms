@@ -104,7 +104,7 @@ const OurClient = () => {
                                         <Col span={24}>
                                             <div className='text-[24px] text-main inline-block'>Our Client</div>
                                             <br />
-                                            <span className='text-[15px] inline-block mt-5'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.</span>
+                                            <span className='text-[15px] inline-block mt-5'>Display your best client on the landing page</span>
                                         </Col>
                                     </Row>
                                 </div>

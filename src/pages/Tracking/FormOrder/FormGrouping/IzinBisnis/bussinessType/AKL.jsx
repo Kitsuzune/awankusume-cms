@@ -28,10 +28,11 @@ const AKL = ({ customerId, makelarId }) => {
         setFiles(
             prevFiles => ({
                 ...prevFiles,
-                [name]: {
-                    ...prevFiles[name],
-                    [index]: file
-                }
+                [name]: [
+                    ...(prevFiles[name] || []).slice(0, index), // Keep files before the index
+                    file, // Add the new file at the specified index
+                    ...(prevFiles[name] || []).slice(index + 1) // Keep files after the index
+                ]
             })
         )
     };

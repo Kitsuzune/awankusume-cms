@@ -104,7 +104,7 @@ const Service = () => {
                                         <Col span={24}>
                                             <div className='text-[24px] text-main inline-block'>Service</div>
                                             <br />
-                                            <span className='text-[15px] inline-block mt-5'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.</span>
+                                            <span className='text-[15px] inline-block mt-5'>Everything is in your control, give the best service</span>
                                         </Col>
                                     </Row>
                                 </div>

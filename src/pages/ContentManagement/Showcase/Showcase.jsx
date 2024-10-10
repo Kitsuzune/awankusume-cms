@@ -18,7 +18,7 @@ const Showcase = () => {
                     <Col span={24}>
                       <div className='text-[24px] text-main inline-block'>Showcase</div>
                       <br />
-                      <span className='text-[15px] inline-block mt-5'>Everything is in your control, use quick access buttons to manage related actions easily.</span>
+                      <span className='text-[15px] inline-block mt-5'>Display your best projects and achievements right on the landing page. Let your work speak for itself with a visually stunning showcase</span>
                     </Col>
                   </Row>
                 </div>
