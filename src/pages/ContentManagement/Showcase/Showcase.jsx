@@ -1,12 +1,77 @@
-import React, { useState } from 'react';
-import { Row, Col, Button, Input, Form, Select } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Row, Col, Button, Input, Form, Select, message, Modal } from 'antd';
 import ImagePreviewUploader from '../../../components/ui/File Upload/ImagePreview';
 import Flag from 'react-world-flags';
+import { apiRequest } from '../../../utils/api';
+import Loading from '../../../components/ui/Loading/Loading';
 
 const Showcase = () => {
   const [image, setImage] = useState(null);
+  const [data, setData] = useState([])
+  const [language, setLanguage] = useState(1);
+  const [form] = Form.useForm();
+  const [loading, setLoading] = useState(false);
+
+  const fetchData = async () => {
+    try {
+      const response = await apiRequest('get', '/content/showcase');
+      console.log(response.data.data)
+      setData(response.data.data)
+
+      const dataLanguage = response.data.data.filter((item) => item.languageId === language)[0];
+
+      form.setFieldsValue({
+        title: dataLanguage.title,
+        subTitle: dataLanguage.subTitle,
+      });
+
+    } catch (error) {
+      message.error(error.response.data.message);
+    }
+  }
+
+  const handleSubmit = async () => {
+    try {
+      setLoading(true);
+      const response = await apiRequest('PATCH', `/content/showcase/${language}`, {
+        title: form.getFieldValue('title'),
+        subTitle: form.getFieldValue('subTitle'),
+        // file: image,
+      });
+
+      if (response.status === 200) {
+        Modal.success({
+          title: 'Success',
+          content: 'Data has been updated',
+          centered: true,
+        });
+
+        fetchData()
+      }
+
+    } catch (error) {
+      message.error(error.response.data.message);
+    }
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    fetchData()
+  }, [])
+
+  useEffect(() => {
+    if (data.length === 0) return;
+    const dataLanguage = data.filter((item) => item.languageId === language)[0];
+
+    form.setFieldsValue({
+      title: dataLanguage.title,
+      subTitle: dataLanguage.subTitle,
+    });
+
+  }, [language])
 
   return (
+    <>
     <Row className="w-full">
       <Col span={24}>
         <div className="rounded-lg">
@@ -24,7 +89,7 @@ const Showcase = () => {
                 </div>
 
                 <div className="mt-5 p-10 bg-white border rounded-lg">
-                  <Form layout="vertical">
+                  <Form layout="vertical" form={form}>
                     <Row>
                       <Col span={24}>
                         <Form.Item
@@ -48,9 +113,11 @@ const Showcase = () => {
                             showSearch
                             placeholder="Select Language"
                             optionFilterProp="label"
+                            onChange={(value) => setLanguage(value)}
+                            defaultValue={1}
                             options={[
                               {
-                                value: 'id',
+                                value: 1,
                                 label: (
                                   <span>
                                     <Flag code="ID" className="inline w-[20px] h-[20px] mr-[8px] shadow-2xl" />
@@ -59,7 +126,7 @@ const Showcase = () => {
                                 ),
                               },
                               {
-                                value: 'en',
+                                value: 2,
                                 label: (
                                   <span>
                                     <Flag code="GB" className="inline w-[20px] h-[20px] mr-[8px] shadow-2xl" />
@@ -68,7 +135,7 @@ const Showcase = () => {
                                 ),
                               },
                               {
-                                value: 'cn',
+                                value: 3,
                                 label: (
                                   <span>
                                     <Flag code="CN" className="inline w-[20px] h-[20px] mr-[8px] shadow-2xl" />
@@ -89,7 +156,9 @@ const Showcase = () => {
                           label="Title"
                           rules={[{ required: true, message: 'Please enter a title' }]}
                         >
-                          <Input placeholder="Enter title" />
+                          <Input
+                            placeholder="Enter title" />
+
                         </Form.Item>
                       </Col>
                     </Row>
@@ -101,14 +170,16 @@ const Showcase = () => {
                           label="Sub Title"
                           rules={[{ required: true, message: 'Please enter a sub title' }]}
                         >
-                          <Input placeholder="Enter subtitle" />
+                          <Input
+                            placeholder="Enter subtitle"
+                          />
                         </Form.Item>
                       </Col>
                     </Row>
 
                     <div className="mt-5 flex justify-end">
                       <Button type="default" className="mr-2">Cancel</Button>
-                      <Button type="primary" className='bg-main'>Save</Button>
+                      <Button type="primary" className='bg-main' onClick={handleSubmit}>Save</Button>
                     </div>
                   </Form>
                 </div>
@@ -119,6 +190,8 @@ const Showcase = () => {
         </div>
       </Col>
     </Row>
+  <Loading isLoading={loading} />
+    </>
   );
 };
 
