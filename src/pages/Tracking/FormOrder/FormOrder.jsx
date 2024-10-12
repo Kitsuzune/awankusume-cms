@@ -81,14 +81,15 @@ const FormOrder = () => {
                           options={[
                             {
                               value: '1',
-                              label: 'Makelar 1'
+                              label: 'Tes'
                             },
                             {
                               value: '2',
-                              label: 'Makelar 2'
+                              label: 'TRDAWDwa'
                             }
                           ]}
                           onChange={(value) => setMakelarId(value)}
+                          optionFilterProp="label"
                         />
                       </Form.Item>
                     </Col>
@@ -102,7 +103,7 @@ const FormOrder = () => {
                     <IzinBisnis customerId={customerId} makelarId={makelarId} />
                   )}
 
-                  {serviceType && (
+                  {/* {serviceType && (
                     <Row justify="end" gutter={16} className="mt-4">
                       <Col>
                       <Button>
@@ -115,7 +116,7 @@ const FormOrder = () => {
                       </Button>
                       </Col>
                     </Row>
-                  )}
+                  )} */}
                 </Form>
               </div>
             </div>
