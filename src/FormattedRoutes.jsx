@@ -29,8 +29,10 @@ import About from "./pages/ContentManagement/About/About";
 import Service from "./pages/ContentManagement/Service/Service";
 import OurClient from "./pages/ContentManagement/OurClient/OurClient";
 import Partnership from "./pages/ContentManagement/Partnership/Partnership";
-import { TfiCommentsSmiley, TfiHandOpen, TfiHome, TfiLayersAlt, TfiLayoutColumn2, TfiUser } from "react-icons/tfi";
+import { TfiCommentsSmiley, TfiHandOpen, TfiHome, TfiLayersAlt, TfiLayoutColumn2, TfiMoney, TfiUser } from "react-icons/tfi";
 import NotFound from "./404";
+import Article from "./pages/ContentManagement/Article/Article";
+import Promo from "./pages/ContentManagement/Promo/Promo";
 
 const iconClasses = `h-6 w-6`;
 const submenuIconClasses = `h-5 w-5`;
@@ -84,7 +86,13 @@ export const routes = [
             path: '/app/content/article',
             icon: <TfiHandOpen className={iconClasses} />,
             name: 'Article',
-            component: NotFound,
+            component: Article,
+          },
+          {
+            path: '/app/content/promo',
+            icon: <TfiMoney className={iconClasses} />,
+            name: 'Promo',
+            component: Promo,
           }
         ]
       },
