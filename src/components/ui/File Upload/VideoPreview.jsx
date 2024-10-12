@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
 
-const VideoPreviewUploader = ({ video, setVideo }) => {
+const VideoPreviewUploader = ({ video, setVideo, name }) => {
+  const [preview, setPreview] = useState(null);
   const [isBlurred, setIsBlurred] = useState(false);
 
   const handleVideoChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
+    setVideo(e.target.files[0]);
+    const videoPreviewShow = e.target.files[0];
+    if (videoPreviewShow) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setVideo(reader.result);
+        setPreview(reader.result);
       };
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(videoPreviewShow);
     }
   };
 
@@ -33,7 +35,7 @@ const VideoPreviewUploader = ({ video, setVideo }) => {
             height: '100%',
             objectFit: 'cover',
           }}
-          src={video}
+          src={preview ? preview : video}
           controls
         />
       )}
@@ -53,6 +55,7 @@ const VideoPreviewUploader = ({ video, setVideo }) => {
         id="videoInput"
         type="file"
         accept="video/*"
+        name={name}
         style={{ display: 'none' }}
         onChange={handleVideoChange}
       />
