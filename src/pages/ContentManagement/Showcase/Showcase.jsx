@@ -8,6 +8,7 @@ import VideoPreviewUploader from './../../../components/ui/File Upload/VideoPrev
 
 const Showcase = () => {
   const [video, setVideo] = useState(null);
+  const [videoCurrent, setVideoCurrent] = useState(null);
   const [data, setData] = useState([])
   const [language, setLanguage] = useState(1);
   const [form] = Form.useForm();
@@ -28,6 +29,7 @@ const Showcase = () => {
       });
 
       setVideo(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataLanguage.image}`);
+      setVideoCurrent(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataLanguage.image}`);
 
       setLoading(false);
     } catch (error) {
@@ -40,10 +42,13 @@ const Showcase = () => {
   const handleSubmit = async () => {
     try {
       setLoading(true);
+
+      const fileToSend = video !== videoCurrent ? video : undefined;
+
       const response = await apiRequest('PATCH', `/content/showcase/${language}`, {
         title: form.getFieldValue('title'),
         subTitle: form.getFieldValue('subTitle'),
-        file: video,
+        file: fileToSend
       });
 
       if (response.status === 200) {

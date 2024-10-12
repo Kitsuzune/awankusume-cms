@@ -10,6 +10,7 @@ import Draggable from '../../../components/ui/File Upload/Draggable';
 const AboutEdit = () => {
     const { id } = useParams();
     const [image, setImage] = useState(null);
+    const [imageCurrent, setImageCurrent] = useState(null);
     const [form] = Form.useForm();
     const [data, setData] = useState([]);
     const [language, setLanguage] = useState(1);
@@ -17,6 +18,7 @@ const AboutEdit = () => {
 
     const fetchData = async () => {
         try {
+            setLoading(true);
             const response = await apiRequest('get', `/content/about/${id}`);
             setData(response.data.data)
 
@@ -30,9 +32,11 @@ const AboutEdit = () => {
             });
 
             setImage(`${process.env.REACT_APP_API_URL_CSM}/public/about/${dataLanguage.image}`);
-
+            setImageCurrent(`${process.env.REACT_APP_API_URL_CSM}/public/about/${dataLanguage.image}`);
+            setLoading(false);
         } catch (error) {
-            message.error(error.response.data.message);
+            setLoading(false);
+            message.error(error.response?.data?.message ? error.response?.data?.message : 'Server Unreachable, Please Check Your Internet Connection');
         }
     }
 
@@ -41,13 +45,15 @@ const AboutEdit = () => {
             setLoading(true);
 
             const dataLanguage = data.filter((item) => item.languageId === language)[0];
+            
+            const fileToSend = image !== imageCurrent ? image : undefined;
 
             const sendData = {
                 title: form.getFieldValue('title'),
                 subTitle: form.getFieldValue('subTitle'),
                 link: form.getFieldValue('link'),
                 show: form.getFieldValue('show') ? '1' : '0',
-                file: image,
+                file: fileToSend,
             }
 
             console.log(sendData);
@@ -60,6 +66,8 @@ const AboutEdit = () => {
                 response = await apiRequest('POST', `/content/about`, sendData);
             }
 
+            setLoading(false);
+
             if (response.status === 200) {
                 Modal.success({
                     title: 'Success',
@@ -71,10 +79,10 @@ const AboutEdit = () => {
             }
 
         } catch (error) {
+            setLoading(false);
             console.log(error);
             message.error(error.response?.data?.message || 'Something went wrong');
         }
-        setLoading(false);
     }
 
     useEffect(() => {
@@ -97,7 +105,7 @@ const AboutEdit = () => {
     }, [language])
 
     return (
-        <>
+        <React.Fragment>
             <Row className="w-full">
                 <Col span={24}>
                     <div className="rounded-lg">
@@ -244,7 +252,7 @@ const AboutEdit = () => {
                 </Col>
             </Row>
             <Loading isLoading={loading} />
-        </>
+        </React.Fragment>
     );
 };
 

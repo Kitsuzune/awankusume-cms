@@ -7,6 +7,7 @@ import { MdOutlineContentCopy } from 'react-icons/md';
 import { CiEdit, CiTrash } from 'react-icons/ci';
 import { useNavigate } from 'react-router-dom';
 import { apiRequest } from '../../../utils/api';
+import Loading from '../../../components/ui/Loading/Loading';
 
 const About = () => {
     const navigate = useNavigate();
@@ -17,8 +18,10 @@ const About = () => {
         key: 'id',
         order: 'desc',
     });
+    const [loading, setLoading] = useState(false);
 
     const fetchData = async () => {
+        setLoading(true);
         try {
             const response = await apiRequest('get', '/content/about', {}, {
                 page: pagination.page,
@@ -36,8 +39,12 @@ const About = () => {
                 perPage: response.data.meta.perPage,
                 totalData: response.data.meta.total,
             });
+
+            setLoading(false);
+            
         } catch (error) {
-            message.error(error.response.data.message);
+            setLoading(false);
+            message.error(error.response?.data?.message ? error.response?.data?.message : 'Error While Fetching Data');
         }
     };
 
@@ -124,76 +131,79 @@ const About = () => {
     ];
 
     return (
-        <Row className="w-full">
-            <Col span={24}>
-                <div className="rounded-lg">
-                    <Row>
-                        <Col span={24}>
-                            <div className="flex flex-col">
-                                <div className="bg-white p-5 rounded-lg">
-                                    <Row>
-                                        <Col span={24}>
-                                            <div className="text-[24px] text-main inline-block">About</div>
-                                            <br />
-                                            <span className="text-[15px] inline-block mt-5">Everything is in your control, Tell me about your company</span>
-                                        </Col>
-                                    </Row>
-                                </div>
+        <React.Fragment>
+            <Row className="w-full">
+                <Col span={24}>
+                    <div className="rounded-lg">
+                        <Row>
+                            <Col span={24}>
+                                <div className="flex flex-col">
+                                    <div className="bg-white p-5 rounded-lg">
+                                        <Row>
+                                            <Col span={24}>
+                                                <div className="text-[24px] text-main inline-block">About</div>
+                                                <br />
+                                                <span className="text-[15px] inline-block mt-5">Everything is in your control, Tell me about your company</span>
+                                            </Col>
+                                        </Row>
+                                    </div>
 
-                                <div className="mt-5 p-5 bg-white border rounded-lg">
-                                    <Row>
-                                        <Col span={24}>
-                                            <div className="flex flex-col">
-                                                <Row justify="space-between" align="middle" className="mb-4">
-                                                    <Col>
-                                                        <span className="text-[24px] inline-block">Editable About Section</span>
-                                                    </Col>
-                                                    <Col className="flex gap-2">
-                                                    <Input.Search placeholder="Search..."
-                                                            onSearch={(value) => {
-                                                                setSearch(value);
-                                                                setPagination({
-                                                                    ...pagination,
-                                                                    page: 1,
-                                                                });
-                                                            }}
-                                                        />
-                                                    </Col>
-                                                </Row>
+                                    <div className="mt-5 p-5 bg-white border rounded-lg">
+                                        <Row>
+                                            <Col span={24}>
+                                                <div className="flex flex-col">
+                                                    <Row justify="space-between" align="middle" className="mb-4">
+                                                        <Col>
+                                                            <span className="text-[24px] inline-block">Editable About Section</span>
+                                                        </Col>
+                                                        <Col className="flex gap-2">
+                                                            <Input.Search placeholder="Search..."
+                                                                onSearch={(value) => {
+                                                                    setSearch(value);
+                                                                    setPagination({
+                                                                        ...pagination,
+                                                                        page: 1,
+                                                                    });
+                                                                }}
+                                                            />
+                                                        </Col>
+                                                    </Row>
 
-                                                <Table
-                                                    dataSource={data}
-                                                    columns={columnsWithActions}
-                                                    pagination={false}
-                                                    bordered
-                                                    scroll={{ x: 768 }}
-                                                />
-                                                <CustomPagination
-                                                    data={data}
-                                                    pagination={pagination}
-                                                    changeLimit={(perPage) => {
-                                                        setPagination({
-                                                            ...pagination,
-                                                            perPage,
-                                                        });
-                                                    }}
-                                                    changePage={(page) => {
-                                                        setPagination({
-                                                            ...pagination,
-                                                            page,
-                                                        });
-                                                    }}
-                                                />
-                                            </div>
-                                        </Col>
-                                    </Row>
+                                                    <Table
+                                                        dataSource={data}
+                                                        columns={columnsWithActions}
+                                                        pagination={false}
+                                                        bordered
+                                                        scroll={{ x: 768 }}
+                                                    />
+                                                    <CustomPagination
+                                                        data={data}
+                                                        pagination={pagination}
+                                                        changeLimit={(perPage) => {
+                                                            setPagination({
+                                                                ...pagination,
+                                                                perPage,
+                                                            });
+                                                        }}
+                                                        changePage={(page) => {
+                                                            setPagination({
+                                                                ...pagination,
+                                                                page,
+                                                            });
+                                                        }}
+                                                    />
+                                                </div>
+                                            </Col>
+                                        </Row>
+                                    </div>
                                 </div>
-                            </div>
-                        </Col>
-                    </Row>
-                </div>
-            </Col>
-        </Row>
+                            </Col>
+                        </Row>
+                    </div>
+                </Col>
+            </Row>
+            <Loading isLoading={loading} />
+        </React.Fragment>
     );
 };
 
