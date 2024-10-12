@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
 
-const ImagePreviewUploader = ({ image, setImage }) => {
+const ImagePreviewUploader = ({ image, setImage, name }) => {
+  const [preview, setPreview] = useState(null);
   const [isBlurred, setIsBlurred] = useState(false);
 
   const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
+    setImage(e.target.files[0]);
+    const imagePreviewShow = e.target.files[0];
+    if (imagePreviewShow) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImage(reader.result);
+        setPreview(reader.result);
       };
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(imagePreviewShow);
     }
   };
 
@@ -18,7 +20,7 @@ const ImagePreviewUploader = ({ image, setImage }) => {
     <div
       className="w-full h-64 flex items-center justify-center border-dashed border-2 rounded-lg relative"
       style={{
-        backgroundImage: `url(${image})`,
+        backgroundImage: `url(${preview ? preview : image})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         cursor: 'pointer',
@@ -49,6 +51,7 @@ const ImagePreviewUploader = ({ image, setImage }) => {
         id="fileInput"
         type="file"
         accept="image/*"
+        name={name}
         style={{ display: 'none' }}
         onChange={handleImageChange}
       />

@@ -29,6 +29,8 @@ const AboutEdit = () => {
                 show: dataLanguage.show,
             });
 
+            setImage(`${process.env.REACT_APP_API_URL_CSM}/public/about/${dataLanguage.image}`);
+
         } catch (error) {
             message.error(error.response.data.message);
         }
@@ -45,7 +47,7 @@ const AboutEdit = () => {
                 subTitle: form.getFieldValue('subTitle'),
                 link: form.getFieldValue('link'),
                 show: form.getFieldValue('show') ? '1' : '0',
-                ...image && { file: base64ToFile(image, 'image.jpg') },
+                file: image,
             }
 
             console.log(sendData);
@@ -69,24 +71,11 @@ const AboutEdit = () => {
             }
 
         } catch (error) {
-            message.error(error.response.data.message);
+            console.log(error);
+            message.error(error.response?.data?.message || 'Something went wrong');
         }
         setLoading(false);
     }
-
-    const base64ToFile = (base64String, fileName) => {
-        const arr = base64String.split(',');
-        const mime = arr[0].match(/:(.*?);/)[1];
-        const bstr = atob(arr[1]);
-        let n = bstr.length;
-        const u8arr = new Uint8Array(n);
-        
-        while (n--) {
-            u8arr[n] = bstr.charCodeAt(n);
-        }
-        
-        return new File([u8arr], fileName, { type: mime });
-    };
 
     useEffect(() => {
         if (id) {
@@ -134,13 +123,13 @@ const AboutEdit = () => {
                                                         label="Image"
                                                         rules={[{ required: true, message: 'Please upload an image' }]}
                                                     >
-                                                        {/* <ImagePreviewUploader image={image} setImage={setImage}  /> */}
-                                                        <img src={process.env.REACT_APP_API_URL_CSM + '/about/' + data[0].image } />
+                                                        <ImagePreviewUploader image={image} setImage={setImage} name="image" />
+                                                        {/* <img src={process.env.REACT_APP_API_URL_CSM + '/about/' + data[0]?.image } />
                                                         <Draggable
                                                             topText="Click or drag file SK to this area to upload"
                                                             bottomText="Supported Format : PDF, Max Size : 10 MB"
                                                             onFileChange={(file) => setImage(file)}
-                                                        />
+                                                        /> */}
                                                     </Form.Item>
                                                 </Col>
                                             </Row>
@@ -149,10 +138,11 @@ const AboutEdit = () => {
                                                 <Col span={24} className='flex justify-end gap-3'>
                                                     <Form.Item
                                                         name="show"
-                                                        label="Visibility"
                                                         valuePropName="checked"
                                                     >
-                                                        <Switch />
+                                                        <span className='text-[15px]'>Hide</span>
+                                                        <Switch defaultChecked className='mx-2' />
+                                                        <span className='text-[15px]'>Show</span>
                                                     </Form.Item>
                                                 </Col>
                                             </Row>

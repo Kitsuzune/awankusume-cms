@@ -83,7 +83,7 @@ const Service = () => {
             key: 'desain',
             render: (text, record) => (
                 <div className='cursor-pointer'>
-                    {text.name}
+                    {text?.name}
                 </div>
             ),
         },
