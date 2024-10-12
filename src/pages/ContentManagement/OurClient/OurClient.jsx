@@ -1,41 +1,50 @@
-import React from 'react'
-import { Row, Col, Button, Input, Form, Tag, Table } from 'antd';
+import React, { useEffect, useState } from 'react'
+import { Row, Col, Button, Input, Form, Tag, Table, message } from 'antd';
 import ImagePreviewUploader from '../../../components/ui/File Upload/ImagePreview';
 import { CustomPagination } from '../../../components/ui/Table/CustomPagination';
 import { PlusOutlined } from '@ant-design/icons';
 import { MdOutlineContentCopy } from 'react-icons/md';
 import { CiEdit, CiTrash } from 'react-icons/ci';
 import { useNavigate } from 'react-router-dom';
+import { apiRequest } from '../../../utils/api';
 
 const OurClient = () => {
     const navigate = useNavigate();
+    const [data, setData] = useState([]);
+    const [pagination, setPagination] = useState({ page: 1, perPage: 10, totalData: 1 });
+    const [search, setSearch] = useState('');
+    const [order, setOrder] = useState({
+        key: 'id',
+        order: 'desc',
+    });
 
-    const dataSource = [
-        {
-            key: '1',
-            number: '1',
-            name: 'Lorem',
-            status: true
-        },
-        {
-            key: '2',
-            number: '2',
-            name: 'Lorem',
-            status: false
-        },
-        {
-            key: '3',
-            number: '3',
-            name: 'Lorem',
-            status: true
-        },
-        {
-            key: '4',
-            number: '4',
-            name: 'Lorem',
-            status: false
-        },
-    ]
+    const fetchData = async () => {
+        try {
+            const response = await apiRequest('get', '/content/ourclient', {}, {
+                page: pagination.page,
+                perPage: pagination.perPage,
+                where: search,
+                orderBy: `${order.key}:${order.order}`,
+            });
+
+            setData(response.data.data.map((item) => ({
+                ...item,
+                key: item.id,
+            })));
+
+            setPagination({
+                page: response.data.meta.currentPage,
+                perPage: response.data.meta.perPage,
+                totalData: response.data.meta.total,
+            });
+        } catch (error) {
+            message.error(error.response.data.message);
+        }
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, [pagination.page, pagination.perPage, search]);
 
     const columnsWithActions = [
         {
@@ -49,15 +58,55 @@ const OurClient = () => {
             ),
         },
         {
-            title: 'Status',
-            dataIndex: 'status',
-            key: 'status',
+            title: 'Description',
+            dataIndex: 'description',
+            key: 'description',
+            render: (text, record) => (
+                <div className='cursor-pointer'>
+                    {text}
+                </div>
+            ),
+        },
+        {
+            title: 'Image',
+            dataIndex: 'image',
+            key: 'image',
+            render: (text, record) => (
+                <div className='cursor-pointer'>
+                    {text}
+                </div>
+            ),
+        },
+        {
+            title: 'Hastag',
+            dataIndex: 'hastag',
+            key: 'hastag',
+            render: (text, record) => (
+                <div className='cursor-pointer'>
+                    {text}
+                </div>
+            ),
+        },
+        {
+            title: 'Link',
+            dataIndex: 'link',
+            key: 'link',
+            render: (text, record) => (
+                <div className='cursor-pointer'>
+                    {text}
+                </div>
+            ),
+        },
+        {
+            title: 'Show',
+            dataIndex: 'show',
+            key: 'show',
             width: 300,
             align: 'center',
             render: (text, record) => (
                 <>
                     {/* {record.status ? <Tag color="green">Show</Tag> : <Tag color="red">Hide</Tag>} */}
-                    {record.status ?
+                    {record.show === 1 ?
                         // <Tag color="green">Show</Tag> 
                         <div className='flex justify-center items-center cursor-pointer'>
                             <div className='bg-main text-center text-white px-2 py-1 rounded-md w-1/2 hover:bg-main/80 transition-all duration-300'>
@@ -119,7 +168,15 @@ const OurClient = () => {
                                                         <span className='text-[24px] inline-block'>List Our Client</span>
                                                     </Col>
                                                     <Col className="flex gap-2">
-                                                        <Input.Search placeholder="Search..." />
+                                                        <Input.Search placeholder="Search..."
+                                                            onSearch={(value) => {
+                                                                setSearch(value);
+                                                                setPagination({
+                                                                    ...pagination,
+                                                                    page: 1,
+                                                                });
+                                                            }}
+                                                        />
                                                         <Button type="primary">
                                                             Add New
                                                             <PlusOutlined />
@@ -128,17 +185,27 @@ const OurClient = () => {
                                                 </Row>
 
                                                 <Table
-                                                    dataSource={dataSource}
+                                                    dataSource={data}
                                                     columns={columnsWithActions}
                                                     pagination={{ pageSize: 10, position: ['bottomCenter'], showSizeChanger: true, style: { display: "none" } }}
                                                     bordered
                                                     scroll={{ x: 768 }}
                                                 />
                                                 <CustomPagination
-                                                    data={dataSource}
-                                                    pagination={{ page: 1, perPage: 10, totalData: 1 }}
-                                                    changeLimit={() => { }}
-                                                    changePage={() => { }}
+                                                    data={data}
+                                                    pagination={pagination}
+                                                    changeLimit={(perPage) => {
+                                                        setPagination({
+                                                            ...pagination,
+                                                            perPage,
+                                                        });
+                                                    }}
+                                                    changePage={(page) => {
+                                                        setPagination({
+                                                            ...pagination,
+                                                            page,
+                                                        });
+                                                    }}
                                                 />
 
                                             </div>

@@ -8,6 +8,8 @@ const { Option } = Select;
 
 const AKL = ({ customerId, makelarId }) => {
     const [materialMSDSCount, setMaterialMSDSCount] = useState(1);
+    const [form] = Form.useForm();
+    const [errors, setErrors] = useState({});
 
     const [data, setData] = useState({
         fullName: '',
@@ -29,9 +31,9 @@ const AKL = ({ customerId, makelarId }) => {
             prevFiles => ({
                 ...prevFiles,
                 [name]: [
-                    ...(prevFiles[name] || []).slice(0, index), // Keep files before the index
-                    file, // Add the new file at the specified index
-                    ...(prevFiles[name] || []).slice(index + 1) // Keep files after the index
+                    ...(prevFiles[name] || []).slice(0, index),
+                    file, 
+                    ...(prevFiles[name] || []).slice(index + 1) 
                 ]
             })
         )
@@ -43,15 +45,43 @@ const AKL = ({ customerId, makelarId }) => {
     };
 
     const handleSubmit = async () => {
+        const newErrors = {};
+        if (!data.fullName) newErrors.fullName = 'Please enter your full name';
+        if (!data.email) newErrors.email = 'Please enter your email';
+        if (!data.nomorTelp) newErrors.nomorTelp = 'Please enter your phone number';
+        if (!files.loa) newErrors.loa = 'Please upload the LoA';
+        if (!files.cfs) newErrors.cfs = 'Please upload the CFS';
+        if (!files.iso13485) newErrors.iso13485 = 'Please upload the ISO 13485';
+        for (let i = 0; i < materialMSDSCount; i++) {
+            if (!files[`material${i}`]) newErrors[`material${i}`] = `Please upload the List Material MSDS ${i + 1}`;
+        }
+        if (!files.flowProductionChart) newErrors.flowProductionChart = 'Please upload the Flow Production chart';
+        if (!files.clinicalTrial) newErrors.clinicalTrial = 'Please upload the Clinical Trial';
+        if (!files.specificationBrochure) newErrors.specificationBrochure = 'Please upload the Specification dan Broshure';
+        if (!files.documentVerificationAndValidation) newErrors.documentVerificationAndValidation = 'Please upload the Document Verification and Validation';
+        if (!files.biocompatibility) newErrors.biocompatibility = 'Please upload the Biocompatibility';
+        if (!files.preClinicalTrial) newErrors.preClinicalTrial = 'Please upload the Pre Clinical Trial';
+        if (!files.clinicalEvaluation) newErrors.clinicalEvaluation = 'Please upload the Clinical Evaluation';
+        if (!files.iso14971) newErrors.iso14971 = 'Please upload the ISO 14971';
+        if (!files.coa) newErrors.coa = 'Please upload the CoA';
+        if (!files.penandaLuarIndonesia) newErrors.penandaLuarIndonesia = 'Please upload the Penanda di luar Indonesia';
+        if (!files.simbolPackagingLuar) newErrors.simbolPackagingLuar = 'Please upload the Simbol di packaging luar';
+        if (!files.tandaExpiredDate) newErrors.tandaExpiredDate = 'Please upload the Tanda Expired Date';
+        if (!files.manualGuideline) newErrors.manualGuideline = 'Please upload the Manual Guideline';
+        if (!files.aksesoris) newErrors.aksesoris = 'Please upload the Aksesoris';
+
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
+            return;
+        }
+
         try {
             const filesAndData = {
                 ...files,
                 ...data,
-                makelarId: makelarId,
-                customerId: customerId,
+                ...(makelarId ? { makelarId } : {}),
+                ...(customerId ? { customerId } : {}),
             };
-
-            console.log(filesAndData);
 
             await apiRequest('post', 'order/10', filesAndData);
             message.success('Order created successfully');
@@ -62,7 +92,7 @@ const AKL = ({ customerId, makelarId }) => {
 
     const renderMaterialMSDS = () => {
         const forms = [];
-        for (let i = 0; i < materialMSDSCount; i++) { // Change loop condition to < instead of <=
+        for (let i = 0; i < materialMSDSCount; i++) {
             forms.push(
                 <div key={i}>
                     <Row gutter={16}>
@@ -71,6 +101,8 @@ const AKL = ({ customerId, makelarId }) => {
                                 name={`listMaterialMSDS${i}`}
                                 label={`List Material di dalam dan MSDS ${i + 1} :`}
                                 rules={[{ required: true, message: `Please enter the name of List Material MSDS ${i}` }]}
+                                validateStatus={errors[`listMaterialMSDS${i}`] ? 'error' : ''}
+                                help={errors[`listMaterialMSDS${i}`]}
                             >
                                 <Draggable
                                     icon={<PiFoldersDuotone />}
@@ -89,7 +121,7 @@ const AKL = ({ customerId, makelarId }) => {
     };
 
     return (
-        <Form layout="vertical">
+        <Form layout="vertical" form={form}>
             {/* <Row gutter={16}>
                 <Col span={24}>
                     <Form.Item
@@ -113,6 +145,8 @@ const AKL = ({ customerId, makelarId }) => {
                         name="fullName"
                         label="Full name :"
                         rules={[{ required: true, message: 'Please enter your full name' }]}
+                        validateStatus={errors.fullName ? 'error' : ''}
+                        help={errors.fullName}
                     >
                         <Input name="fullName" placeholder="Enter your full name" onChange={handleChange} />
                     </Form.Item>
@@ -125,6 +159,8 @@ const AKL = ({ customerId, makelarId }) => {
                         name="email"
                         label="Email :"
                         rules={[{ required: true, message: 'Please enter your email' }]}
+                        validateStatus={errors.email ? 'error' : ''}
+                        help={errors.email}
                     >
                         <Input name="email" placeholder="Enter your email" onChange={handleChange} />
                     </Form.Item>
@@ -134,6 +170,8 @@ const AKL = ({ customerId, makelarId }) => {
                         name="phone"
                         label="No.Phone :"
                         rules={[{ required: true, message: 'Please enter your phone number' }]}
+                        validateStatus={errors.nomorTelp ? 'error' : ''}
+                        help={errors.nomorTelp}
                     >
                         <Input name="nomorTelp" placeholder="Enter your phone number" onChange={handleChange} />
                     </Form.Item>
@@ -146,6 +184,8 @@ const AKL = ({ customerId, makelarId }) => {
                         name="loa"
                         label="LoA yang telah di legalisir oleh KBRI atau apostile :"
                         rules={[{ required: true, message: 'Please upload the LoA' }]}
+                        validateStatus={errors.loa ? 'error' : ''}
+                        help={errors.loa}
                     >
                         <Draggable
                             icon={<PiFoldersDuotone />}
@@ -160,6 +200,8 @@ const AKL = ({ customerId, makelarId }) => {
                         name="cfs"
                         label="CFS :"
                         rules={[{ required: true, message: 'Please upload the CFS' }]}
+                        validateStatus={errors.cfs ? 'error' : ''}
+                        help={errors.cfs}
                     >
                         <Draggable
                             icon={<PiFoldersDuotone />}
@@ -177,6 +219,8 @@ const AKL = ({ customerId, makelarId }) => {
                         name="iso13485"
                         label="ISO 13485 :"
                         rules={[{ required: true, message: 'Please upload the ISO 13485' }]}
+                        validateStatus={errors.iso13485 ? 'error' : ''}
+                        help={errors.iso13485}
                     >
                         <Draggable
                             icon={<PiFoldersDuotone />}
@@ -216,6 +260,8 @@ const AKL = ({ customerId, makelarId }) => {
                         name="flowProductionChart"
                         label="Flow Production chart :"
                         rules={[{ required: true, message: 'Please upload the Flow Production chart' }]}
+                        validateStatus={errors.flowProductionChart ? 'error' : ''}
+                        help={errors.flowProductionChart}
                     >
                         <Draggable
                             icon={<PiFoldersDuotone />}
@@ -230,6 +276,8 @@ const AKL = ({ customerId, makelarId }) => {
                         name="clinicalTrial"
                         label="Clinical Trial :"
                         rules={[{ required: true, message: 'Please upload the Clinical Trial' }]}
+                        validateStatus={errors.clinicalTrial ? 'error' : ''}
+                        help={errors.clinicalTrial}
                     >
                         <Draggable
                             icon={<PiFoldersDuotone />}
@@ -247,6 +295,8 @@ const AKL = ({ customerId, makelarId }) => {
                         name="specificationBrochure"
                         label="Specification dan Broshure :"
                         rules={[{ required: true, message: 'Please upload the Specification dan Broshure' }]}
+                        validateStatus={errors.specificationBrochure ? 'error' : ''}
+                        help={errors.specificationBrochure}
                     >
                         <Draggable
                             icon={<PiFoldersDuotone />}
@@ -261,6 +311,8 @@ const AKL = ({ customerId, makelarId }) => {
                         name="documentVerification"
                         label="Document Verification and Validation :"
                         rules={[{ required: true, message: 'Please upload the Document Verification and Validation' }]}
+                        validateStatus={errors.documentVerificationAndValidation ? 'error' : ''}
+                        help={errors.documentVerificationAndValidation}
                     >
                         <Draggable
                             icon={<PiFoldersDuotone />}
@@ -278,6 +330,8 @@ const AKL = ({ customerId, makelarId }) => {
                         name="biocompatibility"
                         label="Biocompatibility :"
                         rules={[{ required: true, message: 'Please upload the Biocompatibility' }]}
+                        validateStatus={errors.biocompatibility ? 'error' : ''}
+                        help={errors.biocompatibility}
                     >
                         <Draggable
                             icon={<PiFoldersDuotone />}
@@ -292,6 +346,8 @@ const AKL = ({ customerId, makelarId }) => {
                         name="preClinicalTrial"
                         label="Pre Clinical Trial :"
                         rules={[{ required: true, message: 'Please upload the Pre Clinical Trial' }]}
+                        validateStatus={errors.preClinicalTrial ? 'error' : ''}
+                        help={errors.preClinicalTrial}
                     >
                         <Draggable
                             icon={<PiFoldersDuotone />}
@@ -309,6 +365,8 @@ const AKL = ({ customerId, makelarId }) => {
                         name="clinicalEvaluation"
                         label="Clinical Evaluation :"
                         rules={[{ required: true, message: 'Please upload the Clinical Evaluation' }]}
+                        validateStatus={errors.clinicalEvaluation ? 'error' : ''}
+                        help={errors.clinicalEvaluation}
                     >
                         <Draggable
                             icon={<PiFoldersDuotone />}
@@ -326,6 +384,8 @@ const AKL = ({ customerId, makelarId }) => {
                         name="iso14971"
                         label="ISO 14971 :"
                         rules={[{ required: true, message: 'Please upload the ISO 14971' }]}
+                        validateStatus={errors.iso14971 ? 'error' : ''}
+                        help={errors.iso14971}
                     >
                         <Draggable
                             icon={<PiFoldersDuotone />}
@@ -340,6 +400,8 @@ const AKL = ({ customerId, makelarId }) => {
                         name="coa"
                         label="CoA :"
                         rules={[{ required: true, message: 'Please upload the CoA' }]}
+                        validateStatus={errors.coa ? 'error' : ''}
+                        help={errors.coa}
                     >
                         <Draggable
                             icon={<PiFoldersDuotone />}
@@ -357,6 +419,8 @@ const AKL = ({ customerId, makelarId }) => {
                         name="penandaLuarIndonesia"
                         label="Penanda di luar Indonesia :"
                         rules={[{ required: true, message: 'Please upload the Penanda di luar Indonesia' }]}
+                        validateStatus={errors.penandaLuarIndonesia ? 'error' : ''}
+                        help={errors.penandaLuarIndonesia}
                     >
                         <Draggable
                             icon={<PiFoldersDuotone />}
@@ -371,6 +435,8 @@ const AKL = ({ customerId, makelarId }) => {
                         name="simbolPackagingLuar"
                         label="Simbol di packaging luar :"
                         rules={[{ required: true, message: 'Please upload the Simbol di packaging luar' }]}
+                        validateStatus={errors.simbolPackagingLuar ? 'error' : ''}
+                        help={errors.simbolPackagingLuar}
                     >
                         <Draggable
                             icon={<PiFoldersDuotone />}
@@ -388,6 +454,8 @@ const AKL = ({ customerId, makelarId }) => {
                         name="tandaExpiredDate"
                         label="Tanda Expired Date :"
                         rules={[{ required: true, message: 'Please upload the Tanda Expired Date' }]}
+                        validateStatus={errors.tandaExpiredDate ? 'error' : ''}
+                        help={errors.tandaExpiredDate}
                     >
                         <Draggable
                             icon={<PiFoldersDuotone />}
@@ -405,6 +473,8 @@ const AKL = ({ customerId, makelarId }) => {
                         name="manualGuideline"
                         label="Manual Guideline Bahasa Indonesia & Bahasa Inggris :"
                         rules={[{ required: true, message: 'Please upload the Manual Guideline' }]}
+                        validateStatus={errors.manualGuideline ? 'error' : ''}
+                        help={errors.manualGuideline}
                     >
                         <Draggable
                             icon={<PiFoldersDuotone />}
@@ -419,6 +489,8 @@ const AKL = ({ customerId, makelarId }) => {
                         name="aksesoris"
                         label="Aksesoris yang dilertakan :"
                         rules={[{ required: true, message: 'Please upload the Aksesoris' }]}
+                        validateStatus={errors.aksesoris ? 'error' : ''}
+                        help={errors.aksesoris}
                     >
                         <Draggable
                             icon={<PiFoldersDuotone />}

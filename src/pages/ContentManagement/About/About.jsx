@@ -1,78 +1,109 @@
-import React from 'react'
-import { Row, Col, Button, Input, Form, Tag, Table } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Row, Col, Button, Input, Form, Tag, Table, message } from 'antd';
 import ImagePreviewUploader from '../../../components/ui/File Upload/ImagePreview';
 import { CustomPagination } from '../../../components/ui/Table/CustomPagination';
 import { PlusOutlined } from '@ant-design/icons';
 import { MdOutlineContentCopy } from 'react-icons/md';
 import { CiEdit, CiTrash } from 'react-icons/ci';
 import { useNavigate } from 'react-router-dom';
+import { apiRequest } from '../../../utils/api';
 
 const About = () => {
     const navigate = useNavigate();
+    const [data, setData] = useState([]);
+    const [pagination, setPagination] = useState({ page: 1, perPage: 10, totalData: 1 });
+    const [search, setSearch] = useState('');
+    const [order, setOrder] = useState({
+        key: 'id',
+        order: 'desc',
+    });
 
-    const dataSource = [
-        {
-            key: '1',
-            number: '1',
-            name: 'Lorem',
-            status: true
-        },
-        {
-            key: '2',
-            number: '2',
-            name: 'Lorem',
-            status: false
-        },
-        {
-            key: '3',
-            number: '3',
-            name: 'Lorem',
-            status: true
-        },
-        {
-            key: '4',
-            number: '4',
-            name: 'Lorem',
-            status: false
-        },
-    ]
+    const fetchData = async () => {
+        try {
+            const response = await apiRequest('get', '/content/about', {}, {
+                page: pagination.page,
+                perPage: pagination.perPage,
+                where: search,
+                orderBy: `${order.key}:${order.order}`,
+            });
+            setData(response.data.data.map((item) => ({
+                ...item,
+                key: item.id,
+            })));
+
+            setPagination({
+                page: response.data.meta.currentPage,
+                perPage: response.data.meta.perPage,
+                totalData: response.data.meta.total,
+            });
+        } catch (error) {
+            message.error(error.response.data.message);
+        }
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, [pagination.page, pagination.perPage, search]);
 
     const columnsWithActions = [
         {
-            title: 'Name',
-            dataIndex: 'name',
-            key: 'name',
+            title: 'Title',
+            dataIndex: 'title',
+            key: 'title',
             render: (text, record) => (
-                <div className='cursor-pointer'>
+                <div className="cursor-pointer">
                     {text}
                 </div>
             ),
         },
         {
-            title: 'Status',
-            dataIndex: 'status',
-            key: 'status',
+            title: 'Sub Title',
+            dataIndex: 'subTitle',
+            key: 'subTitle',
+            render: (text, record) => (
+                <div className="cursor-pointer">
+                    {text}
+                </div>
+            ),
+        },
+        {
+            title: 'Image',
+            dataIndex: 'image',
+            key: 'image',
+            render: (text, record) => (
+                <div className="cursor-pointer">
+                    {text}
+                </div>
+            ),
+        },
+        {
+            title: 'Link',
+            dataIndex: 'link',
+            key: 'link',
+            render: (text, record) => (
+                <div className="cursor-pointer">
+                    {text}
+                </div>
+            ),
+        },
+        {
+            title: 'Show',
+            dataIndex: 'show',
+            key: 'show',
             width: 300,
             align: 'center',
             render: (text, record) => (
-                <>
-                    {/* {record.status ? <Tag color="green">Show</Tag> : <Tag color="red">Hide</Tag>} */}
-                    {record.status ?
-                        // <Tag color="green">Show</Tag> 
-                        <div className='flex justify-center items-center cursor-pointer'>
-                            <div className='bg-main text-center text-white px-2 py-1 rounded-md w-1/2 hover:bg-main/80 transition-all duration-300'>
-                                Show
-                            </div>
+                <div className="flex justify-center items-center cursor-pointer">
+                    {record.show === 1 ? (
+                        <div className="bg-main text-center text-white px-2 py-1 rounded-md w-1/2 hover:bg-main/80 transition-all duration-300">
+                            Show
                         </div>
-                        :
-                        // <Tag color="red">Hide</Tag>
-                        <div className='flex justify-center items-center cursor-pointer'>
-                            <div className='bg-second text-center text-white px-2 py-1 rounded-md w-1/2 hover:bg-second/80 transition-all duration-300'>
-                                Hide
-                            </div>
+                    ) : (
+                        <div className="bg-second text-center text-white px-2 py-1 rounded-md w-1/2 hover:bg-second/80 transition-all duration-300">
+                            Hide
                         </div>
-                    }
-                </>
+                    )}
+                </div>
             ),
         },
         {
@@ -80,17 +111,17 @@ const About = () => {
             key: 'action',
             width: 100,
             render: (text, record) => (
-                <div className='flex gap-2'>
-                    <CiEdit className='text-2xl text-center text-second cursor-pointer hover:text-main'
+                <div className="flex gap-2">
+                    <CiEdit className="text-2xl text-center text-second cursor-pointer hover:text-main"
                         onClick={() => {
-                            navigate(`/app/content/about/${record.key}`)
+                            navigate(`/app/content/about/${record.uuid}`);
                         }}
                     />
-                    <CiTrash className='text-2xl text-center text-second cursor-pointer hover:text-main' />
+                    <CiTrash className="text-2xl text-center text-second cursor-pointer hover:text-main" />
                 </div>
             ),
         },
-    ]
+    ];
 
     return (
         <Row className="w-full">
@@ -99,12 +130,12 @@ const About = () => {
                     <Row>
                         <Col span={24}>
                             <div className="flex flex-col">
-                                <div className='bg-white p-5 rounded-lg'>
+                                <div className="bg-white p-5 rounded-lg">
                                     <Row>
                                         <Col span={24}>
-                                            <div className='text-[24px] text-main inline-block'>About</div>
+                                            <div className="text-[24px] text-main inline-block">About</div>
                                             <br />
-                                            <span className='text-[15px] inline-block mt-5'>Everything is in your control, Tell me about your company</span>
+                                            <span className="text-[15px] inline-block mt-5">Everything is in your control, Tell me about your company</span>
                                         </Col>
                                     </Row>
                                 </div>
@@ -113,42 +144,57 @@ const About = () => {
                                     <Row>
                                         <Col span={24}>
                                             <div className="flex flex-col">
-
                                                 <Row justify="space-between" align="middle" className="mb-4">
                                                     <Col>
-                                                        <span className='text-[24px] inline-block'>Editable About Section</span>
+                                                        <span className="text-[24px] inline-block">Editable About Section</span>
                                                     </Col>
                                                     <Col className="flex gap-2">
-                                                        <Input.Search placeholder="Search..." />
+                                                    <Input.Search placeholder="Search..."
+                                                            onSearch={(value) => {
+                                                                setSearch(value);
+                                                                setPagination({
+                                                                    ...pagination,
+                                                                    page: 1,
+                                                                });
+                                                            }}
+                                                        />
                                                     </Col>
                                                 </Row>
 
                                                 <Table
-                                                    dataSource={dataSource}
+                                                    dataSource={data}
                                                     columns={columnsWithActions}
-                                                    pagination={{ pageSize: 10, position: ['bottomCenter'], showSizeChanger: true, style: { display: "none" } }}
+                                                    pagination={false}
                                                     bordered
                                                     scroll={{ x: 768 }}
                                                 />
                                                 <CustomPagination
-                                                    data={dataSource}
-                                                    pagination={{ page: 1, perPage: 10, totalData: 1 }}
-                                                    changeLimit={() => { }}
-                                                    changePage={() => { }}
+                                                    data={data}
+                                                    pagination={pagination}
+                                                    changeLimit={(perPage) => {
+                                                        setPagination({
+                                                            ...pagination,
+                                                            perPage,
+                                                        });
+                                                    }}
+                                                    changePage={(page) => {
+                                                        setPagination({
+                                                            ...pagination,
+                                                            page,
+                                                        });
+                                                    }}
                                                 />
-
                                             </div>
                                         </Col>
                                     </Row>
                                 </div>
-
                             </div>
                         </Col>
                     </Row>
                 </div>
             </Col>
         </Row>
-    )
-}
+    );
+};
 
-export default About
+export default About;

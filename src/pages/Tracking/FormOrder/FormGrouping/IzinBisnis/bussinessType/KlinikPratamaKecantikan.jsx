@@ -8,6 +8,8 @@ const { Option } = Select;
 
 const KlinikPratamaKecantikan = ({ customerId, makelarId }) => {
     const [dokterCount, setDokterCount] = useState(1);
+    const [form] = Form.useForm();
+    const [errors, setErrors] = useState({});
     const [data, setData] = useState({
         fullName: '',
         email: '',
@@ -48,12 +50,27 @@ const KlinikPratamaKecantikan = ({ customerId, makelarId }) => {
     };
 
     const handleSubmit = async () => {
+        const newErrors = {};
+        if (!data.fullName) newErrors.fullName = 'Please enter your full name';
+        if (!data.email) newErrors.email = 'Please enter your email';
+        if (!data.nomorTelp) newErrors.nomorTelp = 'Please enter your phone number';
+        for (let i = 0; i < dokterCount; i++) {
+            if (!data[`namaDokter${i}`]) newErrors[`namaDokter${i}`] = `Please enter the name of doctor ${i + 1}`;
+        }
+        if (!data.namaPerawat) newErrors.namaPerawat = 'Please enter the name of nurse';
+        if (!files.buktiStr) newErrors.buktiStr = 'Please upload the STR certificate';
+        if (!files.tempatPraktek) newErrors.tempatPraktek = 'Please upload the Ruko/Rumah';
+        if (!files.lahanParkir) newErrors.lahanParkir = 'Please upload the Lahan Parkir';
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
+            return;
+        }
         try {
             const filesAndData = {
                 ...files,
                 ...data,
-                makelarId: makelarId,
-                customerId: customerId,
+                ...(makelarId ? { makelarId } : {}), 
+                ...(customerId ? { customerId } : {}), 
             };
 
             console.log(filesAndData);
@@ -76,6 +93,8 @@ const KlinikPratamaKecantikan = ({ customerId, makelarId }) => {
                                 name={`namaDokter${i}`}
                                 label={`Nama dokter ${i + 1} :`}
                                 rules={[{ required: true, message: `Please enter the name of doctor ${i}` }]}
+                                validateStatus={errors[`namaDokter${i}`] ? 'error' : ''}
+                                help={errors[`namaDokter${i}`]}
                             >
                                 <Input name={`name`} placeholder={`Enter the name of doctor ${i + 1}`} onChange={(e) => handleResponsibleChange(i, 'name', e.target.value)} />
                             </Form.Item>
@@ -99,7 +118,7 @@ const KlinikPratamaKecantikan = ({ customerId, makelarId }) => {
     };
 
     return (
-        <>
+        <Form layout="vertical" form={form}>
             {/* <Row gutter={16}>
                 <Col span={24}>
                     <Form.Item
@@ -123,6 +142,8 @@ const KlinikPratamaKecantikan = ({ customerId, makelarId }) => {
                         name="fullName"
                         label="Full name :"
                         rules={[{ required: true, message: 'Please enter your full name' }]}
+                        validateStatus={errors.fullName ? 'error' : ''}
+                        help={errors.fullName}
                     >
                         <Input name="fullName" placeholder="Enter your full name" onChange={handleChange} />
                     </Form.Item>
@@ -135,6 +156,8 @@ const KlinikPratamaKecantikan = ({ customerId, makelarId }) => {
                         name="email"
                         label="Email :"
                         rules={[{ required: true, message: 'Please enter your email' }]}
+                        validateStatus={errors.email ? 'error' : ''}
+                        help={errors.email}
                     >
                         <Input name="email" placeholder="Enter your email" onChange={handleChange} />
                     </Form.Item>
@@ -144,6 +167,8 @@ const KlinikPratamaKecantikan = ({ customerId, makelarId }) => {
                         name="phone"
                         label="No.Phone :"
                         rules={[{ required: true, message: 'Please enter your phone number' }]}
+                        validateStatus={errors.nomorTelp ? 'error' : ''}
+                        help={errors.nomorTelp}
                     >
                         <Input name="nomorTelp" placeholder="Enter your phone number" onChange={handleChange} />
                     </Form.Item>
@@ -162,6 +187,8 @@ const KlinikPratamaKecantikan = ({ customerId, makelarId }) => {
                         name="namaPerawat"
                         label="Nama Perawat :"
                         rules={[{ required: true, message: 'Please enter the name of nurse' }]}
+                        validateStatus={errors.namaPerawat ? 'error' : ''}
+                        help={errors.namaPerawat}
                     >
                         <Input name="namaPerawat" placeholder="Enter the name of nurse" onChange={handleChange} />
                     </Form.Item>
@@ -172,6 +199,8 @@ const KlinikPratamaKecantikan = ({ customerId, makelarId }) => {
                         name="buktiSTR"
                         label="Bukti STR :"
                         rules={[{ required: true, message: 'Please upload the STR certificate' }]}
+                        validateStatus={errors.buktiStr ? 'error' : ''}
+                        help={errors.buktiStr}
                     >
                         <Draggable
                             icon={<PiEnvelopeSimpleDuotone />}
@@ -189,6 +218,8 @@ const KlinikPratamaKecantikan = ({ customerId, makelarId }) => {
                         name="rukoRumah"
                         label="Ruko/Rumah :"
                         rules={[{ required: true, message: 'Please enter the type of company' }]}
+                        validateStatus={errors.tempatPraktek ? 'error' : ''}
+                        help={errors.tempatPraktek}
                     >
                         <Draggable
                             icon={<PiFactoryDuotone />}
@@ -206,6 +237,8 @@ const KlinikPratamaKecantikan = ({ customerId, makelarId }) => {
                         name="lahanParkir"
                         label="Lahan Parkir :"
                         rules={[{ required: true, message: 'Please enter the type of company' }]}
+                        validateStatus={errors.lahanParkir ? 'error' : ''}
+                        help={errors.lahanParkir}
                     >
                         <Draggable
                             icon={<PiFarmDuotone />}
@@ -221,7 +254,7 @@ const KlinikPratamaKecantikan = ({ customerId, makelarId }) => {
                 Submit
             </Button>
 
-        </>
+        </Form>
     )
 }
 

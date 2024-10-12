@@ -15,6 +15,8 @@ const INSW = ({ customerId, makelarId }) => {
         ossPassword: '',
     });
     const [files, setFiles] = useState({});
+    const [form] = Form.useForm();
+    const [errors, setErrors] = useState({});
 
     const handleFileChange = (name, file) => {
         setFiles(prevFiles => ({ ...prevFiles, [name]: file }));
@@ -26,12 +28,25 @@ const INSW = ({ customerId, makelarId }) => {
     };
 
     const handleSubmit = async () => {
+        const newErrors = {};
+        if (!data.fullName) newErrors.fullName = 'Please enter your full name';
+        if (!data.email) newErrors.email = 'Please enter your email';
+        if (!data.nomorTelp) newErrors.nomorTelp = 'Please enter your phone number';
+        if (!files.ttdUtamaKertasKosong) newErrors.ttdUtamaKertasKosong = 'Please upload the Tanda Tangan Utama';
+        if (!files.ttdPenanggungJawabKertasKosong) newErrors.ttdPenanggungJawabKertasKosong = 'Please upload the Tanda Tangan Penanggung Jawab';
+        if (!files.capPerusahaan) newErrors.capPerusahaan = 'Please upload the CAP Perusahaan';
+        if (!data.ossUsername) newErrors.ossUsername = 'Please enter your username';
+        if (!data.ossPassword) newErrors.ossPassword = 'Please enter your password';
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
+            return;
+        }
         try {
             const filesAndData = {
                 ...files,
                 ...data,
-                makelarId: makelarId,
-                customerId: customerId,
+                ...(makelarId ? { makelarId } : {}), 
+                ...(customerId ? { customerId } : {}), 
             };
 
             await apiRequest('post', 'order/9', filesAndData);
@@ -54,7 +69,7 @@ const INSW = ({ customerId, makelarId }) => {
     // };
 
     return (
-        <Form layout="vertical">
+        <Form layout="vertical" form={form}>
             {/* <Row gutter={16}>
                 <Col span={24}>
                     <Form.Item
@@ -78,6 +93,8 @@ const INSW = ({ customerId, makelarId }) => {
                         name="fullName"
                         label="Full name :"
                         rules={[{ required: true, message: 'Please enter your full name' }]}
+                        validateStatus={errors.fullName ? 'error' : ''}
+                        help={errors.fullName}
                     >
                         <Input name="fullName" placeholder="Enter your full name" onChange={handleChange} />
                     </Form.Item>
@@ -90,6 +107,8 @@ const INSW = ({ customerId, makelarId }) => {
                         name="email"
                         label="Email :"
                         rules={[{ required: true, message: 'Please enter your email' }]}
+                        validateStatus={errors.email ? 'error' : ''}
+                        help={errors.email}
                     >
                         <Input name="email" placeholder="Enter your email" onChange={handleChange} />
                     </Form.Item>
@@ -99,6 +118,8 @@ const INSW = ({ customerId, makelarId }) => {
                         name="phone"
                         label="No.Phone :"
                         rules={[{ required: true, message: 'Please enter your phone number' }]}
+                        validateStatus={errors.nomorTelp ? 'error' : ''}
+                        help={errors.nomorTelp}
                     >
                         <Input name="nomorTelp" placeholder="Enter your phone number" onChange={handleChange} />
                     </Form.Item>
@@ -111,6 +132,8 @@ const INSW = ({ customerId, makelarId }) => {
                         name="ttdUtamaKertasKosong"
                         label="TTD Utama Di Kertas Kosong :"
                         rules={[{ required: true, message: 'Please upload the Tanda Tangan Utama' }]}
+                        validateStatus={errors.ttdUtamaKertasKosong ? 'error' : ''}
+                        help={errors.ttdUtamaKertasKosong}
                     >
                         <Draggable
                             icon={<PiFileArchiveDuotone />}
@@ -126,6 +149,8 @@ const INSW = ({ customerId, makelarId }) => {
                         name="ttdPenanggungJawabKertasKosong"
                         label="TTD Penanggung Jawab Di Kertas Kosong :"
                         rules={[{ required: true, message: 'Please upload the Tanda Tangan Penanggung Jawab' }]}
+                        validateStatus={errors.ttdPenanggungJawabKertasKosong ? 'error' : ''}
+                        help={errors.ttdPenanggungJawabKertasKosong}
                     >
                         <Draggable
                             icon={<PiFilmScriptDuotone />}
@@ -144,6 +169,8 @@ const INSW = ({ customerId, makelarId }) => {
                         name="capPerusahaan"
                         label="CAP Perusahaan :"
                         rules={[{ required: true, message: 'Please upload the CAP Perusahaan' }]}
+                        validateStatus={errors.capPerusahaan ? 'error' : ''}
+                        help={errors.capPerusahaan}
                     >
                         <Draggable
                             icon={<PiFlowerLotusDuotone />}
@@ -163,6 +190,8 @@ const INSW = ({ customerId, makelarId }) => {
                         name={`username`}
                         label={`Username :`}
                         rules={[{ required: true, message: `Please enter your username` }]}
+                        validateStatus={errors.ossUsername ? 'error' : ''}
+                        help={errors.ossUsername}
                     >
                         <Input name="ossUsername" placeholder="Enter your username" onChange={handleChange} />
                     </Form.Item>
@@ -172,6 +201,8 @@ const INSW = ({ customerId, makelarId }) => {
                         name={`passwords`}
                         label={`Password :`}
                         rules={[{ required: true, message: `Please enter your password` }]}
+                        validateStatus={errors.ossPassword ? 'error' : ''}
+                        help={errors.ossPassword}
                     >
                         <Input name="ossPassword" placeholder="Enter your Password" onChange={handleChange} />
                     </Form.Item>

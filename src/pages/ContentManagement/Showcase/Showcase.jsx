@@ -15,7 +15,6 @@ const Showcase = () => {
   const fetchData = async () => {
     try {
       const response = await apiRequest('get', '/content/showcase');
-      console.log(response.data.data)
       setData(response.data.data)
 
       const dataLanguage = response.data.data.filter((item) => item.languageId === language)[0];

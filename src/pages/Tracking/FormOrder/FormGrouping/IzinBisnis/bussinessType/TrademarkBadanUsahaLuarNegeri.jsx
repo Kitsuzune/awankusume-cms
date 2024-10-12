@@ -13,6 +13,8 @@ const TrademarkBadanUsahaLuarNegeri = ({ customerId, makelarId }) => {
         nomorTelp: '',
     });
     const [files, setFiles] = useState({});
+    const [form] = Form.useForm();
+    const [errors, setErrors] = useState({});
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -24,12 +26,24 @@ const TrademarkBadanUsahaLuarNegeri = ({ customerId, makelarId }) => {
     };
 
     const handleSubmit = async () => {
+        const newErrors = {};
+        if (!data.fullName) newErrors.fullName = 'Please enter your full name';
+        if (!data.email) newErrors.email = 'Please enter your email';
+        if (!data.nomorTelp) newErrors.nomorTelp = 'Please enter your phone number';
+        if (!files.sertifikatPendirian) newErrors.sertifikatPendirian = 'Please upload the Sertifikat Pendirian';
+        if (!files.etiketLogo) newErrors.etiketLogo = 'Please upload the Etiket Logo';
+        if (!files.tandaTanganDirektur) newErrors.tandaTanganDirektur = 'Please upload the Tanda Tangan Direktur';
+        if (!files.penjelasanBisnis) newErrors.penjelasanBisnis = 'Please upload the Penjelasan Bisnis';
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
+            return;
+        }
         try {
             const filesAndData = {
                 ...files,
                 ...data,
-                makelarId: makelarId,
-                customerId: customerId,
+                ...(makelarId ? { makelarId } : {}), 
+                ...(customerId ? { customerId } : {}), 
             };
 
             await apiRequest('post', 'order/6', filesAndData);
@@ -40,7 +54,7 @@ const TrademarkBadanUsahaLuarNegeri = ({ customerId, makelarId }) => {
     };
 
     return (
-        <Form layout="vertical">
+        <Form layout="vertical" form={form}>
 
             {/* 
             <Row gutter={16}>
@@ -66,6 +80,8 @@ const TrademarkBadanUsahaLuarNegeri = ({ customerId, makelarId }) => {
                         name="fullName"
                         label="Full name :"
                         rules={[{ required: true, message: 'Please enter your full name' }]}
+                        validateStatus={errors.fullName ? 'error' : ''}
+                        help={errors.fullName}
                     >
                         <Input name="fullName" placeholder="Enter your full name" onChange={handleChange} />
                     </Form.Item>
@@ -78,6 +94,8 @@ const TrademarkBadanUsahaLuarNegeri = ({ customerId, makelarId }) => {
                         name="email"
                         label="Email :"
                         rules={[{ required: true, message: 'Please enter your email' }]}
+                        validateStatus={errors.email ? 'error' : ''}
+                        help={errors.email}
                     >
                         <Input name="email" placeholder="Enter your email" onChange={handleChange} />
                     </Form.Item>
@@ -87,6 +105,8 @@ const TrademarkBadanUsahaLuarNegeri = ({ customerId, makelarId }) => {
                         name="phone"
                         label="No.Phone :"
                         rules={[{ required: true, message: 'Please enter your phone number' }]}
+                        validateStatus={errors.nomorTelp ? 'error' : ''}
+                        help={errors.nomorTelp}
                     >
                         <Input name="nomorTelp" placeholder="Enter your phone number" onChange={handleChange} />
                     </Form.Item>
@@ -99,6 +119,8 @@ const TrademarkBadanUsahaLuarNegeri = ({ customerId, makelarId }) => {
                         name="sertifikatPendirian"
                         label="Sertifikat Pendirian"
                         rules={[{ required: true, message: 'Please upload the Sertifikat Pendirian' }]}
+                        validateStatus={errors.sertifikatPendirian ? 'error' : ''}
+                        help={errors.sertifikatPendirian}
                     >
                         <Draggable
                             icon={<PiDotsSixVerticalDuotone />}
@@ -116,6 +138,8 @@ const TrademarkBadanUsahaLuarNegeri = ({ customerId, makelarId }) => {
                         name="etiketLogo"
                         label="Etiket Logo :"
                         rules={[{ required: true, message: 'Please upload the Etiket Logo' }]}
+                        validateStatus={errors.etiketLogo ? 'error' : ''}
+                        help={errors.etiketLogo}
                     >
                         <Draggable
                             icon={<PiBookBookmarkDuotone />}
@@ -133,6 +157,8 @@ const TrademarkBadanUsahaLuarNegeri = ({ customerId, makelarId }) => {
                         name="tandaTanganDirektur"
                         label="Tanda Tangan Direktur Utama Di Kertas Putih :"
                         rules={[{ required: true, message: 'Please upload the Tanda Tangan Direktur' }]}
+                        validateStatus={errors.tandaTanganDirektur ? 'error' : ''}
+                        help={errors.tandaTanganDirektur}
                     >
                         <Draggable
                             icon={<PiChalkboardDuotone />}
@@ -150,6 +176,8 @@ const TrademarkBadanUsahaLuarNegeri = ({ customerId, makelarId }) => {
                         name="penjelasanBisnisYangDikerjakan"
                         label="Penjelasan Bisnis Yang Dikerjakan :"
                         rules={[{ required: true, message: 'Please enter the Penjelasan Bisnis Yang Dikerjakan' }]}
+                        validateStatus={errors.penjelasanBisnis ? 'error' : ''}
+                        help={errors.penjelasanBisnis}
                     >
                         <Draggable
                             icon={<PiCashRegisterDuotone />}

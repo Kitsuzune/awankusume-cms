@@ -9,6 +9,8 @@ const { Option } = Select;
 const BPOM = ({ customerId, makelarId }) => {
     const [penanggungJawabCount, setPenanggungJawabCount] = useState(1);
     const [peralatanKantorCount, setPeralatanKantorCount] = useState(1);
+    const [form] = Form.useForm();
+    const [errors, setErrors] = useState({});
     const [data, setData] = useState({
         fullName: '',
         email: '',
@@ -49,12 +51,33 @@ const BPOM = ({ customerId, makelarId }) => {
     };
 
     const handleSubmit = async () => {
+        const newErrors = {};
+        if (!data.fullName) newErrors.fullName = 'Please enter your full name';
+        if (!data.email) newErrors.email = 'Please enter your email';
+        if (!data.nomorTelp) newErrors.nomorTelp = 'Please enter your phone number';
+        if (!data.bentuk) newErrors.bentuk = 'Please enter the type of company';
+        if (!files.akta) newErrors.akta = 'Please upload the Akta';
+        if (!files.sk) newErrors.sk = 'Please upload the SK';
+        if (!files.npwp) newErrors.npwp = 'Please upload the NPWP';
+        if (!data.nibOssRba) newErrors.nibOssRba = 'Please enter the NIB OSS RBA Dengan KBLI 46691';
+        if (!data.ruko) newErrors.ruko = 'Please upload the Ruko Type';
+        if (!files.rukoImage) newErrors.rukoImage = 'Please upload the Foto Ruko';
+        for (let i = 0; i < penanggungJawabCount; i++) {
+            if (!data[`name${i}`]) newErrors[`name${i}`] = `Please enter the name of Penanggung Jawab ${i + 1}`;
+        }
+        for (let i = 0; i < peralatanKantorCount; i++) {
+            if (!data[`peralatanKantor${i}`]) newErrors[`peralatanKantor${i}`] = `Please enter the peralatan kantor ${i + 1}`;
+        }
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
+            return;
+        }
         try {
             const filesAndData = {
                 ...files,
                 ...data,
-                makelarId: makelarId,
-                customerId: customerId,
+                ...(makelarId ? { makelarId } : {}), 
+                ...(customerId ? { customerId } : {}), 
             };
 
             await apiRequest('post', 'order/2', filesAndData);
@@ -75,6 +98,8 @@ const BPOM = ({ customerId, makelarId }) => {
                                 name={`name${i}`}
                                 label={`Nama Penanggung Jawab ${i + 1} :`}
                                 rules={[{ required: true, message: `Please enter the name of Penanggung Jawab ${i + 1}` }]}
+                                validateStatus={errors[`name${i}`] ? 'error' : ''}
+                                help={errors[`name${i}`]}
                             >
                                 <Input name={`name`} placeholder={`Enter the name of Penanggung Jawab ${i + 1}`} onChange={(e) => handleResponsibleChange(i, 'name', e.target.value)} />
                             </Form.Item>
@@ -84,6 +109,8 @@ const BPOM = ({ customerId, makelarId }) => {
                                 name={`jabatan${i}`}
                                 label={`Jabatan Penanggung Jawab ${i + 1} :`}
                                 rules={[{ required: true, message: `Please enter the position of Penanggung Jawab ${i + 1}` }]}
+                                validateStatus={errors[`jabatan${i}`] ? 'error' : ''}
+                                help={errors[`jabatan${i}`]}
                             >
                                 <Input name={`jabatan`} placeholder={`Enter the position of Penanggung Jawab ${i + 1}`} onChange={(e) => handleResponsibleChange(i, 'jabatan', e.target.value)} />
                             </Form.Item>
@@ -106,6 +133,8 @@ const BPOM = ({ customerId, makelarId }) => {
                                 name={`peralatanKantor${i}`}
                                 label={`Peralatan Kantor ${i + 1} :`}
                                 rules={[{ required: true, message: `Please enter the peralatan kantor ${i + 1}` }]}
+                                validateStatus={errors[`peralatanKantor${i}`] ? 'error' : ''}
+                                help={errors[`peralatanKantor${i}`]}
                             >
                                 <Input name={`peralatanKantor`} placeholder={`Enter the peralatan kantor ${i + 1}`} onChange={(e) => handleOfficeEquipmentChange(i, e.target.value)} />
                             </Form.Item>
@@ -119,7 +148,7 @@ const BPOM = ({ customerId, makelarId }) => {
 
 
     return (
-        <Form layout="vertical">
+        <Form layout="vertical" form={form}>
 
             {/* 
             <Row gutter={16}>
@@ -145,6 +174,8 @@ const BPOM = ({ customerId, makelarId }) => {
                         name="fullName"
                         label="Full name :"
                         rules={[{ required: true, message: 'Please enter your full name' }]}
+                        validateStatus={errors.fullName ? 'error' : ''}
+                        help={errors.fullName}
                     >
                         <Input name="fullName" placeholder="Enter your full name" onChange={handleChange} />
                     </Form.Item>
@@ -157,6 +188,8 @@ const BPOM = ({ customerId, makelarId }) => {
                         name="email"
                         label="Email :"
                         rules={[{ required: true, message: 'Please enter your email' }]}
+                        validateStatus={errors.email ? 'error' : ''}
+                        help={errors.email}
                     >
                         <Input name="email" placeholder="Enter your email" onChange={handleChange} />
                     </Form.Item>
@@ -166,6 +199,8 @@ const BPOM = ({ customerId, makelarId }) => {
                         name="nomorTelp"
                         label="No.Phone :"
                         rules={[{ required: true, message: 'Please enter your phone number' }]}
+                        validateStatus={errors.nomorTelp ? 'error' : ''}
+                        help={errors.nomorTelp}
                     >
                         <Input name="nomorTelp" placeholder="Enter your phone number" onChange={handleChange} />
                     </Form.Item>
@@ -178,6 +213,8 @@ const BPOM = ({ customerId, makelarId }) => {
                         name="berbentuk"
                         label="Berbentuk :"
                         rules={[{ required: true, message: 'Please enter the type of company' }]}
+                        validateStatus={errors.bentuk ? 'error' : ''}
+                        help={errors.bentuk}
                     >
                         <Radio.Group name="bentuk" onChange={handleChange}>
                             <Radio value="PT">PT</Radio>
@@ -193,6 +230,8 @@ const BPOM = ({ customerId, makelarId }) => {
                         name="akta"
                         label="Akta"
                         rules={[{ required: true, message: 'Please upload the Akta' }]}
+                        validateStatus={errors.akta ? 'error' : ''}
+                        help={errors.akta}
                     >
                         <Draggable
                             icon={<PiCalendarDuotone />}
@@ -207,6 +246,8 @@ const BPOM = ({ customerId, makelarId }) => {
                         name="sk"
                         label="SK"
                         rules={[{ required: true, message: 'Please upload the SK' }]}
+                        validateStatus={errors.sk ? 'error' : ''}
+                        help={errors.sk}
                     >
                         <Draggable
                             icon={<PiCardholderDuotone />}
@@ -224,6 +265,8 @@ const BPOM = ({ customerId, makelarId }) => {
                         name="npwp"
                         label="NPWP"
                         rules={[{ required: true, message: 'Please upload the NPWP' }]}
+                        validateStatus={errors.npwp ? 'error' : ''}
+                        help={errors.npwp}
                     >
                         <Draggable
                             icon={<PiIdentificationBadgeDuotone />}
@@ -241,6 +284,8 @@ const BPOM = ({ customerId, makelarId }) => {
                         name="nibOssRba"
                         label="NIB OSS RBA Dengan KBLI 46691"
                         rules={[{ required: true, message: 'Please upload the NIB OSS' }]}
+                        validateStatus={errors.nibOssRba ? 'error' : ''}
+                        help={errors.nibOssRba}
                     >
                         <Input name="nibOssRba" placeholder="Enter the NIB OSS RBA Dengan KBLI 46691" onChange={handleChange} />
                     </Form.Item>
@@ -253,6 +298,8 @@ const BPOM = ({ customerId, makelarId }) => {
                         name="ruko"
                         label="Ruko"
                         rules={[{ required: true, message: 'Please upload the Ruko Type' }]}
+                        validateStatus={errors.ruko ? 'error' : ''}
+                        help={errors.ruko}
                     >
                         <Radio.Group name="ruko" onChange={handleChange}>
                             <Radio value="SEWA">Sewa</Radio>
@@ -268,6 +315,8 @@ const BPOM = ({ customerId, makelarId }) => {
                         name="rukoImage"
                         label="Foto Ruko"
                         rules={[{ required: true, message: 'Please upload the Foto Ruko' }]}
+                        validateStatus={errors.rukoImage ? 'error' : ''}
+                        help={errors.rukoImage}
                     >
                         <Draggable
                             icon={<PiBuildingOfficeDuotone />}

@@ -13,6 +13,8 @@ const TrademarkLokalPerorangan = ({ customerId, makelarId }) => {
         nomorTelp: '',
     });
     const [files, setFiles] = useState({});
+    const [form] = Form.useForm();
+    const [errors, setErrors] = useState({});
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -24,12 +26,24 @@ const TrademarkLokalPerorangan = ({ customerId, makelarId }) => {
     };
 
     const handleSubmit = async () => {
+        const newErrors = {};
+        if (!data.fullName) newErrors.fullName = 'Please enter your full name';
+        if (!data.email) newErrors.email = 'Please enter your email';
+        if (!data.nomorTelp) newErrors.nomorTelp = 'Please enter your phone number';
+        if (!files.ktp) newErrors.ktp = 'Please upload the KTP Pemohon';
+        if (!files.etiketLogo) newErrors.etiketLogo = 'Please upload the Etiket Logo';
+        if (!files.tandaTanganPemohon) newErrors.tandaTanganPemohon = 'Please upload the Tanda Tangan Pemohon';
+        if (!files.penjelasanBisnis) newErrors.penjelasanBisnis = 'Please upload the Penjelasan Bisnis';
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
+            return;
+        }
         try {
             const filesAndData = {
                 ...files,
                 ...data,
-                makelarId: makelarId,
-                customerId: customerId,
+                ...(makelarId ? { makelarId } : {}), 
+                ...(customerId ? { customerId } : {}), 
             };
 
             await apiRequest('post', 'order/3', filesAndData);
@@ -40,7 +54,7 @@ const TrademarkLokalPerorangan = ({ customerId, makelarId }) => {
     };
 
     return (
-        <Form layout="vertical">
+        <Form layout="vertical" form={form}>
 
             {/* 
             <Row gutter={16}>
@@ -66,6 +80,8 @@ const TrademarkLokalPerorangan = ({ customerId, makelarId }) => {
                         name="fullName"
                         label="Full name :"
                         rules={[{ required: true, message: 'Please enter your full name' }]}
+                        validateStatus={errors.fullName ? 'error' : ''}
+                        help={errors.fullName}
                     >
                         <Input name="fullName" placeholder="Enter your full name" onChange={handleChange} />
                     </Form.Item>
@@ -78,6 +94,8 @@ const TrademarkLokalPerorangan = ({ customerId, makelarId }) => {
                         name="email"
                         label="Email :"
                         rules={[{ required: true, message: 'Please enter your email' }]}
+                        validateStatus={errors.email ? 'error' : ''}
+                        help={errors.email}
                     >
                         <Input name="email" placeholder="Enter your email" onChange={handleChange} />
                     </Form.Item>
@@ -87,6 +105,8 @@ const TrademarkLokalPerorangan = ({ customerId, makelarId }) => {
                         name="phone"
                         label="No.Phone :"
                         rules={[{ required: true, message: 'Please enter your phone number' }]}
+                        validateStatus={errors.nomorTelp ? 'error' : ''}
+                        help={errors.nomorTelp}
                     >
                         <Input name="nomorTelp" placeholder="Enter your phone number" onChange={handleChange} />
                     </Form.Item>
@@ -99,6 +119,8 @@ const TrademarkLokalPerorangan = ({ customerId, makelarId }) => {
                         name="ktp"
                         label="KTP Pemohon :"
                         rules={[{ required: true, message: 'Please upload the KTP Pemohon' }]}
+                        validateStatus={errors.ktp ? 'error' : ''}
+                        help={errors.ktp}
                     >
                         <Draggable
                             icon={<PiAlignBottomDuotone />}
@@ -113,6 +135,8 @@ const TrademarkLokalPerorangan = ({ customerId, makelarId }) => {
                         name="etiketLogo"
                         label="Etiket Logo :"
                         rules={[{ required: true, message: 'Please upload the Etiket Logo' }]}
+                        validateStatus={errors.etiketLogo ? 'error' : ''}
+                        help={errors.etiketLogo}
                     >
                         <Draggable
                             icon={<PiBookBookmarkDuotone />}
@@ -130,6 +154,8 @@ const TrademarkLokalPerorangan = ({ customerId, makelarId }) => {
                         name="tandaTanganPemohon"
                         label="Tanda Tangan Pemohon Di Kertas Putih :"
                         rules={[{ required: true, message: 'Please upload the Tanda Tangan Pemohon' }]}
+                        validateStatus={errors.tandaTanganPemohon ? 'error' : ''}
+                        help={errors.tandaTanganPemohon}
                     >
                         <Draggable
                             icon={<PiCardsThreeDuotone />}
@@ -147,6 +173,8 @@ const TrademarkLokalPerorangan = ({ customerId, makelarId }) => {
                         name="penjelasanBisnis"
                         label="Penjelasan Bisnis Yang Dikerjakan :"
                         rules={[{ required: true, message: 'Please enter the Penjelasan Bisnis Yang Dikerjakan' }]}
+                        validateStatus={errors.penjelasanBisnis ? 'error' : ''}
+                        help={errors.penjelasanBisnis}
                     >
                         <Draggable
                             icon={<PiCashRegisterDuotone />}
