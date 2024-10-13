@@ -8,7 +8,7 @@ import { apiRequest } from '../../../utils/api';
 import { useNavigate } from 'react-router-dom';
 
 const OurClientEdit = () => {
-    const { id } = useParams();
+    const [ id, setId ] = useState(useParams().id);
     const [image, setImage] = useState(null);
     const [imageCurrent, setImageCurrent] = useState(null);
     const [form] = Form.useForm();
@@ -64,7 +64,7 @@ const OurClientEdit = () => {
 
             let response;
 
-            if (id !== 'add') {
+            if (id) {
                 response = await apiRequest('PATCH', `/content/ourclient/${dataLanguage.id}`, sendData);
             } else {
                 response = await apiRequest('POST', `/content/ourclient`, sendData);
@@ -80,9 +80,10 @@ const OurClientEdit = () => {
                 });
 
                 let newUuid = null;
-                if (id === 'add') {
+                if (!id) {
                     newUuid = response.data.data[0].uuid;
                     navigate('/app/content/our-client/' + newUuid);
+                    setId(newUuid);
                 }
 
                 fetchData(newUuid ? newUuid : id);
@@ -96,7 +97,7 @@ const OurClientEdit = () => {
     }
 
     useEffect(() => {
-        if (id !== 'add') {
+        if (id) {
             fetchData(id);
         }
     }, [])

@@ -9,7 +9,7 @@ import Draggable from '../../../components/ui/File Upload/Draggable';
 import { useNavigate } from 'react-router-dom';
 
 const AboutEdit = () => {
-    const { id } = useParams();
+    const [ id, setId ] = useState(useParams().id);
     const [image, setImage] = useState(null);
     const [imageCurrent, setImageCurrent] = useState(null);
     const [form] = Form.useForm();
@@ -81,7 +81,7 @@ const AboutEdit = () => {
 
             let response;
 
-            if (id !== 'add') {
+            if (id) {
                 response = await apiRequest('PATCH', `/content/about/${dataLanguage.id}`, sendData);
             } else {
                 response = await apiRequest('POST', `/content/about`, sendData);
@@ -97,9 +97,10 @@ const AboutEdit = () => {
                 });
 
                 let newUuid = null;
-                if (id === 'add') {
+                if (!id) {
                     newUuid = response.data.data[0].uuid;
                     navigate('/app/content/about/' + newUuid);
+                    setId(newUuid);
                 }
 
                 fetchData(newUuid ? newUuid : id);
@@ -113,7 +114,7 @@ const AboutEdit = () => {
     }
 
     useEffect(() => {
-        if (id !== 'add') {
+        if (id) {
             fetchData(id)
         }
     }, [])
