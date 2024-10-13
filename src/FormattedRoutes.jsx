@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Dashboard from "./pages/Dashboard/Dashboard";
-import { FaFire, FaList } from "react-icons/fa";
+import { FaComments, FaFire, FaList } from "react-icons/fa";
 import { IoArchive, IoAttach, IoBasket, IoBicycle, IoCheckmarkCircleSharp, IoCheckmarkDoneCircle, IoCheckmarkDoneCircleSharp, IoCloseCircle, IoCodeSlashSharp, IoDocumentText, IoLogOut, IoPlayCircleOutline, IoWatch } from "react-icons/io5";
 import { IoDocument } from "react-icons/io5";
 import { IoPerson } from "react-icons/io5";
@@ -35,6 +35,7 @@ import Article from "./pages/ContentManagement/Article/Article";
 import Promo from "./pages/ContentManagement/Promo/Promo";
 import Faq from "./pages/Faq/Faq";
 import PengajuanFailed from "./pages/Pengajuan/Failed/PengajuanFailed";
+import LogOut from "./pages/LogOut/LogOut";
 
 const iconClasses = `h-6 w-6`;
 const submenuIconClasses = `h-5 w-5`;
@@ -100,7 +101,7 @@ export const routes = [
       },
       {
         path: '/app/faq',
-        icon: <IoWatch className={iconClasses} />,
+        icon: <FaComments className={iconClasses} />,
         name: 'FAQ',
         component: Faq,
       }
@@ -207,7 +208,7 @@ export const routes = [
         path: '/app/logout',
         icon: <IoLogOut className={iconClasses} />,
         name: 'Logout',
-        component: Dashboard,
+        component: LogOut,
       }
     ],
   },
