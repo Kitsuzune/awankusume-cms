@@ -19,6 +19,7 @@ const AboutEdit = () => {
     const location = useLocation();
     const [isEditing, setIsEditing] = useState(location.state?.edit || false);
     const navigate = useNavigate();
+    const [active, setActive] = useState(false);
 
     const fetchData = async (localId) => {
         try {
@@ -32,9 +33,9 @@ const AboutEdit = () => {
                 title: dataLanguage.title,
                 subTitle: dataLanguage.subTitle,
                 link: dataLanguage.link,
-                show: dataLanguage.show === '1' ? true : false,
+                show: dataLanguage.show == '1' ? true : false,
             });
-
+            setActive(dataLanguage.show == '1' ? true : false);
             setImage(`${process.env.REACT_APP_API_URL_CSM}/public/about/${dataLanguage.image}`);
             setImageCurrent(`${process.env.REACT_APP_API_URL_CSM}/public/about/${dataLanguage.image}`);
             setLoading(false);
@@ -72,7 +73,7 @@ const AboutEdit = () => {
                 title: form.getFieldValue('title'),
                 subTitle: form.getFieldValue('subTitle'),
                 link: form.getFieldValue('link'),
-                show: form.getFieldValue('show') ? '1' : '0',
+                show: active ? '1' : '0',
             }
 
             if (fileToSend) {
@@ -126,9 +127,10 @@ const AboutEdit = () => {
             title: dataLanguage.title,
             subTitle: dataLanguage.subTitle,
             link: dataLanguage.link,
-            show: dataLanguage.show === '1' ? true : false,
+            show: dataLanguage.show == '1' ? true : false,
         });
 
+        setActive(dataLanguage.show == '1' ? true : false);
     }, [language])
 
     return (
@@ -176,7 +178,12 @@ const AboutEdit = () => {
                                                         valuePropName="checked"
                                                     >
                                                         <span className='text-[15px]'>Hide</span>
-                                                        <Switch defaultChecked className='mx-2' disabled={!isEditing} />
+                                                        <Switch
+                                                            checked={active}
+                                                            className='mx-2'
+                                                            disabled={!isEditing}
+                                                            onClick={() => setActive(!active)}
+                                                        />
                                                         <span className='text-[15px]'>Show</span>
                                                     </Form.Item>
                                                 </Col>
