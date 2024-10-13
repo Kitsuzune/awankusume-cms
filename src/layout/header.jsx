@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
-import { FaBars, FaBell, FaUser } from "react-icons/fa";
+import { FaBars, FaChevronDown, FaUserCircle } from "react-icons/fa";
 import { Link } from 'react-router-dom';
+import { Dropdown, Menu } from 'antd';
 
 const Header = ({ toggleSidebarCollapse }) => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -8,6 +9,23 @@ const Header = ({ toggleSidebarCollapse }) => {
     const toggleDropdown = () => {
         setIsDropdownOpen(!isDropdownOpen);
     };
+
+    const menu = (
+        <Menu>
+            <Menu.Item key="0">
+                <Link to={'/app/settings-profile'}>
+                    Profile Settings
+                </Link>
+            </Menu.Item>
+            <Menu.Item key="1">
+                <Link to={'/app/settings-billing'}>Bill History</Link>
+            </Menu.Item>
+            <Menu.Divider />
+            <Menu.Item key="2">
+                <Link to={'/app/logout'}>Logout</Link>
+            </Menu.Item>
+        </Menu>
+    );
 
     return (
         <>
@@ -23,32 +41,21 @@ const Header = ({ toggleSidebarCollapse }) => {
                 <div className="flex items-center space-x-4">
 
                     {/* Notification icon */}
-                    <button className="relative text-white">
+                    {/* <button className="relative text-white">
                         <FaBell className="h-6 w-6" />
-                        {/* {noOfNotifications > 0 ? <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full text-xs w-4 h-4 flex items-center justify-center">{noOfNotifications}</span> : null} */}
-                    </button>
+                    </button> */}
 
                     {/* Profile icon, opening menu on click */}
-                    <div className="relative">
-                        <button className="text-white" onClick={toggleDropdown}>
-                            <FaUser className="h-6 w-6" />
-                        </button>
-                        {isDropdownOpen && (
-                            <ul className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg py-2">
-                                <li className="px-4 py-2 hover:bg-gray-100">
-                                    <Link to={'/app/settings-profile'}>
-                                        Profile Settings
-                                    </Link>
-                                </li>
-                                <li className="px-4 py-2 hover:bg-gray-100">
-                                    <Link to={'/app/settings-billing'}>Bill History</Link>
-                                </li>
-                                <div className="border-t my-2"></div>
-                                <li className="px-4 py-2 hover:bg-gray-100">
-                                    <a>Logout</a>
-                                </li>
-                            </ul>
-                        )}
+                    <div className="relative mr-5">
+                        <Dropdown overlay={menu} trigger={['click']}>
+                            <button className="text-white flex items-center gap-2" onClick={e => e.preventDefault()}>
+                                <FaUserCircle className="h-6 w-6" />
+                                <div className="text-white flex gap-1">
+                                    User 1
+                                    <FaChevronDown className="text-white text-[12px]" />
+                                </div>
+                            </button>
+                        </Dropdown>
                     </div>
                 </div>
             </div>

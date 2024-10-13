@@ -12,12 +12,12 @@ const LogOut = () => {
                 const response = await apiRequest('post', '/auth/logout');
                 console.log(response);
                 message.success('Logout Success');
+                navigate('/web/login');
             } catch (error) {
                 console.log(error);
             }
         };
         logout();
-        navigate('/web/login');
     }, []);
 
     return null;
