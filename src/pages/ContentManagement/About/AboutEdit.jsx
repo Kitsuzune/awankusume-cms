@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Button, Input, Form, Switch, Select, message, Modal } from 'antd';
 import ImagePreviewUploader from '../../../components/ui/File Upload/ImagePreview';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import Flag from 'react-world-flags';
 import { apiRequest } from '../../../utils/api';
 import Loading from '../../../components/ui/Loading/Loading';
@@ -15,6 +15,8 @@ const AboutEdit = () => {
     const [data, setData] = useState([]);
     const [language, setLanguage] = useState(1);
     const [loading, setLoading] = useState(false);
+    const location = useLocation();
+    const [isEditing, setIsEditing] = useState(location.state?.edit || false);
 
     const fetchData = async () => {
         try {
@@ -40,12 +42,28 @@ const AboutEdit = () => {
         }
     }
 
+    const handleEdit = () => {
+        setIsEditing(true);
+    };
+
+    const handleCancel = () => {
+        const dataLanguage = data.filter((item) => item.languageId === language)[0];
+        form.setFieldsValue({
+            title: dataLanguage.title,
+            subTitle: dataLanguage.subTitle,
+            link: dataLanguage.link,
+            show: dataLanguage.show,
+            image: dataLanguage.image,
+        });
+        setIsEditing(false);
+    };
+
     const handleSubmit = async () => {
         try {
             setLoading(true);
 
             const dataLanguage = data.filter((item) => item.languageId === language)[0];
-            
+
             const fileToSend = image !== imageCurrent ? image : undefined;
 
             const sendData = {
@@ -131,7 +149,7 @@ const AboutEdit = () => {
                                                         label="Image"
                                                         rules={[{ required: true, message: 'Please upload an image' }]}
                                                     >
-                                                        <ImagePreviewUploader image={image} setImage={setImage} name="image" />
+                                                        <ImagePreviewUploader image={image} setImage={setImage} name="image" disabled={!isEditing} />
                                                         {/* <img src={process.env.REACT_APP_API_URL_CSM + '/about/' + data[0]?.image } />
                                                         <Draggable
                                                             topText="Click or drag file SK to this area to upload"
@@ -149,7 +167,7 @@ const AboutEdit = () => {
                                                         valuePropName="checked"
                                                     >
                                                         <span className='text-[15px]'>Hide</span>
-                                                        <Switch defaultChecked className='mx-2' />
+                                                        <Switch defaultChecked className='mx-2' disabled={!isEditing} />
                                                         <span className='text-[15px]'>Show</span>
                                                     </Form.Item>
                                                 </Col>
@@ -168,6 +186,7 @@ const AboutEdit = () => {
                                                             optionFilterProp="label"
                                                             onChange={(value) => setLanguage(value)}
                                                             defaultValue={1}
+                                                            disabled={!isEditing}
                                                             options={[
                                                                 {
                                                                     value: 1,
@@ -209,7 +228,7 @@ const AboutEdit = () => {
                                                         label="Title"
                                                         rules={[{ required: true, message: 'Please enter a title' }]}
                                                     >
-                                                        <Input placeholder="Enter title" />
+                                                        <Input placeholder="Enter title" disabled={!isEditing} />
                                                     </Form.Item>
                                                 </Col>
                                             </Row>
@@ -221,7 +240,7 @@ const AboutEdit = () => {
                                                         label="Sub Title"
                                                         rules={[{ required: true, message: 'Please enter a sub title' }]}
                                                     >
-                                                        <Input placeholder="Enter subtitle" />
+                                                        <Input placeholder="Enter subtitle" disabled={!isEditing} />
                                                     </Form.Item>
                                                 </Col>
                                             </Row>
@@ -233,14 +252,20 @@ const AboutEdit = () => {
                                                         label="Link"
                                                         rules={[{ required: true, message: 'Please enter a link' }]}
                                                     >
-                                                        <Input placeholder="Enter Link" />
+                                                        <Input placeholder="Enter Link" disabled={!isEditing} />
                                                     </Form.Item>
                                                 </Col>
                                             </Row>
 
                                             <div className="mt-5 flex justify-end">
-                                                <Button type="default" className="mr-2">Cancel</Button>
-                                                <Button type="primary" className='bg-main' onClick={handleSubmit}>Save</Button>
+                                                {isEditing ? (
+                                                    <>
+                                                        <Button type="default" className="mr-2" onClick={handleCancel}>Cancel</Button>
+                                                        <Button type="primary" className='bg-main' onClick={handleSubmit}>Save</Button>
+                                                    </>
+                                                ) : (
+                                                    <Button type="primary" className='bg-main px-10 py-5' onClick={handleEdit}>Edit</Button>
+                                                )}
                                             </div>
                                         </Form>
                                     </div>

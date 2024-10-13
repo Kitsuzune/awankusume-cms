@@ -58,7 +58,9 @@ const About = () => {
             dataIndex: 'title',
             key: 'title',
             render: (text, record) => (
-                <div className="cursor-pointer">
+                <div className="cursor-pointer" onClick={() => {
+                    navigate(`/app/content/about/${record.uuid}`);
+                }}>
                     {text}
                 </div>
             ),
@@ -68,7 +70,9 @@ const About = () => {
             dataIndex: 'subTitle',
             key: 'subTitle',
             render: (text, record) => (
-                <div className="cursor-pointer">
+                <div className="cursor-pointer" onClick={() => {
+                    navigate(`/app/content/about/${record.uuid}`);
+                }}>
                     {text}
                 </div>
             ),
@@ -78,7 +82,9 @@ const About = () => {
             dataIndex: 'image',
             key: 'image',
             render: (text, record) => (
-                <div className="cursor-pointer">
+                <div className="cursor-pointer" onClick={() => {
+                    navigate(`/app/content/about/${record.uuid}`);
+                }}>
                     {text}
                 </div>
             ),
@@ -88,7 +94,9 @@ const About = () => {
             dataIndex: 'link',
             key: 'link',
             render: (text, record) => (
-                <div className="cursor-pointer">
+                <div className="cursor-pointer" onClick={() => {
+                    navigate(`/app/content/about/${record.uuid}`);
+                }}>
                     {text}
                 </div>
             ),
@@ -117,14 +125,15 @@ const About = () => {
             title: 'Action',
             key: 'action',
             width: 100,
+            align: 'center',
             render: (text, record) => (
-                <div className="flex gap-2">
+                <div className="flex justify-center items-center gap-2">
                     <CiEdit className="text-2xl text-center text-second cursor-pointer hover:text-main"
                         onClick={() => {
-                            navigate(`/app/content/about/${record.uuid}`);
+                            navigate(`/app/content/about/${record.uuid}`, { state: { edit: true } });
                         }}
                     />
-                    <CiTrash className="text-2xl text-center text-second cursor-pointer hover:text-main" />
+                    {/* <CiTrash className="text-2xl text-center text-second cursor-pointer hover:text-main" /> */}
                 </div>
             ),
         },

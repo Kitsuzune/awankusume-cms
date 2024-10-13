@@ -1,12 +1,17 @@
 import { Col, Input, Row, Select, Table } from 'antd'
-import React from 'react'
+import React, { useState } from 'react'
 import { CustomPagination } from '../../../components/ui/Table/CustomPagination'
 import { trackingColumns } from '../../../components/ui/Table/columns/tracking';
 import { PlusOutlined } from '@ant-design/icons';
 import Button from '../../../components/ui/Button/Button';
+import { CiEdit } from 'react-icons/ci';
+import { useNavigate } from 'react-router-dom';
+import Loading from '../../../components/ui/Loading/Loading';
 
 const TrackingOnGoing = () => {
     const { Option } = Select;
+    const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
 
     const dataSource = [
         {
@@ -48,59 +53,82 @@ const TrackingOnGoing = () => {
         {
             title: 'Action',
             key: 'action',
-            width: 300,
+            width: 100,
+            align: 'center',
             render: (text, record) => (
-                <span>
-                    <Button type="link">Approve</Button>
-                    <Button type="link">Reject</Button>
-                    <Button type="link">Edit</Button>
-                </span>
+                <div className="flex justify-center items-center gap-2">
+                    <CiEdit className="text-2xl text-center text-second cursor-pointer hover:text-main"
+                        onClick={() => {
+                            navigate(`/app/content/about/${record.uuid}`);
+                        }}
+                    />
+                    {/* <CiTrash className="text-2xl text-center text-second cursor-pointer hover:text-main" /> */}
+                </div>
             ),
         },
     ];
 
     return (
-        <Row className="w-full">
-            <Col span={24}>
-                <div className="p-5 rounded-lg">
-                    <Row>
-                        <Col span={24}>
-                            <div className="flex flex-col">
-                                <div className="mt-5 md:mt-10 mx-5 md:mx-10">
-                                    <Row justify="space-between" align="middle" className="mb-4">
-                                        <Col>
-                                            <span className='text-2xl font-bold'>On Going</span>
-                                        </Col>
-                                        <Col className="flex gap-2">
-                                            <Input.Search placeholder="Search..." />
-                                            <Button type="primary">
-                                                Add New
-                                                <PlusOutlined />
-                                            </Button>
-                                        </Col>
-                                    </Row>
+        <React.Fragment>
+            <Row className="w-full">
+                <Col span={24}>
+                    <div className="rounded-lg">
+                        <Row>
+                            <Col span={24}>
+                                <div className="flex flex-col">
+                                    <div className="bg-white p-5 rounded-lg">
+                                        <Row>
+                                            <Col span={24}>
+                                                <div className="text-[24px] text-main inline-block">Tracking On Going</div>
+                                                <br />
+                                                <span className="text-[15px] inline-block mt-5">Tracking on going data</span>
+                                            </Col>
+                                        </Row>
+                                    </div>
 
-                                    <Table
-                                        dataSource={dataSource}
-                                        columns={columnsWithActions}
-                                        pagination={{ pageSize: 10, position: ['bottomCenter'], showSizeChanger: true, style: { display: "none" } }}
-                                        bordered
-                                        scroll={{ x: 768 }}
-                                    />
-                                    <CustomPagination
-                                        data={dataSource}
-                                        pagination={{ page: 1, perPage: 10, totalData: 1 }}
-                                        changeLimit={() => { }}
-                                        changePage={() => { }}
-                                    />
+                                    <div className="mt-5 p-5 bg-white border rounded-lg">
+                                        <Row>
+                                            <Col span={24}>
+                                                <div className="flex flex-col">
+                                                    <Row justify="space-between" align="middle" className="mb-4">
+                                                        <Col>
+                                                            <span className="text-[24px] inline-block">On Going</span>
+                                                        </Col>
+                                                        <Col className="flex gap-2">
+                                                            <Input.Search placeholder="Search..." />
+                                                            <Button type="primary">
+                                                                Add New
+                                                                <PlusOutlined />
+                                                            </Button>
+                                                        </Col>
+                                                    </Row>
+
+                                                    <Table
+                                                        dataSource={dataSource}
+                                                        columns={columnsWithActions}
+                                                        pagination={{ pageSize: 10, position: ['bottomCenter'], showSizeChanger: true, style: { display: "none" } }}
+                                                        bordered
+                                                        scroll={{ x: 768 }}
+                                                    />
+                                                    <CustomPagination
+                                                        data={dataSource}
+                                                        pagination={{ page: 1, perPage: 10, totalData: 1 }}
+                                                        changeLimit={() => { }}
+                                                        changePage={() => { }}
+                                                    />
+                                                </div>
+                                            </Col>
+                                        </Row>
+                                    </div>
+
                                 </div>
-
-                            </div>
-                        </Col>
-                    </Row>
-                </div>
-            </Col>
-        </Row>
+                            </Col>
+                        </Row>
+                    </div>
+                </Col>
+            </Row>
+            <Loading loading={loading} />
+        </React.Fragment>
     )
 }
 

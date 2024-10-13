@@ -20,6 +20,7 @@ export default function AdditionalRoutes() {
 
       {/* // Content -> Our Client */}
       <Route path="/app/content/our-client/:id" element={<OurClientEdit />} />
+      <Route path="/app/content/our-client/add" element={<OurClientEdit />} />
 
       {/* // Content -> Partnership */}
       <Route path="/app/content/partnership/:id" element={<PartnershipEdit />} />

@@ -177,7 +177,9 @@ const OurClient = () => {
                                                                 });
                                                             }}
                                                         />
-                                                        <Button type="primary">
+                                                        <Button type="primary" onClick={() => {
+                                                            navigate('/app/content/our-client/add');
+                                                        }}>
                                                             Add New
                                                             <PlusOutlined />
                                                         </Button>

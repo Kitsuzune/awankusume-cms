@@ -18,7 +18,8 @@ const OurClientEdit = () => {
                                     <Row>
                                         <Col span={24}>
                                             <div className='text-[24px] text-main inline-block'>
-                                                Our Client / {id}
+                                                {/* Our Client / {id} */}
+                                                {id ? 'Our Client / ' + id : 'Add New Client'}
                                             </div>
                                         </Col>
                                     </Row>
