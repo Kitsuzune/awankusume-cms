@@ -64,17 +64,26 @@ const SMKPO = ({ customerId, makelarId }) => {
         if (!data.email) newErrors.email = 'Please enter your email';
         if (!data.nomorTelp) newErrors.nomorTelp = 'Please enter your phone number';
         if (!data.bentuk) newErrors.bentuk = 'Please enter the type of company';
-        if (!data.akta) newErrors.akta = 'Please upload the Akta';
-        if (!data.sk) newErrors.sk = 'Please upload the SK';
-        if (!data.npwp) newErrors.npwp = 'Please upload the NPWP';
+        if (!files.akta) newErrors.akta = 'Please upload the Akta';
+        if (!files.sk) newErrors.sk = 'Please upload the SK';
+        if (!files.npwp) newErrors.npwp = 'Please upload the NPWP';
         if (!data.nibOssRba) newErrors.nibOssRba = 'Please upload the NIB OSS RBA';
         if (!data.ruko) newErrors.ruko = 'Please enter the type of Ruko';
         if (!files.rukoImage) newErrors.rukoImage = 'Please upload the Foto Ruko';
+        // for (let i = 0; i < penanggungJawabCount; i++) {
+        //     if (!data[`name${i}`]) newErrors[`name${i}`] = `Please enter the name of Penanggung Jawab ${i + 1}`;
+        // }
+        // for (let i = 0; i < peralatanKantorCount; i++) {
+        //     if (!data[`peralatanKantor${i}`]) newErrors[`peralatanKantor${i}`] = `Please enter the peralatan kantor ${i + 1}`;
+        // }
         for (let i = 0; i < penanggungJawabCount; i++) {
-            if (!data[`name${i}`]) newErrors[`name${i}`] = `Please enter the name of Penanggung Jawab ${i + 1}`;
+            const responsibleObj = JSON.parse(data.responsible[i] || '{}');
+            if (!responsibleObj.name) newErrors[`name${i}`] = `Please enter the name of Penanggung Jawab ${i + 1}`;
+            if (!responsibleObj.jabatan) newErrors[`jabatan${i}`] = `Please enter the position of Penanggung Jawab ${i + 1}`;
         }
         for (let i = 0; i < peralatanKantorCount; i++) {
-            if (!data[`peralatanKantor${i}`]) newErrors[`peralatanKantor${i}`] = `Please enter the peralatan kantor ${i + 1}`;
+            const officeEquipmentObj = JSON.parse(data.officeEquipment[i] || '{}');
+            if (!officeEquipmentObj.peralatanKantor) newErrors[`peralatanKantor${i}`] = `Please enter the peralatan kantor ${i + 1}`;
         }
         if (Object.keys(newErrors).length > 0) {
             setErrors(newErrors);
@@ -84,8 +93,8 @@ const SMKPO = ({ customerId, makelarId }) => {
             const filesAndData = {
                 ...files,
                 ...data,
-                ...(makelarId ? { makelarId } : {}), 
-                ...(customerId ? { customerId } : {}), 
+                ...(makelarId ? { makelarId } : {}),
+                ...(customerId ? { customerId } : {}),
             };
 
             await apiRequest('post', 'order/7', filesAndData);

@@ -78,26 +78,34 @@ const LegalitasPP = ({ customerId, makelarId }) => {
     if (!data.namaPt) newErrors.namaPt = 'Please enter the name of the PT';
     if (!data.namaPt1) newErrors.namaPt1 = 'Please enter the first alternative name of the PT';
     if (!data.namaPt2) newErrors.namaPt2 = 'Please enter the second alternative name of the PT';
+    // for (let i = 0; i < pengurusCount; i++) {
+    //   if (!data[`name${i}`]) newErrors[`name${i}`] = `Please enter the name of manager ${i + 1}`;
+    // }
+    // for (let i = 0; i < pengurusCount; i++) {
+    //   if (!data[`jabatan${i}`]) newErrors[`jabatan${i}`] = `Please enter the position ${i + 1}`;
+    // }
+    // for (let i = 0; i < pengurusCount; i++) {
+    //   if (!data[`saham${i}`]) newErrors[`saham${i}`] = `Please enter the shares ${i + 1}`;
+    // }
+    // for (let i = 0; i < pengurusCount; i++) {
+    //   if (!data[`nomorTelp${i}`]) newErrors[`nomorTelp${i}`] = `Please enter the phone number ${i + 1}`;
+    // }
+    // for (let i = 0; i < pengurusCount; i++) {
+    //   if (!data[`email${i}`]) newErrors[`email${i}`] = `Please enter the email ${i + 1}`;
+    // }
+    // for (let i = 0; i < pengurusCount; i++) {
+    //   if (!data[`ktp${i}`]) newErrors[`ktp${i}`] = `Please upload the KTP ${i + 1}`;
+    // }
+    // for (let i = 0; i < pengurusCount; i++) {
+    //   if (!data[`npwp${i}`]) newErrors[`npwp${i}`] = `Please upload the NPWP ${i + 1}`;
+    // }
     for (let i = 0; i < pengurusCount; i++) {
-      if (!data[`name${i}`]) newErrors[`name${i}`] = `Please enter the name of manager ${i + 1}`;
-    }
-    for (let i = 0; i < pengurusCount; i++) {
-      if (!data[`jabatan${i}`]) newErrors[`jabatan${i}`] = `Please enter the position ${i + 1}`;
-    }
-    for (let i = 0; i < pengurusCount; i++) {
-      if (!data[`saham${i}`]) newErrors[`saham${i}`] = `Please enter the shares ${i + 1}`;
-    }
-    for (let i = 0; i < pengurusCount; i++) {
-      if (!data[`nomorTelp${i}`]) newErrors[`nomorTelp${i}`] = `Please enter the phone number ${i + 1}`;
-    }
-    for (let i = 0; i < pengurusCount; i++) {
-      if (!data[`email${i}`]) newErrors[`email${i}`] = `Please enter the email ${i + 1}`;
-    }
-    for (let i = 0; i < pengurusCount; i++) {
-      if (!data[`ktp${i}`]) newErrors[`ktp${i}`] = `Please upload the KTP ${i + 1}`;
-    }
-    for (let i = 0; i < pengurusCount; i++) {
-      if (!data[`npwp${i}`]) newErrors[`npwp${i}`] = `Please upload the NPWP ${i + 1}`;
+      const responsibleObj = JSON.parse(data.administrator[i] || '{}');
+      if (!responsibleObj.name) newErrors[`name${i}`] = `Please enter the name of manager ${i + 1}`;
+      if (!responsibleObj.jabatan) newErrors[`jabatan${i}`] = `Please enter the position of manager ${i + 1}`;
+      if (!responsibleObj.saham) newErrors[`saham${i}`] = `Please enter the shares of manager ${i + 1}`;
+      if (!responsibleObj.nomorTelp) newErrors[`nomorTelp${i}`] = `Please enter the phone number of manager ${i + 1}`;
+      if (!responsibleObj.email) newErrors[`email${i}`] = `Please enter the email of manager ${i + 1}`;
     }
     if (!data.modalPasarDitempatkan) newErrors.modalPasarDitempatkan = 'Please enter the modal pasar';
     if (!data.modalPasarDisetor) newErrors.modalPasarDisetor = 'Please enter the modal pasar';
@@ -142,7 +150,7 @@ const LegalitasPP = ({ customerId, makelarId }) => {
                 validateStatus={errors[`name${i}`] ? 'error' : ''}
                 help={errors[`name${i}`]}
               >
-                <Input name={`name`} placeholder={`Enter the name of Penanggung Jawab ${i + 1}`} onChange={(e) => handleAdministratorChange(i, 'name', e.target.value)} />
+                <Input name={`name${i}`} placeholder={`Enter the name of Penanggung Jawab ${i + 1}`} onChange={(e) => handleAdministratorChange(i, 'name', e.target.value)} />
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -153,7 +161,7 @@ const LegalitasPP = ({ customerId, makelarId }) => {
                 validateStatus={errors[`jabatan${i}`] ? 'error' : ''}
                 help={errors[`jabatan${i}`]}
               >
-                <Input name={`jabatan`} placeholder={`Enter the position ${i + 1}`} onChange={(e) => handleAdministratorChange(i, 'jabatan', e.target.value)} />
+                <Input name={`jabatan${i}`} placeholder={`Enter the position ${i + 1}`} onChange={(e) => handleAdministratorChange(i, 'jabatan', e.target.value)} />
               </Form.Item>
             </Col>
           </Row>
@@ -166,7 +174,7 @@ const LegalitasPP = ({ customerId, makelarId }) => {
                 validateStatus={errors[`saham${i}`] ? 'error' : ''}
                 help={errors[`saham${i}`]}
               >
-                <Input name={`saham`} placeholder={`Enter the shares ${i + 1}`} onChange={(e) => handleAdministratorChange(i, 'saham', e.target.value)} />
+                <Input name={`saham${i}`} placeholder={`Enter the shares ${i + 1}`} onChange={(e) => handleAdministratorChange(i, 'saham', e.target.value)} />
               </Form.Item>
             </Col>
           </Row>
@@ -179,7 +187,7 @@ const LegalitasPP = ({ customerId, makelarId }) => {
                 validateStatus={errors[`nomorTelp${i}`] ? 'error' : ''}
                 help={errors[`nomorTelp${i}`]}
               >
-                <Input name={`nomorTelp`} placeholder={`Enter the phone number ${i + 1}`} onChange={(e) => handleAdministratorChange(i, 'nomorTelp', e.target.value)} />
+                <Input name={`nomorTelp${i}`} placeholder={`Enter the phone number ${i + 1}`} onChange={(e) => handleAdministratorChange(i, 'nomorTelp', e.target.value)} />
               </Form.Item>
             </Col>
           </Row>
@@ -192,7 +200,7 @@ const LegalitasPP = ({ customerId, makelarId }) => {
                 validateStatus={errors[`email${i}`] ? 'error' : ''}
                 help={errors[`email${i}`]}
               >
-                <Input name={`email`} placeholder={`Enter the email ${i + 1}`} onChange={(e) => handleAdministratorChange(i, 'email', e.target.value)} />
+                <Input name={`email${i}`} placeholder={`Enter the email ${i + 1}`} onChange={(e) => handleAdministratorChange(i, 'email', e.target.value)} />
               </Form.Item>
             </Col>
           </Row>
@@ -202,8 +210,6 @@ const LegalitasPP = ({ customerId, makelarId }) => {
                 name={`ktp${i}`}
                 label="KTP"
                 rules={[{ required: true, message: 'Please upload the KTP' }]}
-                validateStatus={errors[`ktp${i}`] ? 'error' : ''}
-                help={errors[`ktp${i}`]}
               >
                 <Draggable
                   icon={<PiIdentificationCardDuotone />}
@@ -218,8 +224,6 @@ const LegalitasPP = ({ customerId, makelarId }) => {
                 name={`npwp${i}`}
                 label="NPWP"
                 rules={[{ required: true, message: 'Please upload the NPWP' }]}
-                validateStatus={errors[`npwp${i}`] ? 'error' : ''}
-                help={errors[`npwp${i}`]}
               >
                 <Draggable
                   icon={<PiIdentificationBadgeDuotone />}

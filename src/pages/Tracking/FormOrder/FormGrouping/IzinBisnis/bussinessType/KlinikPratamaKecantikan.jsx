@@ -55,7 +55,8 @@ const KlinikPratamaKecantikan = ({ customerId, makelarId }) => {
         if (!data.email) newErrors.email = 'Please enter your email';
         if (!data.nomorTelp) newErrors.nomorTelp = 'Please enter your phone number';
         for (let i = 0; i < dokterCount; i++) {
-            if (!data[`namaDokter${i}`]) newErrors[`namaDokter${i}`] = `Please enter the name of doctor ${i + 1}`;
+            const responsibleObj = JSON.parse(data.doctor[i] || '{}');
+            if (!responsibleObj.name) newErrors[`namaDokter${i}`] = `Please enter the name of doctor ${i + 1}`;
         }
         if (!data.namaPerawat) newErrors.namaPerawat = 'Please enter the name of nurse';
         if (!files.buktiStr) newErrors.buktiStr = 'Please upload the STR certificate';

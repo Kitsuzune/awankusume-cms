@@ -53,14 +53,16 @@ const AKL = ({ customerId, makelarId }) => {
         if (!files.cfs) newErrors.cfs = 'Please upload the CFS';
         if (!files.iso13485) newErrors.iso13485 = 'Please upload the ISO 13485';
         for (let i = 0; i < materialMSDSCount; i++) {
-            if (!files[`material${i}`]) newErrors[`material${i}`] = `Please upload the List Material MSDS ${i + 1}`;
+            // if (!files[`material${i}`]) newErrors[`material${i}`] = `Please upload the List Material MSDS ${i + 1}`;
+            const materialObj = JSON.parse(files[`material${i}`] || '{}');
+            if (!materialObj.material) newErrors[`material${i}`] = `Please upload the List Material MSDS ${i + 1}`;
         }
         if (!files.flowProductionChart) newErrors.flowProductionChart = 'Please upload the Flow Production chart';
         if (!files.clinicalTrial) newErrors.clinicalTrial = 'Please upload the Clinical Trial';
-        if (!files.specificationBrochure) newErrors.specificationBrochure = 'Please upload the Specification dan Broshure';
+        if (!files.spesificationAndBrosshure) newErrors.spesificationAndBrosshure = 'Please upload the Specification dan Broshure';
         if (!files.documentVerificationAndValidation) newErrors.documentVerificationAndValidation = 'Please upload the Document Verification and Validation';
         if (!files.biocompatibility) newErrors.biocompatibility = 'Please upload the Biocompatibility';
-        if (!files.preClinicalTrial) newErrors.preClinicalTrial = 'Please upload the Pre Clinical Trial';
+        if (!files.preclinicalTrial) newErrors.preclinicalTrial = 'Please upload the Pre Clinical Trial';
         if (!files.clinicalEvaluation) newErrors.clinicalEvaluation = 'Please upload the Clinical Evaluation';
         if (!files.iso14971) newErrors.iso14971 = 'Please upload the ISO 14971';
         if (!files.coa) newErrors.coa = 'Please upload the CoA';
@@ -68,7 +70,7 @@ const AKL = ({ customerId, makelarId }) => {
         if (!files.simbolPackagingLuar) newErrors.simbolPackagingLuar = 'Please upload the Simbol di packaging luar';
         if (!files.tandaExpiredDate) newErrors.tandaExpiredDate = 'Please upload the Tanda Expired Date';
         if (!files.manualGuideline) newErrors.manualGuideline = 'Please upload the Manual Guideline';
-        if (!files.aksesoris) newErrors.aksesoris = 'Please upload the Aksesoris';
+        if (!files.aksesorisDisertakan) newErrors.aksesorisDisertakan = 'Please upload the Aksesoris';
 
         if (Object.keys(newErrors).length > 0) {
             setErrors(newErrors);
@@ -292,11 +294,11 @@ const AKL = ({ customerId, makelarId }) => {
             <Row gutter={16}>
                 <Col span={12}>
                     <Form.Item
-                        name="specificationBrochure"
+                        name="spesificationAndBrosshure"
                         label="Specification dan Broshure :"
                         rules={[{ required: true, message: 'Please upload the Specification dan Broshure' }]}
-                        validateStatus={errors.specificationBrochure ? 'error' : ''}
-                        help={errors.specificationBrochure}
+                        validateStatus={errors.spesificationAndBrosshure ? 'error' : ''}
+                        help={errors.spesificationAndBrosshure}
                     >
                         <Draggable
                             icon={<PiFoldersDuotone />}
@@ -343,11 +345,11 @@ const AKL = ({ customerId, makelarId }) => {
                 </Col>
                 <Col span={12}>
                     <Form.Item
-                        name="preClinicalTrial"
+                        name="preclinicalTrial"
                         label="Pre Clinical Trial :"
                         rules={[{ required: true, message: 'Please upload the Pre Clinical Trial' }]}
-                        validateStatus={errors.preClinicalTrial ? 'error' : ''}
-                        help={errors.preClinicalTrial}
+                        validateStatus={errors.preclinicalTrial ? 'error' : ''}
+                        help={errors.preclinicalTrial}
                     >
                         <Draggable
                             icon={<PiFoldersDuotone />}
@@ -486,7 +488,7 @@ const AKL = ({ customerId, makelarId }) => {
                 </Col>
                 <Col span={12}>
                     <Form.Item
-                        name="aksesoris"
+                        name="aksesorisDisertakan"
                         label="Aksesoris yang dilertakan :"
                         rules={[{ required: true, message: 'Please upload the Aksesoris' }]}
                         validateStatus={errors.aksesoris ? 'error' : ''}

@@ -32,8 +32,8 @@ const INSW = ({ customerId, makelarId }) => {
         if (!data.fullName) newErrors.fullName = 'Please enter your full name';
         if (!data.email) newErrors.email = 'Please enter your email';
         if (!data.nomorTelp) newErrors.nomorTelp = 'Please enter your phone number';
-        if (!files.ttdUtamaKertasKosong) newErrors.ttdUtamaKertasKosong = 'Please upload the Tanda Tangan Utama';
-        if (!files.ttdPenanggungJawabKertasKosong) newErrors.ttdPenanggungJawabKertasKosong = 'Please upload the Tanda Tangan Penanggung Jawab';
+        if (!files.tandaTanganDirektur) newErrors.tandaTanganDirektur = 'Please upload the Tanda Tangan Utama';
+        if (!files.tandaTanganPenanggungJawab) newErrors.tandaTanganPenanggungJawab = 'Please upload the Tanda Tangan Penanggung Jawab';
         if (!files.capPerusahaan) newErrors.capPerusahaan = 'Please upload the CAP Perusahaan';
         if (!data.ossUsername) newErrors.ossUsername = 'Please enter your username';
         if (!data.ossPassword) newErrors.ossPassword = 'Please enter your password';
@@ -129,11 +129,11 @@ const INSW = ({ customerId, makelarId }) => {
             <Row gutter={50} className="mt-4">
                 <Col span={12}>
                     <Form.Item
-                        name="ttdUtamaKertasKosong"
+                        name="tandaTanganDirektur"
                         label="TTD Utama Di Kertas Kosong :"
                         rules={[{ required: true, message: 'Please upload the Tanda Tangan Utama' }]}
-                        validateStatus={errors.ttdUtamaKertasKosong ? 'error' : ''}
-                        help={errors.ttdUtamaKertasKosong}
+                        validateStatus={errors.tandaTanganDirektur ? 'error' : ''}
+                        help={errors.tandaTanganDirektur}
                     >
                         <Draggable
                             icon={<PiFileArchiveDuotone />}
@@ -146,11 +146,11 @@ const INSW = ({ customerId, makelarId }) => {
                 </Col>
                 <Col span={12}>
                     <Form.Item
-                        name="ttdPenanggungJawabKertasKosong"
+                        name="tandaTanganPenanggungJawab"
                         label="TTD Penanggung Jawab Di Kertas Kosong :"
                         rules={[{ required: true, message: 'Please upload the Tanda Tangan Penanggung Jawab' }]}
-                        validateStatus={errors.ttdPenanggungJawabKertasKosong ? 'error' : ''}
-                        help={errors.ttdPenanggungJawabKertasKosong}
+                        validateStatus={errors.tandaTanganPenanggungJawab ? 'error' : ''}
+                        help={errors.tandaTanganPenanggungJawab}
                     >
                         <Draggable
                             icon={<PiFilmScriptDuotone />}

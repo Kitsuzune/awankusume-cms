@@ -63,10 +63,14 @@ const BPOM = ({ customerId, makelarId }) => {
         if (!data.ruko) newErrors.ruko = 'Please upload the Ruko Type';
         if (!files.rukoImage) newErrors.rukoImage = 'Please upload the Foto Ruko';
         for (let i = 0; i < penanggungJawabCount; i++) {
-            if (!data[`name${i}`]) newErrors[`name${i}`] = `Please enter the name of Penanggung Jawab ${i + 1}`;
+            const responsibleObj = JSON.parse(data.responsible[i] || '{}');
+            if (!responsibleObj.name) newErrors[`name${i}`] = `Please enter the name of Penanggung Jawab ${i + 1}`;
+            if (!responsibleObj.jabatan) newErrors[`jabatan${i}`] = `Please enter the position of Penanggung Jawab ${i + 1}`; 
         }
+    
         for (let i = 0; i < peralatanKantorCount; i++) {
-            if (!data[`peralatanKantor${i}`]) newErrors[`peralatanKantor${i}`] = `Please enter the peralatan kantor ${i + 1}`;
+            const officeEquipmentObj = JSON.parse(data.officeEquipment[i] || '{}');
+            if (!officeEquipmentObj.peralatanKantor) newErrors[`peralatanKantor${i}`] = `Please enter the peralatan kantor ${i + 1}`;
         }
         if (Object.keys(newErrors).length > 0) {
             setErrors(newErrors);
@@ -101,7 +105,7 @@ const BPOM = ({ customerId, makelarId }) => {
                                 validateStatus={errors[`name${i}`] ? 'error' : ''}
                                 help={errors[`name${i}`]}
                             >
-                                <Input name={`name`} placeholder={`Enter the name of Penanggung Jawab ${i + 1}`} onChange={(e) => handleResponsibleChange(i, 'name', e.target.value)} />
+                                <Input name={`name${i}`} placeholder={`Enter the name of Penanggung Jawab ${i + 1}`} onChange={(e) => handleResponsibleChange(i, 'name', e.target.value)} />
                             </Form.Item>
                         </Col>
                         <Col span={12}>
@@ -112,7 +116,7 @@ const BPOM = ({ customerId, makelarId }) => {
                                 validateStatus={errors[`jabatan${i}`] ? 'error' : ''}
                                 help={errors[`jabatan${i}`]}
                             >
-                                <Input name={`jabatan`} placeholder={`Enter the position of Penanggung Jawab ${i + 1}`} onChange={(e) => handleResponsibleChange(i, 'jabatan', e.target.value)} />
+                                <Input name={`jabatan${i}`} placeholder={`Enter the position of Penanggung Jawab ${i + 1}`} onChange={(e) => handleResponsibleChange(i, 'jabatan', e.target.value)} />
                             </Form.Item>
                         </Col>
                     </Row>

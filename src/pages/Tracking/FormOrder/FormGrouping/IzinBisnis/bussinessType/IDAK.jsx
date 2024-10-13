@@ -60,6 +60,16 @@ const IDAK = ({ customerId, makelarId }) => {
         if (!data.nibOssRba) newErrors.nibOssRba = 'Please enter the NIB OSS RBA Dengan KBLI 46691';
         if (!data.ruko) newErrors.ruko = 'Please select the Ruko Type';
         if (!files.rukoImage) newErrors.rukoImage = 'Please upload the Foto Ruko';
+        for (let i = 0; i < penanggungJawabCount; i++) {
+            const responsibleObj = JSON.parse(data.responsible[i] || '{}');
+            if (!responsibleObj.name) newErrors[`name${i}`] = `Please enter the name of Penanggung Jawab ${i + 1}`;
+            if (!responsibleObj.jabatan) newErrors[`jabatan${i}`] = `Please enter the position of Penanggung Jawab ${i + 1}`; 
+        }
+    
+        for (let i = 0; i < peralatanKantorCount; i++) {
+            const officeEquipmentObj = JSON.parse(data.officeEquipment[i] || '{}');
+            if (!officeEquipmentObj.peralatanKantor) newErrors[`peralatanKantor${i}`] = `Please enter the peralatan kantor ${i + 1}`;
+        }
 
         if (Object.keys(newErrors).length > 0) {
             setErrors(newErrors);
@@ -92,8 +102,10 @@ const IDAK = ({ customerId, makelarId }) => {
                                 name={`name${i}`}
                                 label={`Nama Penanggung Jawab ${i + 1} :`}
                                 rules={[{ required: true, message: `Please enter the name of Penanggung Jawab ${i + 1}` }]}
+                                validateStatus={errors[`name${i}`] ? 'error' : ''}
+                                help={errors[`name${i}`]}
                             >
-                                <Input name={`name`} placeholder={`Enter the name of Penanggung Jawab ${i + 1}`} onChange={(e) => handleResponsibleChange(i, 'name', e.target.value)} />
+                                <Input name={`name${i}`} placeholder={`Enter the name of Penanggung Jawab ${i + 1}`} onChange={(e) => handleResponsibleChange(i, 'name', e.target.value)} />
                             </Form.Item>
                         </Col>
                         <Col span={12}>
@@ -101,8 +113,10 @@ const IDAK = ({ customerId, makelarId }) => {
                                 name={`jabatan${i}`}
                                 label={`Jabatan Penanggung Jawab ${i + 1} :`}
                                 rules={[{ required: true, message: `Please enter the position of Penanggung Jawab ${i + 1}` }]}
+                                validateStatus={errors[`jabatan${i}`] ? 'error' : ''}
+                                help={errors[`jabatan${i}`]}
                             >
-                                <Input name={`jabatan`} placeholder={`Enter the position of Penanggung Jawab ${i + 1}`} onChange={(e) => handleResponsibleChange(i, 'jabatan', e.target.value)} />
+                                <Input name={`jabatan${i}`} placeholder={`Enter the position of Penanggung Jawab ${i + 1}`} onChange={(e) => handleResponsibleChange(i, 'jabatan', e.target.value)} />
                             </Form.Item>
                         </Col>
                     </Row>
@@ -123,8 +137,10 @@ const IDAK = ({ customerId, makelarId }) => {
                                 name={`peralatanKantor${i}`}
                                 label={`Peralatan Kantor ${i + 1} :`}
                                 rules={[{ required: true, message: `Please enter the peralatan kantor ${i + 1}` }]}
+                                validateStatus={errors[`peralatanKantor${i}`] ? 'error' : ''}
+                                help={errors[`peralatanKantor${i}`]}
                             >
-                                <Input name={`peralatanKantor`} placeholder={`Enter the peralatan kantor ${i + 1}`} onChange={(e) => handleOfficeEquipmentChange(i, e.target.value)} />
+                                <Input name={`peralatanKantor${i}`} placeholder={`Enter the peralatan kantor ${i + 1}`} onChange={(e) => handleOfficeEquipmentChange(i, e.target.value)} />
                             </Form.Item>
                         </Col>
                     </Row>
