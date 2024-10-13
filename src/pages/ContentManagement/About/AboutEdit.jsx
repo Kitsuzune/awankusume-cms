@@ -6,6 +6,7 @@ import Flag from 'react-world-flags';
 import { apiRequest } from '../../../utils/api';
 import Loading from '../../../components/ui/Loading/Loading';
 import Draggable from '../../../components/ui/File Upload/Draggable';
+import { useNavigate } from 'react-router-dom';
 
 const AboutEdit = () => {
     const { id } = useParams();
@@ -15,11 +16,12 @@ const AboutEdit = () => {
     const [data, setData] = useState([]);
     const [language, setLanguage] = useState(1);
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
-    const fetchData = async () => {
+    const fetchData = async (localId) => {
         try {
             setLoading(true);
-            const response = await apiRequest('get', `/content/about/${id}`);
+            const response = await apiRequest('get', `/content/about/${localId}`);
             setData(response.data.data)
 
             const dataLanguage = response.data.data.filter((item) => item.languageId === language)[0];
@@ -28,7 +30,7 @@ const AboutEdit = () => {
                 title: dataLanguage.title,
                 subTitle: dataLanguage.subTitle,
                 link: dataLanguage.link,
-                show: dataLanguage.show,
+                show: dataLanguage.show === '1' ? true : false,
             });
 
             setImage(`${process.env.REACT_APP_API_URL_CSM}/public/about/${dataLanguage.image}`);
@@ -45,7 +47,7 @@ const AboutEdit = () => {
             setLoading(true);
 
             const dataLanguage = data.filter((item) => item.languageId === language)[0];
-            
+
             const fileToSend = image !== imageCurrent ? image : undefined;
 
             const sendData = {
@@ -53,14 +55,15 @@ const AboutEdit = () => {
                 subTitle: form.getFieldValue('subTitle'),
                 link: form.getFieldValue('link'),
                 show: form.getFieldValue('show') ? '1' : '0',
-                file: fileToSend,
             }
 
-            console.log(sendData);
+            if (fileToSend) {
+                sendData.file = fileToSend;
+            }
 
             let response;
 
-            if (id) {
+            if (id !== 'add') {
                 response = await apiRequest('PATCH', `/content/about/${dataLanguage.id}`, sendData);
             } else {
                 response = await apiRequest('POST', `/content/about`, sendData);
@@ -75,7 +78,13 @@ const AboutEdit = () => {
                     centered: true,
                 });
 
-                fetchData()
+                let newUuid = null;
+                if (id === 'add') {
+                    newUuid = response.data.data[0].uuid;
+                    navigate('/app/content/about/' + newUuid);
+                }
+
+                fetchData(newUuid ? newUuid : id);
             }
 
         } catch (error) {
@@ -86,8 +95,8 @@ const AboutEdit = () => {
     }
 
     useEffect(() => {
-        if (id) {
-            fetchData()
+        if (id !== 'add') {
+            fetchData(id)
         }
     }, [])
 
@@ -99,7 +108,7 @@ const AboutEdit = () => {
             title: dataLanguage.title,
             subTitle: dataLanguage.subTitle,
             link: dataLanguage.link,
-            show: dataLanguage.show,
+            show: dataLanguage.show === '1' ? true : false,
         });
 
     }, [language])
@@ -149,7 +158,9 @@ const AboutEdit = () => {
                                                         valuePropName="checked"
                                                     >
                                                         <span className='text-[15px]'>Hide</span>
-                                                        <Switch defaultChecked className='mx-2' />
+                                                        <Switch
+                                                            className='mx-2'
+                                                        />
                                                         <span className='text-[15px]'>Show</span>
                                                     </Form.Item>
                                                 </Col>

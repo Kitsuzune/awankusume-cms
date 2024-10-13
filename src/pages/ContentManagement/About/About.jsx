@@ -41,7 +41,7 @@ const About = () => {
             });
 
             setLoading(false);
-            
+
         } catch (error) {
             setLoading(false);
             message.error(error.response?.data?.message ? error.response?.data?.message : 'Error While Fetching Data');
@@ -79,7 +79,7 @@ const About = () => {
             key: 'image',
             render: (text, record) => (
                 <div className="cursor-pointer">
-                    {text}
+                    <img src={`${process.env.REACT_APP_API_URL_CSM}/public/about/${text}`} alt="image" className="w-40 h-20 object-cover" />
                 </div>
             ),
         },
@@ -166,6 +166,13 @@ const About = () => {
                                                                     });
                                                                 }}
                                                             />
+                                                            <Button type="primary"
+                                                                onClick={() => {
+                                                                    navigate(`/app/content/about/add`);
+                                                                }}>
+                                                                Add New
+                                                                <PlusOutlined />
+                                                            </Button>
                                                         </Col>
                                                     </Row>
 

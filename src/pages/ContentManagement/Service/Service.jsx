@@ -72,8 +72,8 @@ const Service = () => {
             dataIndex: 'image',
             key: 'image',
             render: (text, record) => (
-                <div className='cursor-pointer'>
-                    {text}
+                <div className="cursor-pointer">
+                    <img src={`${process.env.REACT_APP_API_URL_CSM}/public/service/${text}`} alt="image" className="w-40 h-20 object-cover" />
                 </div>
             ),
         },

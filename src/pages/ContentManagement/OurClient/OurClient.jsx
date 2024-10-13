@@ -72,13 +72,13 @@ const OurClient = () => {
             dataIndex: 'image',
             key: 'image',
             render: (text, record) => (
-                <div className='cursor-pointer'>
-                    {text}
+                <div className="cursor-pointer">
+                    <img src={`${process.env.REACT_APP_API_URL_CSM}/public/ourClient/${text}`} alt="image" className="w-40 h-20 object-cover" />
                 </div>
             ),
         },
         {
-            title: 'Hastag',
+            title: 'Hashtag',
             dataIndex: 'hastag',
             key: 'hastag',
             render: (text, record) => (
@@ -132,7 +132,7 @@ const OurClient = () => {
                 <div className='flex gap-2'>
                     <CiEdit className='text-2xl text-center text-second cursor-pointer hover:text-main'
                         onClick={() => {
-                            navigate(`/app/content/our-client/${record.key}`)
+                            navigate(`/app/content/our-client/${record.uuid}`)
                         }}
                     />
                     <CiTrash className='text-2xl text-center text-second cursor-pointer hover:text-main' />
@@ -177,7 +177,10 @@ const OurClient = () => {
                                                                 });
                                                             }}
                                                         />
-                                                        <Button type="primary">
+                                                        <Button type="primary"
+                                                        onClick={() => {
+                                                            navigate(`/app/content/our-client/add`)
+                                                        }}>
                                                             Add New
                                                             <PlusOutlined />
                                                         </Button>
