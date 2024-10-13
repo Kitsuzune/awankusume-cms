@@ -122,7 +122,7 @@ const Service = () => {
                 <div className='flex gap-2'>
                     <CiEdit className='text-2xl text-center text-second cursor-pointer hover:text-main'
                         onClick={() => {
-                            navigate(`/app/content/service/${record.key}`)
+                            navigate(`/app/content/service/${record.uuid}`)
                         }}
                     />
                     <CiTrash className='text-2xl text-center text-second cursor-pointer hover:text-main' />
@@ -167,10 +167,13 @@ const Service = () => {
                                                                 });
                                                             }}
                                                         />
-                                                        <Button type="primary">
-                                                            Add New
-                                                            <PlusOutlined />
-                                                        </Button>
+                                                         <Button type="primary"
+                                                                onClick={() => {
+                                                                    navigate(`/app/content/service/add`);
+                                                                }}>
+                                                                Add New
+                                                                <PlusOutlined />
+                                                            </Button>
                                                     </Col>
                                                 </Row>
 

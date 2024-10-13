@@ -62,8 +62,8 @@ const Partnership = () => {
             dataIndex: 'image',
             key: 'image',
             render: (text, record) => (
-                <div className='cursor-pointer'>
-                    {text}
+                <div className="cursor-pointer">
+                    <img src={`${process.env.REACT_APP_API_URL_CSM}/public/partner/${text}`} alt="image" className="w-40 h-20 object-cover" />
                 </div>
             ),
         },
@@ -71,16 +71,6 @@ const Partnership = () => {
             title: 'Link',
             dataIndex: 'link',
             key: 'link',
-            render: (text, record) => (
-                <div className='cursor-pointer'>
-                    {text}
-                </div>
-            ),
-        },
-        {
-            title: 'Title',
-            dataIndex: 'title',
-            key: 'title',
             render: (text, record) => (
                 <div className='cursor-pointer'>
                     {text}
@@ -167,10 +157,13 @@ const Partnership = () => {
                                                                 });
                                                             }}
                                                         />
-                                                        <Button type="primary">
-                                                            Add New
-                                                            <PlusOutlined />
-                                                        </Button>
+                                                          <Button type="primary"
+                                                                onClick={() => {
+                                                                    navigate(`/app/content/partnership/add`);
+                                                                }}>
+                                                                Add New
+                                                                <PlusOutlined />
+                                                            </Button>
                                                     </Col>
                                                 </Row>
 
