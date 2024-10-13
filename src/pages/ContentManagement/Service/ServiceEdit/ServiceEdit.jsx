@@ -5,7 +5,7 @@ import ServiceEditStep1 from './Step/ServiceEditStep1';
 import ServiceEditStep2 from './Step/ServiceEditStep2';
 
 const ServiceEdit = () => {
-    const { id } = useParams();
+    const [ id, setId ] = useState(useParams().id);
     const [image, setImage] = useState(null);
     const [currentStep, setCurrentStep] = useState(1); // State untuk mengelola langkah saat ini
 
@@ -31,7 +31,7 @@ const ServiceEdit = () => {
                                 </div>
 
                                 {currentStep === 1 ? (
-                                    <ServiceEditStep1 image={image} setImage={setImage} onNext={handleNextPage} />
+                                    <ServiceEditStep1 image={image} setImage={setImage} onNext={handleNextPage} id={id} setId={setId}/>
                                 ) : (
                                     <ServiceEditStep2 />
                                 )}

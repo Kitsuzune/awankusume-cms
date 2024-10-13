@@ -83,7 +83,7 @@ const About = () => {
             key: 'image',
             render: (text, record) => (
                 <div className="cursor-pointer">
-                                        <img src={`${process.env.REACT_APP_API_URL_CSM}/public/about/${text}`} alt="image" className="w-40 h-20 object-cover" />
+                    <img src={`${process.env.REACT_APP_API_URL_CSM}/public/about/${text}`} alt="image" className="w-40 h-20 object-cover" />
                 </div>
             ),
         },

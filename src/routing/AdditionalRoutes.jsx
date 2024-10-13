@@ -18,9 +18,11 @@ export default function AdditionalRoutes() {
 
       {/* // Content -> About */}
       <Route path="/app/content/about/:id" element={<AboutEdit />} />
+      <Route path="/app/content/about/add" element={<AboutEdit />} />
 
       {/* // Content -> Service */}
       <Route path="/app/content/service/:id" element={<ServiceEdit />} />
+      <Route path="/app/content/service/add" element={<ServiceEdit />} />
 
       {/* // Content -> Our Client */}
       <Route path="/app/content/our-client/:id" element={<OurClientEdit />} />
@@ -28,6 +30,7 @@ export default function AdditionalRoutes() {
 
       {/* // Content -> Partnership */}
       <Route path="/app/content/partnership/:id" element={<PartnershipEdit />} />
+      <Route path="/app/content/partnership/add" element={<PartnershipEdit />} />
     </Routes>
   );
 }
