@@ -19,7 +19,7 @@ const FormOrder = () => {
   const [makelarList, setMakelarList] = useState([]);
 
   const fetchCustomer = async (value = '') => {
-    try{
+    try {
       const response = await apiRequest('GET', `/user/by/role`, {}, { role: 'CUSTOMER', search: value });
 
       if (response.status === 200) {
@@ -31,10 +31,10 @@ const FormOrder = () => {
   }
 
   const fetchMakelar = async (value = '') => {
-    try{
+    try {
       const response = await apiRequest('GET', `/user/by/role`, {}, { role: 'MAKELAR', search: value });
 
-      if(response.status === 200){
+      if (response.status === 200) {
         setMakelarList(response.data.data);
       }
     } catch (error) {
@@ -63,7 +63,17 @@ const FormOrder = () => {
       <Col span={24}>
         <Row>
           <Col span={24}>
-            <div className="flex flex-col">
+            <div className="bg-white p-5 rounded-lg">
+              <Row>
+                <Col span={24}>
+                  <div className="text-[24px] text-main inline-block">Form Order</div>
+                  <br />
+                  <span className="text-[15px] inline-block mt-5">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.</span>
+                </Col>
+              </Row>
+            </div>
+
+            <div className="mt-5 flex flex-col border rounded-lg">
               <div className='bg-white px-10 py-5 rounded-lg'>
                 <Form layout="vertical">
                   <Row gutter={16}>
@@ -91,7 +101,7 @@ const FormOrder = () => {
                         label="Customer :"
                         rules={[{ required: true, message: 'Please enter the customer name' }]}
                       >
-                        <Select 
+                        <Select
                           showSearch
                           placeholder="Select a customer"
                           options={customerList.map((customer) => ({
@@ -115,7 +125,7 @@ const FormOrder = () => {
                         label="Makelar :"
                         rules={[{ required: true, message: 'Please enter the makelar name' }]}
                       >
-                        <Select 
+                        <Select
                           showSearch
                           allowClear
                           placeholder="Select a makelar"
@@ -133,7 +143,7 @@ const FormOrder = () => {
                   </Row>
 
                   {serviceType === 'pendirianPerusahaan' && (
-                    <LegalitasPP customerId={customerId} makelarId={makelarId}/>
+                    <LegalitasPP customerId={customerId} makelarId={makelarId} />
                   )}
 
                   {serviceType === 'izinBisnis' && (

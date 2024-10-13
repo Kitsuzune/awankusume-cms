@@ -7,7 +7,7 @@ import { pengajuanOnGoingColumns } from '../../../components/ui/Table/columns/pe
 import { IoIosSearch } from 'react-icons/io';
 import Loading from '../../../components/ui/Loading/Loading';
 
-const PengajuanCompleted = () => {
+const PengajuanFailed = () => {
     const { Option } = Select;
     const { Text } = Typography;
     const [loading, setLoading] = useState(false);
@@ -68,7 +68,7 @@ const PengajuanCompleted = () => {
                                     <div className="bg-white p-5 rounded-lg">
                                         <Row>
                                             <Col span={24}>
-                                                <div className="text-[24px] text-main inline-block">Pengajuan Completed</div>
+                                                <div className="text-[24px] text-main inline-block">Pengajuan Failed</div>
                                                 <br />
                                                 <span className="text-[15px] inline-block mt-5">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.</span>
                                             </Col>
@@ -81,7 +81,7 @@ const PengajuanCompleted = () => {
                                                 <div className="flex flex-col">
                                                     <Row justify="space-between" align="middle" className="mb-4">
                                                         <Col>
-                                                            <span className="text-[24px] inline-block">Completed</span>
+                                                            <span className="text-[24px] inline-block">Failed</span>
                                                         </Col>
                                                         <Col className="flex gap-2">
                                                             <Input.Search placeholder="Search..." />
@@ -117,4 +117,4 @@ const PengajuanCompleted = () => {
     )
 }
 
-export default PengajuanCompleted
+export default PengajuanFailed

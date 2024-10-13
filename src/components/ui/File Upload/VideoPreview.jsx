@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const VideoPreviewUploader = ({ video, setVideo, name }) => {
+const VideoPreviewUploader = ({ video, setVideo, name, disabled }) => {
   const [preview, setPreview] = useState(null);
   const [isBlurred, setIsBlurred] = useState(false);
 
@@ -20,17 +20,17 @@ const VideoPreviewUploader = ({ video, setVideo, name }) => {
     <div
       className="w-full h-64 flex items-center justify-center border-dashed border-2 rounded-lg relative"
       style={{
-        cursor: 'pointer',
+        cursor: disabled ? 'not-allowed' : 'pointer',
       }}
-      onClick={() => document.getElementById('videoInput').click()}
-      onMouseEnter={() => setIsBlurred(true)}
-      onMouseLeave={() => setIsBlurred(false)}
+      onClick={() => !disabled && document.getElementById('videoInput').click()}
+      onMouseEnter={() => !disabled && setIsBlurred(true)}
+      onMouseLeave={() => !disabled && setIsBlurred(false)}
     >
       {video && (
         <video
           className="absolute inset-0"
           style={{
-            filter: isBlurred ? 'blur(2px)' : 'none',
+            filter: !disabled && isBlurred ? 'blur(2px)' : 'none', // Apply blur only if not disabled
             width: '100%',
             height: '100%',
             objectFit: 'cover',
@@ -39,7 +39,7 @@ const VideoPreviewUploader = ({ video, setVideo, name }) => {
           controls
         />
       )}
-      {(!video || isBlurred) && (
+      {(!video || (isBlurred && !disabled)) && (
         <span
           className="absolute text-[15px]"
           style={{
@@ -58,6 +58,7 @@ const VideoPreviewUploader = ({ video, setVideo, name }) => {
         name={name}
         style={{ display: 'none' }}
         onChange={handleVideoChange}
+        disabled={disabled}
       />
     </div>
   );

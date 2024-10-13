@@ -13,6 +13,7 @@ const Showcase = () => {
   const [language, setLanguage] = useState(1);
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
 
   const fetchData = async () => {
     try {
@@ -33,11 +34,24 @@ const Showcase = () => {
 
       setLoading(false);
     } catch (error) {
-      // message.error(error.response.data.message);
       message.error(error.response.data.message ? error.response.data.message : 'Server Unreachable, Please Check Your Internet Connection');
       setLoading(false);
     }
   }
+
+  const handleEdit = () => {
+    setIsEditing(true);
+  };
+
+  const handleCancel = () => {
+    const dataLanguage = data.filter((item) => item.languageId === language)[0];
+    form.setFieldsValue({
+      title: dataLanguage.title,
+      subTitle: dataLanguage.subTitle,
+      video: dataLanguage.image,
+    });
+    setIsEditing(false);
+  };
 
   const handleSubmit = async () => {
     try {
@@ -58,9 +72,9 @@ const Showcase = () => {
           centered: true,
         });
 
-        fetchData()
+        fetchData();
+        setIsEditing(false);
       }
-
     } catch (error) {
       console.log(error);
       message.error(error.response?.data?.message ? error.response?.data?.message : 'Error While Updating Data');
@@ -110,7 +124,7 @@ const Showcase = () => {
                             label="Video"
                             rules={[{ required: true, message: 'Please upload a video' }]}
                           >
-                            <VideoPreviewUploader video={video} setVideo={setVideo} name="video" />
+                            <VideoPreviewUploader video={video} setVideo={setVideo} name="video" disabled={!isEditing} />
                           </Form.Item>
                         </Col>
                       </Row>
@@ -157,6 +171,7 @@ const Showcase = () => {
                                   ),
                                 },
                               ]}
+                              disabled={!isEditing}
                             />
                           </Form.Item>
                         </Col>
@@ -170,8 +185,9 @@ const Showcase = () => {
                             rules={[{ required: true, message: 'Please enter a title' }]}
                           >
                             <Input
-                              placeholder="Enter title" />
-
+                              placeholder="Enter title"
+                              disabled={!isEditing}
+                            />
                           </Form.Item>
                         </Col>
                       </Row>
@@ -185,14 +201,21 @@ const Showcase = () => {
                           >
                             <Input
                               placeholder="Enter subtitle"
+                              disabled={!isEditing}
                             />
                           </Form.Item>
                         </Col>
                       </Row>
 
                       <div className="mt-5 flex justify-end">
-                        <Button type="default" className="mr-2">Cancel</Button>
-                        <Button type="primary" className='bg-main' onClick={handleSubmit}>Save</Button>
+                        {isEditing ? (
+                          <>
+                            <Button type="default" className="mr-2" onClick={handleCancel}>Cancel</Button>
+                            <Button type="primary" className='bg-main' onClick={handleSubmit}>Save</Button>
+                          </>
+                        ) : (
+                          <Button type="primary" className='bg-main px-10 py-5' onClick={handleEdit}>Edit</Button>
+                        )}
                       </div>
                     </Form>
                   </div>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const ImagePreviewUploader = ({ image, setImage, name }) => {
+const ImagePreviewUploader = ({ image, setImage, name, disabled }) => {
   const [preview, setPreview] = useState(null);
   const [isBlurred, setIsBlurred] = useState(false);
 
@@ -23,19 +23,19 @@ const ImagePreviewUploader = ({ image, setImage, name }) => {
         backgroundImage: `url(${preview ? preview : image})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        cursor: 'pointer',
+        cursor: disabled ? 'not-allowed' : 'pointer',
       }}
-      onClick={() => document.getElementById('fileInput').click()}
-      onMouseEnter={() => setIsBlurred(true)}
-      onMouseLeave={() => setIsBlurred(false)}
+      onClick={() => !disabled && document.getElementById('fileInput').click()}
+      onMouseEnter={() => !disabled && setIsBlurred(true)}
+      onMouseLeave={() => !disabled && setIsBlurred(false)}
     >
       <div
         className="absolute inset-0"
         style={{
-          backdropFilter: isBlurred ? 'blur(2px)' : 'none',
+          backdropFilter: !disabled && isBlurred ? 'blur(2px)' : 'none', // Apply blur only if not disabled
         }}
       ></div>
-      {(!image || isBlurred) && (
+      {(!image || (isBlurred && !disabled)) && (
         <span
           className="absolute text-[15px]"
           style={{
@@ -54,6 +54,7 @@ const ImagePreviewUploader = ({ image, setImage, name }) => {
         name={name}
         style={{ display: 'none' }}
         onChange={handleImageChange}
+        disabled={disabled}
       />
     </div>
   );
