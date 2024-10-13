@@ -7,10 +7,14 @@ import ServiceEditStep2 from './Step/ServiceEditStep2';
 const ServiceEdit = () => {
     const [ id, setId ] = useState(useParams().id);
     const [image, setImage] = useState(null);
-    const [currentStep, setCurrentStep] = useState(1); // State untuk mengelola langkah saat ini
+    const [currentStep, setCurrentStep] = useState(1);
+    const [desainId, setDesainId] = useState(null);
+    const [data, setData] = useState([]);
+    const [language, setLanguage] = useState(1);
+    const [showcase, setShowcase] = useState({});
 
     const handleNextPage = () => {
-        setCurrentStep(2); // Ubah ke langkah kedua
+        setCurrentStep(2);
     };
 
     return (
@@ -31,9 +35,9 @@ const ServiceEdit = () => {
                                 </div>
 
                                 {currentStep === 1 ? (
-                                    <ServiceEditStep1 image={image} setImage={setImage} onNext={handleNextPage} id={id} setId={setId}/>
+                                    <ServiceEditStep1 image={image} setImage={setImage} onNext={handleNextPage} id={id} setId={setId} data={data} setData={setData} language={language} setLanguage={setLanguage} setDesainId={setDesainId}/>
                                 ) : (
-                                    <ServiceEditStep2 />
+                                    <ServiceEditStep2 desainId={desainId} setDesainId={setDesainId} data={data} setData={setData} language={language} showcase={showcase} setShowcase={setShowcase}/>
                                 )}
 
                             </div>

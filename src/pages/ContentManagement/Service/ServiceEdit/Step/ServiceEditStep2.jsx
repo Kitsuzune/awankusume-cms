@@ -7,15 +7,16 @@ import FaqPage from '../Form/FaqPage';
 import ArtikelPage from '../Form/ArtikelPage';
 import PromoPage from '../Form/PromoPage';
 
-const ServiceEditStep2 = () => {
+const ServiceEditStep2 = ({ desainId, setDesainId, data, language, showcase, setShowcase, setData }) => {
+    const [form] = Form.useForm();
+
     return (
+        <>
+            <StylePage desainId={desainId} setDesainId={setDesainId} data={data} language={language} setData={setData}/>
 
-        <Form layout="vertical">
-            <StylePage />
+            <ShowcasePage data={data} language={language} showcase={showcase} setShowcase={setShowcase} setData={setData} />
 
-            <ShowcasePage />
-
-            <ServiceSyaratPage />
+            <ServiceSyaratPage data={data} language={language} setData={setData} />
 
             <FaqPage />
 
@@ -27,8 +28,7 @@ const ServiceEditStep2 = () => {
                 <Button type="default" className="mr-2">Cancel</Button>
                 <Button type="primary" className='bg-main'>Save</Button>
             </div>
-        </Form>
-
+        </>
     );
 };
 
