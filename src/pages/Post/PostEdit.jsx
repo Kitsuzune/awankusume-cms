@@ -62,6 +62,14 @@ const PostEdit = () => {
         resizeImage: true
     };
 
+    const handleSubmit = async () => {
+        try {
+            console.log(value)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     return (
         <React.Fragment>
             <Row className="w-full">
@@ -120,7 +128,7 @@ const PostEdit = () => {
                                                             theme="snow"
                                                             value={value}
                                                             onChange={(value) => {
-                                                                form.setFieldValue('content', value);
+                                                                setValue(value)
                                                             }}
                                                             placeholder="Write your post here..."
                                                             modules={modules}
@@ -132,7 +140,7 @@ const PostEdit = () => {
 
                                             <div className="mt-10 flex justify-end">
                                                 <Button type="default" className="mr-2" >Cancel</Button>
-                                                <Button type="primary" className='bg-main' >Save</Button>
+                                                <Button type="primary" className='bg-main' onClick={handleSubmit}>Save</Button>
                                             </div>
                                         </Form>
                                     </div>
