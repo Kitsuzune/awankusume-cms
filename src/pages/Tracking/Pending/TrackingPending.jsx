@@ -8,7 +8,7 @@ import { CiEdit, CiTrash } from 'react-icons/ci';
 import { useNavigate } from 'react-router-dom';
 import Loading from '../../../components/ui/Loading/Loading';
 
-const TrackingOnGoing = () => {
+const TrackingPending = () => {
     const { Option } = Select;
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
@@ -71,7 +71,7 @@ const TrackingOnGoing = () => {
                                                     name="status"
                                                     label="Status"
                                                 >
-                                                    <Select defaultValue="PROCESS">
+                                                    <Select defaultValue="PENDING">
                                                         <Select.Option value="PENDING">PENDING</Select.Option>
                                                         <Select.Option value="PROCESS">ON GOING</Select.Option>
                                                         <Select.Option value="FINISH">FINISH</Select.Option>
@@ -85,7 +85,7 @@ const TrackingOnGoing = () => {
                                             <Button type="default" className="mr-2" onClick={() => {
                                                 form.resetFields()
                                                 Modal.destroyAll()
-                                                }}
+                                            }}
                                             >Cancel</Button>
                                             <Button type="primary" className='bg-main'>Save</Button>
                                         </div>
@@ -95,7 +95,7 @@ const TrackingOnGoing = () => {
                             });
                         }}
                     />
-                    <CiTrash className="text-2xl text-center text-second cursor-pointer hover:text-main" 
+                    <CiTrash className="text-2xl text-center text-second cursor-pointer hover:text-main"
                         onClick={() => {
                             Modal.info({
                                 title: 'Delete Data',
@@ -119,6 +119,7 @@ const TrackingOnGoing = () => {
             ),
         },
     ];
+
     return (
         <React.Fragment>
             <Row className="w-full">
@@ -130,9 +131,9 @@ const TrackingOnGoing = () => {
                                     <div className="bg-white p-5 rounded-lg">
                                         <Row>
                                             <Col span={24}>
-                                                <div className="text-[24px] text-main inline-block">Tracking On Going</div>
+                                                <div className="text-[24px] text-main inline-block">Tracking Pending</div>
                                                 <br />
-                                                <span className="text-[15px] inline-block mt-5">Tracking on going data</span>
+                                                <span className="text-[15px] inline-block mt-5">Tracking pending data</span>
                                             </Col>
                                         </Row>
                                     </div>
@@ -143,7 +144,7 @@ const TrackingOnGoing = () => {
                                                 <div className="flex flex-col">
                                                     <Row justify="space-between" align="middle" className="mb-4">
                                                         <Col>
-                                                            <span className="text-[24px] inline-block">On Going</span>
+                                                            <span className="text-[24px] inline-block">Pending</span>
                                                         </Col>
                                                         <Col className="flex gap-2">
                                                             <Input.Search placeholder="Search..." />
@@ -185,4 +186,4 @@ const TrackingOnGoing = () => {
     )
 }
 
-export default TrackingOnGoing
+export default TrackingPending

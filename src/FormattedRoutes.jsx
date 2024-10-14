@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import { FaComments, FaFire, FaList } from "react-icons/fa";
-import { IoArchive, IoAttach, IoBasket, IoBicycle, IoCheckmarkCircleSharp, IoCheckmarkDoneCircle, IoCheckmarkDoneCircleSharp, IoCloseCircle, IoCodeSlashSharp, IoDocumentText, IoLogOut, IoPlayCircleOutline, IoWatch } from "react-icons/io5";
+import { IoArchive, IoAttach, IoBasket, IoBicycle, IoCheckmarkCircleSharp, IoCheckmarkDoneCircle, IoCheckmarkDoneCircleSharp, IoCloseCircle, IoCodeSlashSharp, IoDocumentText, IoLogOut, IoPlayCircleOutline, IoTimerOutline, IoWatch } from "react-icons/io5";
 import { IoDocument } from "react-icons/io5";
 import { IoPerson } from "react-icons/io5";
 import { IoFlash } from "react-icons/io5";
@@ -36,6 +36,7 @@ import Promo from "./pages/ContentManagement/Promo/Promo";
 import Faq from "./pages/Faq/Faq";
 import PengajuanFailed from "./pages/Pengajuan/Failed/PengajuanFailed";
 import LogOut from "./pages/LogOut/LogOut";
+import TrackingPending from "./pages/Tracking/Pending/TrackingPending";
 
 const iconClasses = `h-6 w-6`;
 const submenuIconClasses = `h-5 w-5`;
@@ -126,6 +127,12 @@ export const routes = [
             icon: <GrInProgress className={iconClasses} />,
             name: 'OnGoing',
             component: TrackingOnGoing,
+          },
+          {
+            path: '/app/tracking/pending',
+            icon: <IoTimerOutline className={iconClasses} />,
+            name: 'Pending',
+            component: TrackingPending,
           },
           {
             path: '/app/tracking/completed',

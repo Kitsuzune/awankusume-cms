@@ -1,4 +1,4 @@
-import { Col, Input, Row, Select, Table } from 'antd'
+import { Col, Form, Input, Modal, Row, Select, Table } from 'antd'
 import React, { useState } from 'react'
 import { CustomPagination } from '../../../components/ui/Table/CustomPagination'
 import { trackingColumns } from '../../../components/ui/Table/columns/tracking';
@@ -6,12 +6,13 @@ import { PlusOutlined } from '@ant-design/icons';
 import Button from '../../../components/ui/Button/Button';
 import { useNavigate } from 'react-router-dom';
 import Loading from '../../../components/ui/Loading/Loading';
-import { CiTrash } from 'react-icons/ci';
+import { CiEdit, CiTrash } from 'react-icons/ci';
 
 const TrackingCompleted = () => {
     const { Option } = Select;
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
+    const [form] = Form.useForm()
 
     const dataSource = [
         {
@@ -57,12 +58,63 @@ const TrackingCompleted = () => {
             align: 'center',
             render: (text, record) => (
                 <div className="flex justify-center items-center gap-2">
-                    {/* <CiEdit className="text-2xl text-center text-second cursor-pointer hover:text-main"
+                    <CiEdit className="text-2xl text-center text-second cursor-pointer hover:text-main"
                         onClick={() => {
-                            navigate(`/app/content/about/${record.uuid}`);
+                            Modal.info({
+                                title: 'Edit Data',
+                                centered: true,
+                                content: (
+                                    <Form form={form}>
+                                        <Row>
+                                            <Col span={24}>
+                                                <Form.Item
+                                                    name="status"
+                                                    label="Status"
+                                                >
+                                                    <Select defaultValue="CANCEL">
+                                                        <Select.Option value="PENDING">PENDING</Select.Option>
+                                                        <Select.Option value="PROCESS">ON GOING</Select.Option>
+                                                        <Select.Option value="FINISH">FINISH</Select.Option>
+                                                        <Select.Option value="CANCEL">FAILED</Select.Option>
+                                                    </Select>
+                                                </Form.Item>
+                                            </Col>
+                                        </Row>
+
+                                        <div className="mt-5 flex justify-end">
+                                            <Button type="default" className="mr-2" onClick={() => {
+                                                form.resetFields()
+                                                Modal.destroyAll()
+                                                }}
+                                            >Cancel</Button>
+                                            <Button type="primary" className='bg-main'>Save</Button>
+                                        </div>
+                                    </Form>
+                                ),
+                                footer: null
+                            });
                         }}
-                    /> */}
-                    <CiTrash className="text-2xl text-center text-second cursor-pointer hover:text-main" />
+                    />
+                    <CiTrash className="text-2xl text-center text-second cursor-pointer hover:text-main" 
+                        onClick={() => {
+                            Modal.info({
+                                title: 'Delete Data',
+                                centered: true,
+                                content: (
+                                    <React.Fragment>
+                                        <div>Are you sure want to delete this data?</div>
+                                        <div className="mt-5 flex justify-end">
+                                            <Button type="default" className="mr-2" onClick={() => {
+                                                Modal.destroyAll()
+                                            }}>Cancel</Button>
+                                            <Button type="primary" className='bg-main'>Delete</Button>
+                                        </div>
+                                    </React.Fragment>
+                                ),
+                                footer: null
+                            });
+                        }}
+                    />
                 </div>
             ),
         },
@@ -96,7 +148,9 @@ const TrackingCompleted = () => {
                                                         </Col>
                                                         <Col className="flex gap-2">
                                                             <Input.Search placeholder="Search..." />
-                                                            <Button type="primary">
+                                                            <Button type="primary" onClick={() => {
+                                                                window.location.href = 'form-order'
+                                                            }}>
                                                                 Add New
                                                                 <PlusOutlined />
                                                             </Button>
