@@ -212,7 +212,7 @@ const ServiceSyaratPage = ({ data, language, setData }) => {
                         </Row>
 
                         <div className="mt-5 flex justify-end">
-                            <Button type="default" className="mr-2" onClick={() => fetchServices()}>Cancel</Button>
+                            <Button type="default" className="mr-2">Cancel</Button>
                             <Button type="primary" className='bg-main' onClick={() => handleSubmit(index, service.id ? 'update' : 'add', service.id)}>Save</Button>
                         </div>
                     </div>

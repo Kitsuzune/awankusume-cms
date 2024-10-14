@@ -18,7 +18,7 @@ const ServiceEditStep2 = ({ desainId, setDesainId, data, language, showcase, set
 
             <ServiceSyaratPage data={data} language={language} setData={setData} />
 
-            <FaqPage />
+            <FaqPage data={data} language={language} setData={setData} />
 
             <ArtikelPage />
 

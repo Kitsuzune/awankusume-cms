@@ -1,28 +1,88 @@
-import React, { useState } from 'react'
-import { Row, Col, Form, Input, Switch, Button, Select } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Row, Col, Form, Input, Switch, Button, Select, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
+import { apiRequest } from '../../../../../utils/api';
 
-const FaqPage = () => {
-    // const [questionCount, setQuestionCount] = useState(1)
-    // const addQuestionAnswer = () => {
-    //     setQuestionCount(questionCount + 1)
-    // }
-    const [form] = Form.useForm()
-    const [faq, setFaq] = useState([{
-        faqTitle: '',
-        faqSubTitle: '',
-        faqQuestion1: '',
-        faqAnswer1: '',
-    }])
+const FaqPage = ({ data, language, setData }) => {
+    const [services, setServices] = useState([]);
+    const [form] = Form.useForm();
+
+    const fetchServices = async () => {
+        try {
+            const dataLanguage = data.filter((item) => item.languageId === language)[0];
+            const response = await apiRequest('GET', `/content/service-content/faq/${dataLanguage.id}`);
+            if (response.status === 200) {
+                setServices(response.data.data.map((item) => ({
+                    id: item.id,
+                    title: item.title,
+                    subTitle: item.subTitle,
+                    question: item.question,
+                    answer: item.answer,
+                    show: item.show === '1' ? true : false,
+                })));
+            }
+        } catch (error) {
+            message.error(error.response?.data?.message ? error.response?.data?.message : 'Server Unreachable, Please Check Your Internet Connection');
+        }
+    };
+
+    const handleSubmit = async (index, type, serviceDetailId) => {
+        try {
+            const serviceData = services[index];
+            let response;
+            const sendData = {
+                title: serviceData.title,
+                subTitle: serviceData.subTitle,
+                show: serviceData.show ? '1' : '0',
+                question: serviceData.question,
+                answer: serviceData.answer,
+            }
+            if (type === 'add') {
+                sendData.serviceUuid = data[0].uuid;
+                response = await apiRequest('POST', `/content/faq`, sendData);
+            } else {
+                response = await apiRequest('PATCH', `/content/faq/${serviceDetailId}`, sendData);
+            }
+            if (response.status === 200) {
+                message.success('Data Updated');
+                fetchServices();
+            }
+        } catch (error) {
+            message.error(error.response?.data?.message ? error.response?.data?.message : 'Failed to update data');
+        }
+    };
+
+    const handleInputChange = (index, field, value) => {
+        const newServices = [...services];
+        newServices[index][field] = value;
+        setServices(newServices);
+        form.setFieldsValue({ [`${field}${index}`]: value });
+    };
 
     const addNewForm = () => {
-        setFaq([...faq, {
-            faqTitle: '',
-            faqSubTitle: '',
-            faqQuestion1: '',
-            faqAnswer1: '',
-        }])
-    }
+        setServices([...services, {
+            title: '',
+            subTitle: '',
+            question: '',
+            answer: '',
+            show: true
+        }]);
+    };
+
+    useEffect(() => {
+        fetchServices();
+    }, []);
+
+    useEffect(() => {
+        services.forEach((service, index) => {
+            form.setFieldsValue({
+                [`title${index}`]: service.title,
+                [`subTitle${index}`]: service.subTitle,
+                [`question${index}`]: service.question,
+                [`answer${index}`]: service.answer,
+            });
+        });
+    }, [services]);
 
     return (
         <>
@@ -34,13 +94,13 @@ const FaqPage = () => {
                     </Button>
                 </div>
 
-                {faq.map((item, index) => (
+                {services.map((item, index) => (
                     <Form key={index} form={form} initialValues={item}>
                         <div className="mt-5 p-5 bg-white border rounded-lg">
                             <Row>
                                 <Col span={24} className='flex justify-end gap-3'>
                                     <span className='text-[15px]'>Hide</span>
-                                    <Switch defaultChecked />
+                                    <Switch defaultChecked={item.show} onChange={(value) => handleInputChange(index, 'show', value)} />
                                     <span className='text-[15px]'>Show</span>
                                 </Col>
                             </Row>
@@ -48,32 +108,40 @@ const FaqPage = () => {
                             <Row>
                                 <Col span={24}>
                                     <Form.Item
-                                        name={`faqTitle${index}`}
+                                        name={`title${index}`}
                                         label={`Title ${index + 1} :`}
                                     >
-                                        <Input placeholder="Enter title" />
+                                        <Input
+                                            onChange={(e) => handleInputChange(index, 'title', e.target.value)}
+                                            placeholder="Enter title"
+                                        />
                                     </Form.Item>
                                 </Col>
                             </Row>
 
                             <Row>
-                                <Col span={24}>
-                                    <Form.Item
-                                        name={`faqSubTitle${index}`}
-                                        label={`Sub Title ${index + 1} :`}
-                                    >
-                                        <Input placeholder="Enter sub title" />
-                                    </Form.Item>
-                                </Col>
-                            </Row>
+                            <Col span={24}>
+                                <Form.Item
+                                    name={`subTitle${index}`}
+                                    label={`Sub Title ${index + 1} :`}
+                                >
+                                    <Input
+                                        onChange={(e) => handleInputChange(index, 'subTitle', e.target.value)}
+                                        placeholder="Enter subtitle"
+                                    />
+                                </Form.Item>
+                            </Col>
+                        </Row>
 
                             <Row>
                                 <Col span={24}>
                                     <Form.Item
-                                        name={`faqQuestion${index}`}
+                                        name={`question${index}`}
                                         label={`Question ${index + 1} :`}
                                     >
-                                        <Input placeholder="Enter question 1" />
+                                        <Input
+                                            onChange={(e) => handleInputChange(index, 'question', e.target.value)}
+                                            placeholder="Enter question" />
                                     </Form.Item>
                                 </Col>
                             </Row>
@@ -81,18 +149,21 @@ const FaqPage = () => {
                             <Row>
                                 <Col span={24}>
                                     <Form.Item
-                                        name={`faqAnswer${index}`}
+                                        name={`answer${index}`}
                                         label={`Answer ${index + 1} :`}
                                     >
-                                        <Input placeholder="Enter answer 1" />
+                                        <Input
+                                            onChange={(e) => handleInputChange(index, 'answer', e.target.value)}
+                                            placeholder="Enter answer"
+                                        />
                                     </Form.Item>
                                 </Col>
                             </Row>
 
 
                             <div className="mt-5 flex justify-end">
-                                <Button type="default" className="mr-2">Cancel</Button>
-                                <Button type="primary" className='bg-main'>Save</Button>
+                            <Button type="default" className="mr-2">Cancel</Button>
+                            <Button type="primary" className='bg-main' onClick={() => handleSubmit(index, item.id ? 'update' : 'add', item.id)}>Save</Button>
                             </div>
                         </div>
                     </Form>
