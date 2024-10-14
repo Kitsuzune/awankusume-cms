@@ -6,15 +6,14 @@ import { useNavigate } from 'react-router-dom';
 import { useParams, useLocation } from 'react-router-dom';
 import { apiRequest } from '../../../../../utils/api';
 
-const ServiceEditStep1 = ({ image, setImage, onNext, id, setId }) => {
+const ServiceEditStep1 = ({ image, setImage, onNext, id, setId, data, setData, language, setLanguage, setDesainId }) => {
     const [imageCurrent, setImageCurrent] = useState(null);
     const [form] = Form.useForm();
-    const [data, setData] = useState([]);
-    const [language, setLanguage] = useState(1);
     const [loading, setLoading] = useState(false);
     const location = useLocation();
     const [isEditing, setIsEditing] = useState(location.state?.edit || false);
     const navigate = useNavigate();
+    const [nextPageType, setNextPageType] = useState(false);
 
     const fetchData = async (localId) => {
         try {
@@ -23,6 +22,7 @@ const ServiceEditStep1 = ({ image, setImage, onNext, id, setId }) => {
             setData(response.data.data)
 
             const dataLanguage = response.data.data.filter((item) => item.languageId === language)[0];
+            setDesainId(dataLanguage.desainId);
 
             form.setFieldsValue({
                 title: dataLanguage.title,
@@ -88,7 +88,7 @@ const ServiceEditStep1 = ({ image, setImage, onNext, id, setId }) => {
                     content: 'Data has been updated',
                     centered: true,
                 });
-
+                setNextPageType(true);
                 let newUuid = null;
                 if (!id) {
                     newUuid = response.data.data[0].uuid;
@@ -108,6 +108,7 @@ const ServiceEditStep1 = ({ image, setImage, onNext, id, setId }) => {
 
     useEffect(() => {
         if (id) {
+            setNextPageType(true);
             fetchData(id)
         }
     }, [])
@@ -221,7 +222,7 @@ const ServiceEditStep1 = ({ image, setImage, onNext, id, setId }) => {
 
                 <Row>
                     <Col span={24} className='flex justify-center'>
-                        <Button type="primary" className='bg-main' onClick={onNext}>
+                        <Button type="primary" className='bg-main' onClick={onNext} disabled={!nextPageType}>
                             Next Page
                         </Button>
                     </Col>
