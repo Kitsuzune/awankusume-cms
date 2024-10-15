@@ -4,7 +4,7 @@ import { CustomPagination } from '../../../components/ui/Table/CustomPagination'
 import { trackingColumns } from '../../../components/ui/Table/columns/tracking';
 import { PlusOutlined } from '@ant-design/icons';
 import Button from '../../../components/ui/Button/Button';
-import { CiEdit, CiTrash } from 'react-icons/ci';
+import { CiEdit } from 'react-icons/ci';
 import { useNavigate } from 'react-router-dom';
 import Loading from '../../../components/ui/Loading/Loading';
 import { apiRequest } from '../../../utils/api';
@@ -127,39 +127,6 @@ const TrackingCompleted = () => {
               });
             }}
           />
-          {/* <CiTrash
-            className="text-2xl text-center text-second cursor-pointer hover:text-main"
-            onClick={() => {
-              Modal.info({
-                title: 'Delete Data',
-                centered: true,
-                content: (
-                  <React.Fragment>
-                    <div>Are you sure you want to delete this data?</div>
-                    <div className="mt-5 flex justify-end">
-                      <Button
-                        type="default"
-                        className="mr-2"
-                        onClick={() => {
-                          Modal.destroyAll();
-                        }}
-                      >
-                        Cancel
-                      </Button>
-                      <Button
-                        type="primary"
-                        className="bg-main"
-                        onClick={() => handleDelete(record.id)}
-                      >
-                        Delete
-                      </Button>
-                    </div>
-                  </React.Fragment>
-                ),
-                footer: null,
-              });
-            }}
-          /> */}
         </div>
       ),
     },
@@ -192,10 +159,15 @@ const TrackingCompleted = () => {
                               <span className="text-[24px] inline-block">Finish</span>
                             </Col>
                             <Col className="flex gap-2">
-                              <Input.Search
-                                placeholder="Search..."
-                                onSearch={(value) => setSearch(value)}
-                              />
+                            <Input.Search placeholder="Search..."
+                                                            onSearch={(value) => {
+                                                                setSearch(value);
+                                                                setPagination({
+                                                                    ...pagination,
+                                                                    page: 1,
+                                                                });
+                                                            }}
+                                                        />
                               <Button
                                 type="primary"
                                 onClick={() => {

@@ -38,6 +38,7 @@ import PengajuanFailed from "./pages/Pengajuan/Failed/PengajuanFailed";
 import LogOut from "./pages/LogOut/LogOut";
 import TrackingPending from "./pages/Tracking/Pending/TrackingPending";
 import FaqNew from "./pages/Faq/FaqNew";
+import PengajuanPending from "./pages/Pengajuan/Pending/PengajuanPending";
 
 const iconClasses = `h-6 w-6`;
 const submenuIconClasses = `h-5 w-5`;
@@ -118,16 +119,10 @@ export const routes = [
         name: 'Tracking',
         submenu: [
           {
-            path: '/app/tracking/failed',
-            icon: <MdOutlineSmsFailed className={iconClasses} />,
-            name: 'Failed',
-            component: TrackingFailed,
-          },
-          {
-            path: '/app/tracking/on-going',
-            icon: <GrInProgress className={iconClasses} />,
-            name: 'OnGoing',
-            component: TrackingOnGoing,
+            path: '/app/tracking/form-order',
+            icon: <GiTransform className={iconClasses} />,
+            name: 'Form Order',
+            component: FormOrder,
           },
           {
             path: '/app/tracking/pending',
@@ -136,16 +131,22 @@ export const routes = [
             component: TrackingPending,
           },
           {
+            path: '/app/tracking/on-going',
+            icon: <GrInProgress className={iconClasses} />,
+            name: 'OnGoing',
+            component: TrackingOnGoing,
+          },
+          {
             path: '/app/tracking/completed',
             icon: <MdIncompleteCircle className={iconClasses} />,
             name: 'Completed',
             component: TrackingCompleted,
           },
           {
-            path: '/app/tracking/form-order',
-            icon: <GiTransform className={iconClasses} />,
-            name: 'Form Order',
-            component: FormOrder,
+            path: '/app/tracking/failed',
+            icon: <MdOutlineSmsFailed className={iconClasses} />,
+            name: 'Failed',
+            component: TrackingFailed,
           }
         ]
       },
@@ -176,6 +177,12 @@ export const routes = [
         icon: <SiDocsdotrs className={iconClasses} />,
         submenu: [
           {
+            path: '/app/points/pending',
+            icon: <GrInProgress className={iconClasses} />,
+            name: 'Pending',
+            component: PengajuanPending,
+          },
+          {
             path: '/app/points/ongoing',
             icon: <IoPlayCircleOutline className={iconClasses} />,
             name: 'OnGoing',
@@ -190,7 +197,7 @@ export const routes = [
           {
             path: '/app/points/failed',
             icon: <IoCloseCircle className={iconClasses} />,
-            name: 'Failed',
+            name: 'Rejected',
             component: PengajuanFailed,
           },
         ]

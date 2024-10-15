@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import { apiRequest } from '../../../utils/api';
 import { CiEdit } from 'react-icons/ci';
 
-const PengajuanOnGoing = () => {
+const PengajuanPending = () => {
     const { Option } = Select;
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
@@ -31,7 +31,7 @@ const PengajuanOnGoing = () => {
                 perPage: pagination.perPage,
                 where: search,
                 orderBy: `${order.key}:${order.order}`,
-                status: 'PROCESS',
+                status: 'PENDING',
             });
 
             setData(
@@ -97,7 +97,7 @@ const PengajuanOnGoing = () => {
                                         <Row>
                                             <Col span={24}>
                                                 <Form.Item name="status" label="Status">
-                                                    <Select value={"PROCESS"}>
+                                                    <Select value={"PENDING"}>
                                                         <Option value="PENDING">PENDING</Option>
                                                         <Option value="PROCESS">ON GOING</Option>
                                                         <Option value="FINISH">COMPLETE</Option>
@@ -145,7 +145,7 @@ const PengajuanOnGoing = () => {
                                     <div className="bg-white p-5 rounded-lg">
                                         <Row>
                                             <Col span={24}>
-                                                <div className="text-[24px] text-main inline-block">Pengajuan On Going</div>
+                                                <div className="text-[24px] text-main inline-block">Pengajuan Pending</div>
                                                 <br />
                                                 <span className="text-[15px] inline-block mt-5">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.</span>
                                             </Col>
@@ -180,7 +180,7 @@ const PengajuanOnGoing = () => {
                                                         bordered
                                                         scroll={{ x: 768 }}
                                                     />
-                                                     <CustomPagination
+                                                    <CustomPagination
                                                         data={data}
                                                         pagination={pagination}
                                                         changeLimit={(perPage) => {
@@ -212,4 +212,4 @@ const PengajuanOnGoing = () => {
     )
 }
 
-export default PengajuanOnGoing
+export default PengajuanPending;

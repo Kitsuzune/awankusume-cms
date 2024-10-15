@@ -192,9 +192,14 @@ const TrackingOnGoing = () => {
                               <span className="text-[24px] inline-block">On Going</span>
                             </Col>
                             <Col className="flex gap-2">
-                              <Input.Search
-                                placeholder="Search..."
-                                onSearch={(value) => setSearch(value)}
+                              <Input.Search placeholder="Search..."
+                                onSearch={(value) => {
+                                  setSearch(value);
+                                  setPagination({
+                                    ...pagination,
+                                    page: 1,
+                                  });
+                                }}
                               />
                               <Button
                                 type="primary"

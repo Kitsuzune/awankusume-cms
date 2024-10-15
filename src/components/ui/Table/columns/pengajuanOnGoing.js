@@ -1,18 +1,28 @@
 export const pengajuanOnGoingColumns = [
     {
-        title: '#',
-        dataIndex: 'number',
-        key: 'number',
+        title: 'Serial Code',
+        dataIndex: 'serialCode',
+        key: 'serialCode',
     },
     {
         title: 'Nama',
-        dataIndex: 'nama',
-        key: 'nama',
+        dataIndex: 'fullName',
+        key: 'fullName',
     },
     {
         title: 'Date',
-        dataIndex: 'date',
-        key: 'date',
+        dataIndex: 'createdAt',
+        key: 'createdAt',
+    },
+    {
+        title: 'Badan Usaha',
+        dataIndex: 'badanUsaha',
+        key: 'badanUsaha',
+    },
+    {
+        title: 'Jenis Legalitas',
+        dataIndex: 'jenisLegalitas',
+        key: 'jenisLegalitas'
     },
     {
         title: 'Komisi',

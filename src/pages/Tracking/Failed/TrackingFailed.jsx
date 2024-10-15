@@ -91,7 +91,7 @@ const TrackingFailed = () => {
                   <Form
                     form={form}
                     initialValues={{ status: record.status }}
-                    onFinish={(values) => {handleEdit(record.id, values)}}
+                    onFinish={(values) => { handleEdit(record.id, values) }}
                   >
                     <Row>
                       <Col span={24}>
@@ -192,9 +192,14 @@ const TrackingFailed = () => {
                               <span className="text-[24px] inline-block">Cancel</span>
                             </Col>
                             <Col className="flex gap-2">
-                              <Input.Search
-                                placeholder="Search..."
-                                onSearch={(value) => setSearch(value)}
+                              <Input.Search placeholder="Search..."
+                                onSearch={(value) => {
+                                  setSearch(value);
+                                  setPagination({
+                                    ...pagination,
+                                    page: 1,
+                                  });
+                                }}
                               />
                               <Button
                                 type="primary"

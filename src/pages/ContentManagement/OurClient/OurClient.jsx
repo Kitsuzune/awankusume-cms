@@ -53,7 +53,6 @@ const OurClient = () => {
         }
     };
 
-
     useEffect(() => {
         fetchData();
     }, [pagination.page, pagination.perPage, search]);
@@ -258,7 +257,6 @@ const OurClient = () => {
                                         </Col>
                                     </Row>
                                 </div>
-
                             </div>
                         </Col>
                     </Row>
