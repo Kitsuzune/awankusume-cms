@@ -7,6 +7,7 @@ import PartnershipEdit from "../pages/ContentManagement/Partnership/PartnershipE
 import UserEdit from "../pages/Users/UserEdit";
 import SettingProfile from "../pages/ProfileSettings/SettingProfile";
 import PostEdit from "../pages/Post/PostEdit";
+import FaqEdit from "../pages/Faq/FaqEdit";
 export default function AdditionalRoutes() {
   return (
     <Routes>
@@ -32,6 +33,10 @@ export default function AdditionalRoutes() {
       {/* // Content -> Partnership */}
       <Route path="/app/content/partnership/:id" element={<PartnershipEdit />} />
       <Route path="/app/content/partnership/add" element={<PartnershipEdit />} />
+
+      {/* Faq */}
+      <Route path="/app/faq/:id" element={<FaqEdit />} />
+      <Route path="/app/faq/add" element={<FaqEdit />} />
 
       {/* // Post */}
       <Route path="/app/post/:id" element={<PostEdit />} />

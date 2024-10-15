@@ -37,6 +37,7 @@ import Faq from "./pages/Faq/Faq";
 import PengajuanFailed from "./pages/Pengajuan/Failed/PengajuanFailed";
 import LogOut from "./pages/LogOut/LogOut";
 import TrackingPending from "./pages/Tracking/Pending/TrackingPending";
+import FaqNew from "./pages/Faq/FaqNew";
 
 const iconClasses = `h-6 w-6`;
 const submenuIconClasses = `h-5 w-5`;
@@ -104,7 +105,7 @@ export const routes = [
         path: '/app/faq',
         icon: <FaComments className={iconClasses} />,
         name: 'FAQ',
-        component: Faq,
+        component: FaqNew,
       }
     ],
   },

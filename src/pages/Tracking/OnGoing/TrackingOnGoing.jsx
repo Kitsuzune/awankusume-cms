@@ -211,18 +211,7 @@ const TrackingOnGoing = () => {
                           <Table
                             dataSource={data}
                             columns={columnsWithActions}
-                            pagination={{
-                              current: pagination.page,
-                              pageSize: pagination.perPage,
-                              total: pagination.totalData,
-                              onChange: (page, pageSize) => {
-                                setPagination({
-                                  ...pagination,
-                                  page,
-                                  perPage: pageSize,
-                                });
-                              },
-                            }}
+                            pagination={false}
                             bordered
                             scroll={{ x: 768 }}
                           />
