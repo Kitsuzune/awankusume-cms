@@ -1,13 +1,8 @@
 export const trackingColumns = [
     {
-        title: '#',
-        dataIndex: 'number',
-        key: 'number',
-    },
-    {
         title: 'Nama',
-        dataIndex: 'nama',
-        key: 'nama',
+        dataIndex: 'fullName',
+        key: 'fullName',
     },
     {
         title: 'Serial-Code',
@@ -23,5 +18,10 @@ export const trackingColumns = [
         title: 'Jenis Legalitas',
         dataIndex: 'jenisLegalitas',
         key: 'jenisLegalitas'
+    },
+    {
+        title: 'Tanggal',
+        dataIndex: 'createdAt',
+        key: 'createdAt',
     },
 ];

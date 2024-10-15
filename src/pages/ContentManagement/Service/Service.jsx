@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Row, Col, Button, Input, Form, Tag, Table, message } from 'antd';
+import { Row, Col, Button, Input, Form, Tag, Table, message, Modal } from 'antd';
 import ImagePreviewUploader from '../../../components/ui/File Upload/ImagePreview';
 import { CustomPagination } from '../../../components/ui/Table/CustomPagination';
 import { PlusOutlined } from '@ant-design/icons';
@@ -41,6 +41,18 @@ const Service = () => {
             message.error(error.response.data.message);
         }
     };
+
+    const handleDelete = async (uuid) => {
+        try {
+            await apiRequest('delete', `/content/service-content/${uuid}`);
+            fetchData();
+            message.success('Data deleted successfully');
+            Modal.destroyAll();
+        } catch (error) {
+            message.error(error.response?.data?.message ? error.response?.data?.message : 'Error While Deleting Data');
+        }
+    };
+
 
     useEffect(() => {
         fetchData();
@@ -125,7 +137,38 @@ const Service = () => {
                             navigate(`/app/content/service/${record.uuid}`)
                         }}
                     />
-                    <CiTrash className='text-2xl text-center text-second cursor-pointer hover:text-main' />
+                    <CiTrash className="text-2xl text-center text-second cursor-pointer hover:text-main"
+                        onClick={() => {
+                            Modal.info({
+                                title: 'Delete Data',
+                                centered: true,
+                                content: (
+                                    <React.Fragment>
+                                        <div>Are you sure you want to delete this data?</div>
+                                        <div className="mt-5 flex justify-end">
+                                            <Button
+                                                type="default"
+                                                className="mr-2"
+                                                onClick={() => {
+                                                    Modal.destroyAll();
+                                                }}
+                                            >
+                                                Cancel
+                                            </Button>
+                                            <Button
+                                                type="primary"
+                                                className="bg-main"
+                                                onClick={() => handleDelete(record.uuid)}
+                                            >
+                                                Delete
+                                            </Button>
+                                        </div>
+                                    </React.Fragment>
+                                ),
+                                footer: null,
+                            });
+                        }}
+                    />
                 </div>
             ),
         },
@@ -158,7 +201,7 @@ const Service = () => {
                                                         <span className='text-[24px] inline-block'>List Service</span>
                                                     </Col>
                                                     <Col className="flex gap-2">
-                                                    <Input.Search placeholder="Search..."
+                                                        <Input.Search placeholder="Search..."
                                                             onSearch={(value) => {
                                                                 setSearch(value);
                                                                 setPagination({
@@ -167,13 +210,13 @@ const Service = () => {
                                                                 });
                                                             }}
                                                         />
-                                                         <Button type="primary"
-                                                                onClick={() => {
-                                                                    navigate(`/app/content/service/add`);
-                                                                }}>
-                                                                Add New
-                                                                <PlusOutlined />
-                                                            </Button>
+                                                        <Button type="primary"
+                                                            onClick={() => {
+                                                                navigate(`/app/content/service/add`);
+                                                            }}>
+                                                            Add New
+                                                            <PlusOutlined />
+                                                        </Button>
                                                     </Col>
                                                 </Row>
 

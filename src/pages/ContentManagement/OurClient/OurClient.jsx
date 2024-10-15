@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Row, Col, Button, Input, Form, Tag, Table, message } from 'antd';
+import { Row, Col, Button, Input, Form, Tag, Table, message, Modal } from 'antd';
 import ImagePreviewUploader from '../../../components/ui/File Upload/ImagePreview';
 import { CustomPagination } from '../../../components/ui/Table/CustomPagination';
 import { PlusOutlined } from '@ant-design/icons';
@@ -41,6 +41,18 @@ const OurClient = () => {
             message.error(error.response.data.message);
         }
     };
+
+    const handleDelete = async (uuid) => {
+        try {
+            await apiRequest('delete', `/content/ourclient/${uuid}`);
+            fetchData();
+            message.success('Data deleted successfully');
+            Modal.destroyAll();
+        } catch (error) {
+            message.error(error.response?.data?.message ? error.response?.data?.message : 'Error While Deleting Data');
+        }
+    };
+
 
     useEffect(() => {
         fetchData();
@@ -135,7 +147,38 @@ const OurClient = () => {
                             navigate(`/app/content/our-client/${record.uuid}`)
                         }}
                     />
-                    <CiTrash className='text-2xl text-center text-second cursor-pointer hover:text-main' />
+                    <CiTrash className="text-2xl text-center text-second cursor-pointer hover:text-main"
+                        onClick={() => {
+                            Modal.info({
+                                title: 'Delete Data',
+                                centered: true,
+                                content: (
+                                    <React.Fragment>
+                                        <div>Are you sure you want to delete this data?</div>
+                                        <div className="mt-5 flex justify-end">
+                                            <Button
+                                                type="default"
+                                                className="mr-2"
+                                                onClick={() => {
+                                                    Modal.destroyAll();
+                                                }}
+                                            >
+                                                Cancel
+                                            </Button>
+                                            <Button
+                                                type="primary"
+                                                className="bg-main"
+                                                onClick={() => handleDelete(record.uuid)}
+                                            >
+                                                Delete
+                                            </Button>
+                                        </div>
+                                    </React.Fragment>
+                                ),
+                                footer: null,
+                            });
+                        }}
+                    />
                 </div>
             ),
         },
@@ -178,9 +221,9 @@ const OurClient = () => {
                                                             }}
                                                         />
                                                         <Button type="primary"
-                                                        onClick={() => {
-                                                            navigate(`/app/content/our-client/add`)
-                                                        }}>
+                                                            onClick={() => {
+                                                                navigate(`/app/content/our-client/add`)
+                                                            }}>
                                                             Add New
                                                             <PlusOutlined />
                                                         </Button>

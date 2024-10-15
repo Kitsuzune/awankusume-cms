@@ -99,7 +99,6 @@ const FormOrder = () => {
                       <Form.Item
                         name="customerId"
                         label="Customer :"
-                        rules={[{ required: true, message: 'Please enter the customer name' }]}
                       >
                         <Select
                           showSearch
@@ -123,7 +122,6 @@ const FormOrder = () => {
                       <Form.Item
                         name="makelarId"
                         label="Makelar :"
-                        rules={[{ required: true, message: 'Please enter the makelar name' }]}
                       >
                         <Select
                           showSearch
