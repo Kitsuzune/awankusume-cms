@@ -14,6 +14,7 @@ const ServiceEditStep1 = ({ image, setImage, onNext, id, setId, data, setData, l
     const [isEditing, setIsEditing] = useState(location.state?.edit || false);
     const navigate = useNavigate();
     const [nextPageType, setNextPageType] = useState(false);
+    const [active, setActive] = useState(false);
 
     const fetchData = async (localId) => {
         try {
@@ -30,6 +31,7 @@ const ServiceEditStep1 = ({ image, setImage, onNext, id, setId, data, setData, l
                 show: dataLanguage.show === '1' ? true : false,
             });
 
+            setActive(dataLanguage.show == '1' ? true : false);
             setImage(`${process.env.REACT_APP_API_URL_CSM}/public/service/${dataLanguage.image}`);
             setImageCurrent(`${process.env.REACT_APP_API_URL_CSM}/public/service/${dataLanguage.image}`);
             setLoading(false);
@@ -44,14 +46,8 @@ const ServiceEditStep1 = ({ image, setImage, onNext, id, setId, data, setData, l
     };
 
     const handleCancel = () => {
-        const dataLanguage = data.filter((item) => item.languageId === language)[0];
-        form.setFieldsValue({
-            title: dataLanguage.title,
-            subTitle: dataLanguage.subTitle,
-            show: dataLanguage.show,
-            image: dataLanguage.image,
-        });
         setIsEditing(false);
+        navigate(0);
     };
 
     const handleSubmit = async () => {
@@ -65,7 +61,7 @@ const ServiceEditStep1 = ({ image, setImage, onNext, id, setId, data, setData, l
             const sendData = {
                 title: form.getFieldValue('title'),
                 subTitle: form.getFieldValue('subTitle'),
-                show: form.getFieldValue('show') ? '1' : '0',
+                show: active ? '1' : '0',
             }
 
             if (fileToSend) {
@@ -143,7 +139,12 @@ const ServiceEditStep1 = ({ image, setImage, onNext, id, setId, data, setData, l
                 <Row>
                     <Col span={24} className='flex justify-end gap-3'>
                         <span className='text-[15px]'>Hide</span>
-                        <Switch defaultChecked />
+                        <Switch
+                            checked={active}
+                            className='mx-2'
+                            disabled={!isEditing}
+                            onClick={() => setActive(!active)}
+                        />
                         <span className='text-[15px]'>Show</span>
                     </Col>
                 </Row>
@@ -222,7 +223,7 @@ const ServiceEditStep1 = ({ image, setImage, onNext, id, setId, data, setData, l
 
                 <Row>
                     <Col span={24} className='flex justify-center'>
-                        <Button type="primary" className='bg-main' onClick={onNext} disabled={!nextPageType}>
+                        <Button type="primary" className='bg-main' onClick={onNext} disabled={!nextPageType || !isEditing}>
                             Next Page
                         </Button>
                     </Col>

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Col, Form, Input, Switch, Button, Select, message } from 'antd';
+import { Row, Col, Form, Input, Switch, Button, Select, message, Modal } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { apiRequest } from '../../../../../utils/api';
+import { CiEdit, CiTrash } from 'react-icons/ci';
 
 const ServiceSyaratPage = ({ data, language, setData }) => {
     const [services, setServices] = useState([]);
@@ -20,11 +21,23 @@ const ServiceSyaratPage = ({ data, language, setData }) => {
                     discount: item.discount,
                     benefit: item.benefit,
                     syarat: item.syarat,
-                    show: item.show === '1' ? true : false,
+                    uuid: item.uuid,
+                    show: item.show == 1 ? true : false,
                 })));
             }
         } catch (error) {
             message.error(error.response?.data?.message ? error.response?.data?.message : 'Server Unreachable, Please Check Your Internet Connection');
+        }
+    };
+
+    const handleDelete = async (uuid) => {
+        try {
+            await apiRequest('delete', `/content/service-detail/${uuid}`);
+            fetchServices();
+            message.success('Data deleted successfully');
+            Modal.destroyAll();
+        } catch (error) {
+            message.error(error.response?.data?.message ? error.response?.data?.message : 'Error While Deleting Data');
         }
     };
 
@@ -50,7 +63,7 @@ const ServiceSyaratPage = ({ data, language, setData }) => {
             }
             if (response.status === 200) {
                 message.success('Data Updated');
-                fetchServices(); 
+                fetchServices();
             }
         } catch (error) {
             message.error(error.response?.data?.message ? error.response?.data?.message : 'Failed to update data');
@@ -109,8 +122,8 @@ const ServiceSyaratPage = ({ data, language, setData }) => {
                             <Col span={24} className='flex justify-end gap-3'>
                                 <span className='text-[15px]'>Hide</span>
                                 <Switch
-                                    defaultChecked={service.show}
-                                    onChange={(checked) => handleInputChange(index, 'show', checked)}
+                                    checked={service.show}
+                                    onClick={(value) => handleInputChange(index, 'show', value)}
                                 />
                                 <span className='text-[15px]'>Show</span>
                             </Col>
@@ -183,8 +196,8 @@ const ServiceSyaratPage = ({ data, language, setData }) => {
                                         tokenSeparators={[',']}
                                         onChange={(value) => handleInputChange(index, 'benefit', value)}
                                         options={[
-                                            { value: '1', label: 'Option 1' },
-                                            { value: '2', label: 'Option 2' },
+                                            { value: 'Option 1', label: 'Option 1' },
+                                            { value: 'Option 2', label: 'Option 2' },
                                         ]}
                                     />
                                 </Form.Item>
@@ -203,8 +216,8 @@ const ServiceSyaratPage = ({ data, language, setData }) => {
                                         tokenSeparators={[',']}
                                         onChange={(value) => handleInputChange(index, 'syarat', value)}
                                         options={[
-                                            { value: '1', label: 'Option 1' },
-                                            { value: '2', label: 'Option 2' },
+                                            { value: 'Option 1', label: 'Option 1' },
+                                            { value: 'Option 2', label: 'Option 2' },
                                         ]}
                                     />
                                 </Form.Item>
@@ -212,7 +225,40 @@ const ServiceSyaratPage = ({ data, language, setData }) => {
                         </Row>
 
                         <div className="mt-5 flex justify-end">
-                            <Button type="default" className="mr-2">Cancel</Button>
+                            {service.id ? (
+                                <Button type="default" className="mr-2"
+                                    onClick={() => {
+                                        Modal.info({
+                                            title: 'Delete Data',
+                                            centered: true,
+                                            content: (
+                                                <React.Fragment>
+                                                    <div>Are you sure you want to delete this data?</div>
+                                                    <div className="mt-5 flex justify-end">
+                                                        <Button
+                                                            type="default"
+                                                            className="mr-2"
+                                                            onClick={() => {
+                                                                Modal.destroyAll();
+                                                            }}
+                                                        >
+                                                            Cancel
+                                                        </Button>
+                                                        <Button
+                                                            type="primary"
+                                                            className="bg-main"
+                                                            onClick={() => handleDelete(service.uuid)}
+                                                        >
+                                                            Delete
+                                                        </Button>
+                                                    </div>
+                                                </React.Fragment>
+                                            ),
+                                            footer: null,
+                                        });
+                                    }}
+                                >Delete</Button>
+                            ) : <Button type="default" className="mr-2" onClick={() => setServices(services.filter((item, i) => i !== index))}  >Cancel</Button>}
                             <Button type="primary" className='bg-main' onClick={() => handleSubmit(index, service.id ? 'update' : 'add', service.id)}>Save</Button>
                         </div>
                     </div>

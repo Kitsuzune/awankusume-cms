@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Col, Form, Input, Switch, Button, Select, message } from 'antd';
+import { Row, Col, Form, Input, Switch, Button, Select, message, Modal } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { apiRequest } from '../../../../../utils/api';
 
@@ -18,11 +18,23 @@ const FaqPage = ({ data, language, setData }) => {
                     subTitle: item.subTitle,
                     question: item.question,
                     answer: item.answer,
-                    show: item.show === '1' ? true : false,
+                    uuid: item.uuid,
+                    show: item.show == 1 ? true : false,
                 })));
             }
         } catch (error) {
             message.error(error.response?.data?.message ? error.response?.data?.message : 'Server Unreachable, Please Check Your Internet Connection');
+        }
+    };
+
+    const handleDelete = async (uuid) => {
+        try {
+            await apiRequest('delete', `/content/faq/${uuid}`);
+            fetchServices();
+            message.success('Data deleted successfully');
+            Modal.destroyAll();
+        } catch (error) {
+            message.error(error.response?.data?.message ? error.response?.data?.message : 'Error While Deleting Data');
         }
     };
 
@@ -100,7 +112,10 @@ const FaqPage = ({ data, language, setData }) => {
                             <Row>
                                 <Col span={24} className='flex justify-end gap-3'>
                                     <span className='text-[15px]'>Hide</span>
-                                    <Switch defaultChecked={item.show} onChange={(value) => handleInputChange(index, 'show', value)} />
+                                    <Switch
+                                        checked={item.show}
+                                        onClick={(value) => handleInputChange(index, 'show', value)}
+                                    />
                                     <span className='text-[15px]'>Show</span>
                                 </Col>
                             </Row>
@@ -120,18 +135,18 @@ const FaqPage = ({ data, language, setData }) => {
                             </Row>
 
                             <Row>
-                            <Col span={24}>
-                                <Form.Item
-                                    name={`subTitle${index}`}
-                                    label={`Sub Title ${index + 1} :`}
-                                >
-                                    <Input
-                                        onChange={(e) => handleInputChange(index, 'subTitle', e.target.value)}
-                                        placeholder="Enter subtitle"
-                                    />
-                                </Form.Item>
-                            </Col>
-                        </Row>
+                                <Col span={24}>
+                                    <Form.Item
+                                        name={`subTitle${index}`}
+                                        label={`Sub Title ${index + 1} :`}
+                                    >
+                                        <Input
+                                            onChange={(e) => handleInputChange(index, 'subTitle', e.target.value)}
+                                            placeholder="Enter subtitle"
+                                        />
+                                    </Form.Item>
+                                </Col>
+                            </Row>
 
                             <Row>
                                 <Col span={24}>
@@ -160,10 +175,42 @@ const FaqPage = ({ data, language, setData }) => {
                                 </Col>
                             </Row>
 
-
                             <div className="mt-5 flex justify-end">
-                            <Button type="default" className="mr-2">Cancel</Button>
-                            <Button type="primary" className='bg-main' onClick={() => handleSubmit(index, item.id ? 'update' : 'add', item.id)}>Save</Button>
+                            {item.id ? (
+                                <Button type="default" className="mr-2"
+                                    onClick={() => {
+                                        Modal.info({
+                                            title: 'Delete Data',
+                                            centered: true,
+                                            content: (
+                                                <React.Fragment>
+                                                    <div>Are you sure you want to delete this data?</div>
+                                                    <div className="mt-5 flex justify-end">
+                                                        <Button
+                                                            type="default"
+                                                            className="mr-2"
+                                                            onClick={() => {
+                                                                Modal.destroyAll();
+                                                            }}
+                                                        >
+                                                            Cancel
+                                                        </Button>
+                                                        <Button
+                                                            type="primary"
+                                                            className="bg-main"
+                                                            onClick={() => handleDelete(item.uuid)}
+                                                        >
+                                                            Delete
+                                                        </Button>
+                                                    </div>
+                                                </React.Fragment>
+                                            ),
+                                            footer: null,
+                                        });
+                                    }}
+                                >Delete</Button>
+                            ) : <Button type="default" className="mr-2" onClick={() => setServices(services.filter((item, i) => i !== index))}  >Cancel</Button>}
+                                <Button type="primary" className='bg-main' onClick={() => handleSubmit(index, item.id ? 'update' : 'add', item.id)}>Save</Button>
                             </div>
                         </div>
                     </Form>

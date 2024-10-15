@@ -20,9 +20,9 @@ const ServiceEditStep2 = ({ desainId, setDesainId, data, language, showcase, set
 
             <FaqPage data={data} language={language} setData={setData} />
 
-            <ArtikelPage />
+            <ArtikelPage data={data} language={language} setData={setData} />
 
-            <PromoPage />
+            <PromoPage data={data} language={language} setData={setData} />
 
             <div className="mt-5 flex justify-end">
                 <Button type="default" className="mr-2">Cancel</Button>

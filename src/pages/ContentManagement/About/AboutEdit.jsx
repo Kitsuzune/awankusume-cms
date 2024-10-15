@@ -50,15 +50,8 @@ const AboutEdit = () => {
     };
 
     const handleCancel = () => {
-        const dataLanguage = data.filter((item) => item.languageId === language)[0];
-        form.setFieldsValue({
-            title: dataLanguage.title,
-            subTitle: dataLanguage.subTitle,
-            link: dataLanguage.link,
-            show: dataLanguage.show,
-            image: dataLanguage.image,
-        });
         setIsEditing(false);
+        navigate(0);
     };
 
     const handleSubmit = async () => {

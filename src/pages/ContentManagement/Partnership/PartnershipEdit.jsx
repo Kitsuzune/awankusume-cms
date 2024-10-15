@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import Flag from 'react-world-flags';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { apiRequest } from '../../../utils/api';
+import Loading from '../../../components/ui/Loading/Loading';
 
 const PartnershipEdit = () => {
     const [id, setId] = useState(useParams().id);
@@ -16,6 +17,7 @@ const PartnershipEdit = () => {
     const location = useLocation();
     const [isEditing, setIsEditing] = useState(location.state?.edit || false);
     const navigate = useNavigate();
+    const [active, setActive] = useState(false);
 
     const fetchData = async (localId) => {
         try {
@@ -31,8 +33,9 @@ const PartnershipEdit = () => {
                 show: dataLanguage.show === '1' ? true : false,
             });
 
-            setImage(`${process.env.REACT_APP_API_URL_CSM}/public/partnership/${dataLanguage.image}`);
-            setImageCurrent(`${process.env.REACT_APP_API_URL_CSM}/public/partnership/${dataLanguage.image}`);
+            setActive(dataLanguage.show == '1' ? true : false);
+            setImage(`${process.env.REACT_APP_API_URL_CSM}/public/partner/${dataLanguage.image}`);
+            setImageCurrent(`${process.env.REACT_APP_API_URL_CSM}/public/partner/${dataLanguage.image}`);
             setLoading(false);
         } catch (error) {
             setLoading(false);
@@ -45,13 +48,8 @@ const PartnershipEdit = () => {
     };
 
     const handleCancel = () => {
-        form.setFieldsValue({
-            title: data.title,
-            link: data.link,
-            show: data.show,
-            image: data.image,
-        });
         setIsEditing(false);
+        navigate(0);
     };
 
     const handleSubmit = async () => {
@@ -63,7 +61,7 @@ const PartnershipEdit = () => {
             const sendData = {
                 title: form.getFieldValue('title'),
                 link: form.getFieldValue('link'),
-                show: form.getFieldValue('show') ? '1' : '0',
+                show: active ? '1' : '0',
             }
 
             if (fileToSend) {
@@ -112,89 +110,95 @@ const PartnershipEdit = () => {
 
 
     return (
-        <Row className="w-full">
-            <Col span={24}>
-                <div className="rounded-lg">
-                    <Row>
-                        <Col span={24}>
-                            <div className="flex flex-col">
-                                <div className='bg-white p-5 rounded-lg'>
-                                    <Row>
-                                        <Col span={24}>
-                                            <div className='text-[24px] text-main inline-block'>
-                                                Partnership / {id}
+        <>
+            <Row className="w-full">
+                <Col span={24}>
+                    <div className="rounded-lg">
+                        <Row>
+                            <Col span={24}>
+                                <div className="flex flex-col">
+                                    <div className='bg-white p-5 rounded-lg'>
+                                        <Row>
+                                            <Col span={24}>
+                                                <div className='text-[24px] text-main inline-block'>
+                                                    Partnership / {id}
+                                                </div>
+                                            </Col>
+                                        </Row>
+                                    </div>
+
+                                    <div className="mt-5 p-10 bg-white border rounded-lg">
+                                        <Form layout="vertical" form={form}>
+                                            <Row>
+                                                <Col span={24}>
+                                                    <Form.Item
+                                                        name="image"
+                                                        label="Image"
+                                                        rules={[{ required: true, message: 'Please upload an image' }]}
+                                                    >
+                                                        <ImagePreviewUploader image={image} setImage={setImage} name="image" disabled={!isEditing} />
+                                                    </Form.Item>
+                                                </Col>
+                                            </Row>
+
+                                            <Row>
+                                                <Col span={24} className='flex justify-end gap-3'>
+                                                    <span className='text-[15px]'>Hide</span>
+                                                    <Switch
+                                                        checked={active}
+                                                        className='mx-2'
+                                                        disabled={!isEditing}
+                                                        onClick={() => setActive(!active)}
+                                                    />
+                                                    <span className='text-[15px]'>Show</span>
+                                                </Col>
+                                            </Row>
+
+                                            <Row>
+                                                <Col span={24}>
+                                                    <Form.Item
+                                                        name="title"
+                                                        label="Title"
+                                                        rules={[{ required: true, message: 'Please enter a title' }]}
+                                                    >
+                                                        <Input placeholder="Enter title" disabled={!isEditing} />
+                                                    </Form.Item>
+                                                </Col>
+                                            </Row>
+
+                                            <Row>
+                                                <Col span={24}>
+                                                    <Form.Item
+                                                        name="link"
+                                                        label="Link"
+                                                        rules={[{ required: true, message: 'Please enter a URL' }]}
+                                                    >
+                                                        <Input placeholder="Enter URL" disabled={!isEditing} />
+                                                    </Form.Item>
+                                                </Col>
+                                            </Row>
+
+                                            <div className="mt-5 flex justify-end">
+                                                {isEditing ? (
+                                                    <>
+                                                        <Button type="default" className="mr-2" onClick={handleCancel}>Cancel</Button>
+                                                        <Button type="primary" className='bg-main' onClick={handleSubmit}>Save</Button>
+                                                    </>
+                                                ) : (
+                                                    <Button type="primary" className='bg-main px-10 py-5' onClick={handleEdit}>Edit</Button>
+                                                )}
                                             </div>
-                                        </Col>
-                                    </Row>
+                                        </Form>
+                                    </div>
+
                                 </div>
-
-                                <div className="mt-5 p-10 bg-white border rounded-lg">
-                                    <Form layout="vertical" form={form}>
-                                        <Row>
-                                            <Col span={24}>
-                                                <Form.Item
-                                                    name="image"
-                                                    label="Image"
-                                                    rules={[{ required: true, message: 'Please upload an image' }]}
-                                                >
-                                                    <ImagePreviewUploader image={image} setImage={setImage} name="image" disabled={!isEditing} />
-                                                </Form.Item>
-                                            </Col>
-                                        </Row>
-
-                                        <Row>
-                                            <Col span={24} className='flex justify-end gap-3'>
-                                                <span className='text-[15px]'>Hide</span>
-                                                <Switch
-                                                    defaultChecked
-                                                />
-                                                <span className='text-[15px]'>Show</span>
-                                            </Col>
-                                        </Row>
-
-                                        <Row>
-                                            <Col span={24}>
-                                                <Form.Item
-                                                    name="title"
-                                                    label="Title"
-                                                    rules={[{ required: true, message: 'Please enter a title' }]}
-                                                >
-                                                    <Input placeholder="Enter title" disabled={!isEditing} />
-                                                </Form.Item>
-                                            </Col>
-                                        </Row>
-
-                                        <Row>
-                                            <Col span={24}>
-                                                <Form.Item
-                                                    name="link"
-                                                    label="Link"
-                                                    rules={[{ required: true, message: 'Please enter a URL' }]}
-                                                >
-                                                    <Input placeholder="Enter URL" disabled={!isEditing} />
-                                                </Form.Item>
-                                            </Col>
-                                        </Row>
-
-                                        <div className="mt-5 flex justify-end">
-                                            {isEditing ? (
-                                                <>
-                                                    <Button type="default" className="mr-2" onClick={handleCancel}>Cancel</Button>
-                                                    <Button type="primary" className='bg-main' onClick={handleSubmit}>Save</Button>
-                                                </>
-                                            ) : (
-                                                <Button type="primary" className='bg-main px-10 py-5' onClick={handleEdit}>Edit</Button>
-                                            )}
-                                        </div>
-                                    </Form>
-                                </div>
-
-                            </div>
-                        </Col>
-                    </Row>
-                </div>
-            </Col>
-        </Row>
+                            </Col>
+                        </Row>
+                    </div>
+                </Col>
+            </Row>
+            <Loading isLoading={loading} />
+        </>
     );
 };
 

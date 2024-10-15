@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { Row, Col, Button, Input, Form, Tag, Table, message } from 'antd';
+import { Row, Col, Button, Input, Form, Tag, Table, message, Modal } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { MdOutlineContentCopy } from 'react-icons/md';
 import { CiEdit, CiTrash } from 'react-icons/ci';
 import { useNavigate } from 'react-router-dom';
 import { CustomPagination } from '../../components/ui/Table/CustomPagination';
+import { apiRequest } from '../../utils/api';
 
 const FaqNew = () => {
     const navigate = useNavigate();
@@ -14,39 +15,53 @@ const FaqNew = () => {
         key: 'id',
         order: 'desc',
     });
+    const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(false);
 
+    const fetchData = async () => {
+        setLoading(true);
+        try {
+            const response = await apiRequest('get', '/content/faq', {}, {
+                page: pagination.page,
+                perPage: pagination.perPage,
+                where: search,
+                orderBy: `${order.key}:${order.order}`,
+            });
+            setData(response.data.data.map((item) => ({
+                ...item,
+                key: item.id,
+            })));
 
-    const data = [
-        {
-            id: 1,
-            title: 'What is Lorem Ipsum?',
-            subTitle: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
-            question: 'What is Lorem Ipsum?',
-            answer: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
-            show: 1,
-        },
-        {
-            id: 2,
-            title: 'What is Lorem Ipsum?',
-            subTitle: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
-            question: 'What is Lorem Ipsum?',
-            answer: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
-            show: 1,
-        },
+            setPagination({
+                page: response.data.meta.currentPage,
+                perPage: response.data.meta.perPage,
+                totalData: response.data.meta.total,
+            });
 
-    ];
+            setLoading(false);
+
+        } catch (error) {
+            setLoading(false);
+            message.error(error.response?.data?.message ? error.response?.data?.message : 'Error While Fetching Data');
+        }
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, [pagination.page, pagination.perPage, search]);
+
+    const handleDelete = async (uuid) => {
+        try {
+            await apiRequest('delete', `/content/faq/${uuid}`);
+            fetchData();
+            message.success('Data deleted successfully');
+            Modal.destroyAll();
+        } catch (error) {
+            message.error(error.response?.data?.message ? error.response?.data?.message : 'Error While Deleting Data');
+        }
+    };
 
     const columnsWithActions = [
-        {
-            title: 'id',
-            dataIndex: 'id',
-            key: 'id',
-            render: (text, record) => (
-                <div className='cursor-pointer'>
-                    {text}
-                </div>
-            ),
-        },
         {
             title: 'Title',
             dataIndex: 'title',
@@ -122,10 +137,41 @@ const FaqNew = () => {
                 <div className='flex gap-2'>
                     <CiEdit className='text-2xl text-center text-second cursor-pointer hover:text-main'
                         onClick={() => {
-                            navigate(`/app/content/our-client/${record.uuid}`)
+                            navigate(`/app/faq/${record.uuid}`)
                         }}
                     />
-                    <CiTrash className='text-2xl text-center text-second cursor-pointer hover:text-main' />
+                    <CiTrash className="text-2xl text-center text-second cursor-pointer hover:text-main"
+                        onClick={() => {
+                            Modal.info({
+                                title: 'Delete Data',
+                                centered: true,
+                                content: (
+                                    <React.Fragment>
+                                        <div>Are you sure you want to delete this data?</div>
+                                        <div className="mt-5 flex justify-end">
+                                            <Button
+                                                type="default"
+                                                className="mr-2"
+                                                onClick={() => {
+                                                    Modal.destroyAll();
+                                                }}
+                                            >
+                                                Cancel
+                                            </Button>
+                                            <Button
+                                                type="primary"
+                                                className="bg-main"
+                                                onClick={() => handleDelete(record.uuid)}
+                                            >
+                                                Delete
+                                            </Button>
+                                        </div>
+                                    </React.Fragment>
+                                ),
+                                footer: null,
+                            });
+                        }}
+                    />
                 </div>
             ),
         },
@@ -159,12 +205,18 @@ const FaqNew = () => {
                                                     </Col>
                                                     <Col className="flex gap-2">
                                                         <Input.Search placeholder="Search..."
-  
+                                                            onSearch={(value) => {
+                                                                setSearch(value);
+                                                                setPagination({
+                                                                    ...pagination,
+                                                                    page: 1,
+                                                                });
+                                                            }}
                                                         />
                                                         <Button type="primary"
-                                                        onClick={() => {
-                                                            navigate(`/app/faq/add`)
-                                                        }}>
+                                                            onClick={() => {
+                                                                navigate(`/app/faq/add`)
+                                                            }}>
                                                             Add New
                                                             <PlusOutlined />
                                                         </Button>

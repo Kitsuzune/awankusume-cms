@@ -1,19 +1,124 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Button, Input, Form, Switch, Select, message, Modal } from 'antd';
-import { useParams } from 'react-router-dom';
+import ImagePreviewUploader from '../../components/ui/File Upload/ImagePreview';
+import { useParams, useLocation } from 'react-router-dom';
 import Flag from 'react-world-flags';
+import { apiRequest } from '../../utils/api';
+import Loading from '../../components/ui/Loading/Loading';
+import Draggable from '../../components/ui/File Upload/Draggable';
 import { useNavigate } from 'react-router-dom';
 
 const FaqEdit = () => {
     const [ id, setId ] = useState(useParams().id);
-    const [image, setImage] = useState(null);
-    const [imageCurrent, setImageCurrent] = useState(null);
     const [form] = Form.useForm();
     const [data, setData] = useState([]);
     const [language, setLanguage] = useState(1);
     const [loading, setLoading] = useState(false);
+    const location = useLocation();
+    const [isEditing, setIsEditing] = useState(location.state?.edit || false);
     const navigate = useNavigate();
+    const [active, setActive] = useState(false);
 
+    const fetchData = async (localId) => {
+        try {
+            setLoading(true);
+            const response = await apiRequest('get', `/content/faq/${localId}`);
+            setData(response.data.data)
+
+            const dataLanguage = response.data.data.filter((item) => item.languageId === language)[0];
+
+            form.setFieldsValue({
+                title: dataLanguage.title,
+                subTitle: dataLanguage.subTitle,
+                question: dataLanguage.question,
+                answer: dataLanguage.answer,
+                show: dataLanguage.show == '1' ? true : false,
+            });
+            setActive(dataLanguage.show == '1' ? true : false);
+            setLoading(false);
+        } catch (error) {
+            setLoading(false);
+            message.error(error.response?.data?.message ? error.response?.data?.message : 'Server Unreachable, Please Check Your Internet Connection');
+        }
+    }
+
+    const handleEdit = () => {
+        setIsEditing(true);
+    };
+
+    const handleCancel = () => {
+        setIsEditing(false);
+        navigate(0);
+    };
+
+    const handleSubmit = async () => {
+        try {
+            setLoading(true);
+
+            const dataLanguage = data.filter((item) => item.languageId === language)[0];
+
+            const sendData = {
+                title: form.getFieldValue('title'),
+                subTitle: form.getFieldValue('subTitle'),
+                question: form.getFieldValue('question'),
+                answer: form.getFieldValue('answer'),
+                show: active ? '1' : '0',
+            }
+
+            let response;
+
+            if (id) {
+                response = await apiRequest('PATCH', `/content/faq/${dataLanguage.id}`, sendData);
+            } else {
+                response = await apiRequest('POST', `/content/faq`, sendData);
+            }
+
+            setLoading(false);
+
+            if (response.status === 200) {
+                Modal.success({
+                    title: 'Success',
+                    content: 'Data has been updated',
+                    centered: true,
+                });
+
+                let newUuid = null;
+                if (!id) {
+                    newUuid = response.data.data[0].uuid;
+                    navigate('/app/faq/' + newUuid);
+                    setId(newUuid);
+                }
+
+                fetchData(newUuid ? newUuid : id);
+            }
+
+        } catch (error) {
+            setLoading(false);
+            console.log(error);
+            message.error(error.response?.data?.message || 'Something went wrong');
+        }
+    }
+
+    useEffect(() => {
+        if (id) {
+            fetchData(id)
+        }
+    }, [])
+
+    useEffect(() => {
+        if (data.length === 0) return;
+        const dataLanguage = data.filter((item) => item.languageId === language)[0];
+
+        form.setFieldsValue({
+            title: dataLanguage.title,
+            subTitle: dataLanguage.subTitle,
+            question: dataLanguage.question,
+            answer: dataLanguage.answer,
+            show: dataLanguage.show == '1' ? true : false,
+        });
+
+        setActive(dataLanguage.show == '1' ? true : false);
+    }, [language])
 
     return (
         <Row className="w-full">
@@ -42,7 +147,12 @@ const FaqEdit = () => {
                                                     valuePropName="checked"
                                                 >
                                                     <span className='text-[15px]'>Hide</span>
-                                                    <Switch defaultChecked className='mx-2' />
+                                                    <Switch
+                                                            checked={active}
+                                                            className='mx-2'
+                                                            disabled={!isEditing}
+                                                            onClick={() => setActive(!active)}
+                                                        />
                                                     <span className='text-[15px]'>Show</span>
                                                 </Form.Item>
                                             </Col>
@@ -61,6 +171,7 @@ const FaqEdit = () => {
                                                         optionFilterProp="label"
                                                         onChange={(value) => setLanguage(value)}
                                                         defaultValue={1}
+                                                        disabled={!isEditing}
                                                         options={[
                                                             {
                                                                 value: 1,
@@ -102,7 +213,7 @@ const FaqEdit = () => {
                                                     label="Title"
                                                     rules={[{ required: true, message: 'Please enter a title' }]}
                                                 >
-                                                    <Input placeholder="Enter title" />
+                                                    <Input placeholder="Enter title"  disabled={!isEditing}/>
                                                 </Form.Item>
                                             </Col>
                                         </Row>
@@ -114,7 +225,7 @@ const FaqEdit = () => {
                                                     label="Sub Title"
                                                     rules={[{ required: true, message: 'Please enter a sub title' }]}
                                                 >
-                                                    <Input placeholder="Enter sub title" />
+                                                    <Input placeholder="Enter sub title" disabled={!isEditing} />
                                                 </Form.Item>
                                             </Col>
                                         </Row>
@@ -126,7 +237,7 @@ const FaqEdit = () => {
                                                     label="Question"
                                                     rules={[{ required: true, message: 'Please enter a question' }]}
                                                 >
-                                                    <Input placeholder="Enter question" />
+                                                    <Input placeholder="Enter question" disabled={!isEditing} />
                                                 </Form.Item>
                                             </Col>
                                         </Row>
@@ -138,15 +249,21 @@ const FaqEdit = () => {
                                                     label="Answer"
                                                     rules={[{ required: true, message: 'Please enter a answer' }]}
                                                 >
-                                                    <Input placeholder="Enter answer" />
+                                                    <Input placeholder="Enter answer" disabled={!isEditing}/>
                                                 </Form.Item>
                                             </Col>
                                         </Row>
 
                                         <div className="mt-5 flex justify-end">
-                                            <Button type="default" className="mr-2">Cancel</Button>
-                                            <Button type="primary" className='bg-main'>Save</Button>
-                                        </div>
+                                                {isEditing ? (
+                                                    <>
+                                                        <Button type="default" className="mr-2" onClick={handleCancel}>Cancel</Button>
+                                                        <Button type="primary" className='bg-main' onClick={handleSubmit}>Save</Button>
+                                                    </>
+                                                ) : (
+                                                    <Button type="primary" className='bg-main px-10 py-5' onClick={handleEdit}>Edit</Button>
+                                                )}
+                                            </div>
                                     </Form>
                                 </div>
 
