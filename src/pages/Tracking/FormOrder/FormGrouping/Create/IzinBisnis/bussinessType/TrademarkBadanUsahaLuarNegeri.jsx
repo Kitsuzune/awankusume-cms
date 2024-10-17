@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import { Col, Input, Row, Select, Form, Typography, Button, Radio, message } from 'antd'
-import Draggable from '../../../../../../components/ui/File Upload/Draggable';
-import { PiAlignBottomDuotone, PiBookBookmarkDuotone, PiBuildingOfficeDuotone, PiCalendarDuotone, PiCardholderDuotone, PiCardsThreeDuotone, PiCashRegisterDuotone, PiDiamondDuotone, PiIdentificationBadgeDuotone } from 'react-icons/pi';
-import { apiRequest } from '../../../../../../utils/api';
+import Draggable from '../../../../../../../components/ui/File Upload/Draggable';
+import { PiAlignBottomDuotone, PiBookBookmarkDuotone, PiBuildingOfficeDuotone, PiCalendarDuotone, PiCardholderDuotone, PiCardsThreeDuotone, PiCashRegisterDuotone, PiChalkboardDuotone, PiDotsSixVerticalDuotone, PiIdentificationBadgeDuotone } from 'react-icons/pi';
+import { apiRequest } from '../../../../../../../utils/api';
 
 const { Option } = Select;
 
-const TrademarkLuarNegeriPerorangan = ({ customerId, makelarId }) => {
+const TrademarkBadanUsahaLuarNegeri = ({ customerId, makelarId }) => {
     const [data, setData] = useState({
         fullName: '',
         email: '',
@@ -30,9 +30,9 @@ const TrademarkLuarNegeriPerorangan = ({ customerId, makelarId }) => {
         if (!data.fullName) newErrors.fullName = 'Please enter your full name';
         if (!data.email) newErrors.email = 'Please enter your email';
         if (!data.nomorTelp) newErrors.nomorTelp = 'Please enter your phone number';
-        if (!files.passportPemohon) newErrors.passportPemohon = 'Please upload the Passport Pemohon';
+        if (!files.sertifikatPendirian) newErrors.sertifikatPendirian = 'Please upload the Sertifikat Pendirian';
         if (!files.etiketLogo) newErrors.etiketLogo = 'Please upload the Etiket Logo';
-        if (!files.tandaTanganPemohon) newErrors.tandaTanganPemohon = 'Please upload the Tanda Tangan Pemohon';
+        if (!files.tandaTanganDirektur) newErrors.tandaTanganDirektur = 'Please upload the Tanda Tangan Direktur';
         if (!files.penjelasanBisnis) newErrors.penjelasanBisnis = 'Please upload the Penjelasan Bisnis';
         if (Object.keys(newErrors).length > 0) {
             setErrors(newErrors);
@@ -46,7 +46,7 @@ const TrademarkLuarNegeriPerorangan = ({ customerId, makelarId }) => {
                 ...(customerId ? { customerId } : {}), 
             };
 
-            await apiRequest('post', 'order/5', filesAndData);
+            await apiRequest('post', 'order/6', filesAndData);
             message.success('Order created successfully');
         } catch (error) {
             message.error('Failed to create order');
@@ -56,8 +56,8 @@ const TrademarkLuarNegeriPerorangan = ({ customerId, makelarId }) => {
     return (
         <Form layout="vertical" form={form}>
 
-
-            {/* <Row gutter={16}>
+            {/* 
+            <Row gutter={16}>
                 <Col span={24}>
                     <Form.Item
                         name="customerField"
@@ -113,24 +113,27 @@ const TrademarkLuarNegeriPerorangan = ({ customerId, makelarId }) => {
                 </Col>
             </Row>
 
-            <Row gutter={50} className="mt-4">
-                <Col span={12}>
+            <Row gutter={16} className="mt-4">
+                <Col span={24}>
                     <Form.Item
-                        name="passportPemohon"
-                        label="Passport Pemohon :"
-                        rules={[{ required: true, message: 'Please upload the Passport Pemohon' }]}
-                        validateStatus={errors.passportPemohon ? 'error' : ''}
-                        help={errors.passportPemohon}
+                        name="sertifikatPendirian"
+                        label="Sertifikat Pendirian"
+                        rules={[{ required: true, message: 'Please upload the Sertifikat Pendirian' }]}
+                        validateStatus={errors.sertifikatPendirian ? 'error' : ''}
+                        help={errors.sertifikatPendirian}
                     >
                         <Draggable
-                            icon={<PiDiamondDuotone />}
-                            topText="Click or drag file Passport Pemohon to this area to upload"
+                            icon={<PiDotsSixVerticalDuotone />}
+                            topText="Click or drag file Sertifikat Pendirian to this area to upload"
                             bottomText="Supported Format : PDF, Max Size : 10 MB"
-                            onFileChange={(file) => handleFileChange('paspor', file)}
+                            onFileChange={(file) => handleFileChange('sertifikatPendirian', file)}
                         />
                     </Form.Item>
                 </Col>
-                <Col span={12}>
+            </Row>
+
+            <Row gutter={16}>
+                <Col span={24}>
                     <Form.Item
                         name="etiketLogo"
                         label="Etiket Logo :"
@@ -151,17 +154,17 @@ const TrademarkLuarNegeriPerorangan = ({ customerId, makelarId }) => {
             <Row gutter={16}>
                 <Col span={24}>
                     <Form.Item
-                        name="tandaTanganPemohon"
-                        label="Tanda Tangan Pemohon Di Kertas Putih :"
-                        rules={[{ required: true, message: 'Please upload the Tanda Tangan Pemohon' }]}
-                        validateStatus={errors.tandaTanganPemohon ? 'error' : ''}
-                        help={errors.tandaTanganPemohon}
+                        name="tandaTanganDirektur"
+                        label="Tanda Tangan Direktur Utama Di Kertas Putih :"
+                        rules={[{ required: true, message: 'Please upload the Tanda Tangan Direktur' }]}
+                        validateStatus={errors.tandaTanganDirektur ? 'error' : ''}
+                        help={errors.tandaTanganDirektur}
                     >
                         <Draggable
-                            icon={<PiCardsThreeDuotone />}
-                            topText="Click or drag file Tanda Tangan Pemohon to this area to upload"
+                            icon={<PiChalkboardDuotone />}
+                            topText="Click or drag file Tanda Tangan Direktur to this area to upload"
                             bottomText="Supported Format : PDF, Max Size : 10 MB"
-                            onFileChange={(file) => handleFileChange('tandaTanganPemohon', file)}
+                            onFileChange={(file) => handleFileChange('tandaTanganDirektur', file)}
                         />
                     </Form.Item>
                 </Col>
@@ -194,4 +197,4 @@ const TrademarkLuarNegeriPerorangan = ({ customerId, makelarId }) => {
     )
 }
 
-export default TrademarkLuarNegeriPerorangan
+export default TrademarkBadanUsahaLuarNegeri

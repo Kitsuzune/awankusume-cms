@@ -1,27 +1,26 @@
 import React, { useState } from 'react'
 import { Col, Input, Row, Select, Form, Typography, Button, Radio, message } from 'antd'
-import Draggable from '../../../../../../components/ui/File Upload/Draggable';
+import Draggable from '../../../../../../../components/ui/File Upload/Draggable';
 import { PiBuildingOfficeDuotone, PiCalendarDuotone, PiCardholderDuotone, PiIdentificationBadgeDuotone } from 'react-icons/pi';
-import { apiRequest } from '../../../../../../utils/api';
+import { apiRequest } from '../../../../../../../utils/api';
 
 const { Option } = Select;
 
-const BPOM = ({ customerId, makelarId }) => {
+const IDAK = ({ customerId, makelarId }) => {
     const [penanggungJawabCount, setPenanggungJawabCount] = useState(1);
     const [peralatanKantorCount, setPeralatanKantorCount] = useState(1);
     const [form] = Form.useForm();
-    const [errors, setErrors] = useState({});
     const [data, setData] = useState({
         fullName: '',
         email: '',
         nomorTelp: '',
         nibOssRba: '',
         ruko: '',
-        bentuk: '',
-        responsible: [''], 
-        officeEquipment: [''],
+        responsible: [''], // Array of string
+        officeEquipment: [''], // Array of string
     });
     const [files, setFiles] = useState({});
+    const [errors, setErrors] = useState({});
 
     const handleFileChange = (name, file) => {
         setFiles(prevFiles => ({ ...prevFiles, [name]: file }));
@@ -55,12 +54,11 @@ const BPOM = ({ customerId, makelarId }) => {
         if (!data.fullName) newErrors.fullName = 'Please enter your full name';
         if (!data.email) newErrors.email = 'Please enter your email';
         if (!data.nomorTelp) newErrors.nomorTelp = 'Please enter your phone number';
-        if (!data.bentuk) newErrors.bentuk = 'Please enter the type of company';
         if (!files.akta) newErrors.akta = 'Please upload the Akta';
         if (!files.sk) newErrors.sk = 'Please upload the SK';
         if (!files.npwp) newErrors.npwp = 'Please upload the NPWP';
         if (!data.nibOssRba) newErrors.nibOssRba = 'Please enter the NIB OSS RBA Dengan KBLI 46691';
-        if (!data.ruko) newErrors.ruko = 'Please upload the Ruko Type';
+        if (!data.ruko) newErrors.ruko = 'Please select the Ruko Type';
         if (!files.rukoImage) newErrors.rukoImage = 'Please upload the Foto Ruko';
         for (let i = 0; i < penanggungJawabCount; i++) {
             const responsibleObj = JSON.parse(data.responsible[i] || '{}');
@@ -72,10 +70,12 @@ const BPOM = ({ customerId, makelarId }) => {
             const officeEquipmentObj = JSON.parse(data.officeEquipment[i] || '{}');
             if (!officeEquipmentObj.peralatanKantor) newErrors[`peralatanKantor${i}`] = `Please enter the peralatan kantor ${i + 1}`;
         }
+
         if (Object.keys(newErrors).length > 0) {
             setErrors(newErrors);
             return;
         }
+
         try {
             const filesAndData = {
                 ...files,
@@ -84,7 +84,7 @@ const BPOM = ({ customerId, makelarId }) => {
                 ...(customerId ? { customerId } : {}), 
             };
 
-            await apiRequest('post', 'order/2', filesAndData);
+            await apiRequest('post', 'order/1', filesAndData);
             message.success('Order created successfully');
         } catch (error) {
             message.error('Failed to create order');
@@ -140,7 +140,7 @@ const BPOM = ({ customerId, makelarId }) => {
                                 validateStatus={errors[`peralatanKantor${i}`] ? 'error' : ''}
                                 help={errors[`peralatanKantor${i}`]}
                             >
-                                <Input name={`peralatanKantor`} placeholder={`Enter the peralatan kantor ${i + 1}`} onChange={(e) => handleOfficeEquipmentChange(i, e.target.value)} />
+                                <Input name={`peralatanKantor${i}`} placeholder={`Enter the peralatan kantor ${i + 1}`} onChange={(e) => handleOfficeEquipmentChange(i, e.target.value)} />
                             </Form.Item>
                         </Col>
                     </Row>
@@ -150,12 +150,10 @@ const BPOM = ({ customerId, makelarId }) => {
         return forms;
     }
 
-
     return (
         <Form layout="vertical" form={form}>
 
-            {/* 
-            <Row gutter={16}>
+            {/* <Row gutter={16}>
                 <Col span={24}>
                     <Form.Item
                         name="customerField"
@@ -163,6 +161,7 @@ const BPOM = ({ customerId, makelarId }) => {
                     >
                         <Select
                             placeholder="Select Customer"
+                            onChange={(value) => handleSelectChange(value, 'customerField')}
                         >
                             <Option value="Customer 1">Customer 1</Option>
                             <Option value="Customer 2">Customer 2</Option>
@@ -207,23 +206,6 @@ const BPOM = ({ customerId, makelarId }) => {
                         help={errors.nomorTelp}
                     >
                         <Input name="nomorTelp" placeholder="Enter your phone number" onChange={handleChange} />
-                    </Form.Item>
-                </Col>
-            </Row>
-
-            <Row gutter={16}>
-                <Col span={24}>
-                    <Form.Item
-                        name="berbentuk"
-                        label="Berbentuk :"
-                        rules={[{ required: true, message: 'Please enter the type of company' }]}
-                        validateStatus={errors.bentuk ? 'error' : ''}
-                        help={errors.bentuk}
-                    >
-                        <Radio.Group name="bentuk" onChange={handleChange}>
-                            <Radio value="PT">PT</Radio>
-                            <Radio value="CV">CV</Radio>
-                        </Radio.Group>
                     </Form.Item>
                 </Col>
             </Row>
@@ -287,7 +269,7 @@ const BPOM = ({ customerId, makelarId }) => {
                     <Form.Item
                         name="nibOssRba"
                         label="NIB OSS RBA Dengan KBLI 46691"
-                        rules={[{ required: true, message: 'Please upload the NIB OSS' }]}
+                        rules={[{ required: true, message: 'Please enter the NIB OSS RBA Dengan KBLI 46691' }]}
                         validateStatus={errors.nibOssRba ? 'error' : ''}
                         help={errors.nibOssRba}
                     >
@@ -301,7 +283,7 @@ const BPOM = ({ customerId, makelarId }) => {
                     <Form.Item
                         name="ruko"
                         label="Ruko"
-                        rules={[{ required: true, message: 'Please upload the Ruko Type' }]}
+                        rules={[{ required: true, message: 'Please select the Ruko Type' }]}
                         validateStatus={errors.ruko ? 'error' : ''}
                         help={errors.ruko}
                     >
@@ -352,4 +334,4 @@ const BPOM = ({ customerId, makelarId }) => {
     )
 }
 
-export default BPOM
+export default IDAK

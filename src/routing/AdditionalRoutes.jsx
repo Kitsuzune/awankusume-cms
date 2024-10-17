@@ -8,6 +8,7 @@ import UserEdit from "../pages/Users/UserEdit";
 import SettingProfile from "../pages/ProfileSettings/SettingProfile";
 import PostEdit from "../pages/Post/PostEdit";
 import FaqEdit from "../pages/Faq/FaqEdit";
+import FormView from "../pages/Tracking/FormOrder/FormView";
 export default function AdditionalRoutes() {
   return (
     <Routes>
@@ -33,6 +34,9 @@ export default function AdditionalRoutes() {
       {/* // Content -> Partnership */}
       <Route path="/app/content/partnership/:id" element={<PartnershipEdit />} />
       <Route path="/app/content/partnership/add" element={<PartnershipEdit />} />
+
+      {/* // Tracking -> Form Order */}
+      <Route path="/app/tracking/form-order/:id" element={<FormView />} />
 
       {/* Faq */}
       <Route path="/app/faq/:id" element={<FaqEdit />} />

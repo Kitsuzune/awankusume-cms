@@ -3,10 +3,10 @@ import React, { useEffect, useState, useCallback } from 'react'
 import Button from '../../../components/ui/Button/Button';
 import { EditOutlined, PlusOutlined } from '@ant-design/icons';
 import { CustomPagination } from '../../../components/ui/Table/CustomPagination';
-import LegalitasPP from './FormGrouping/PendirianPerusahaan/LegalitasPP';
-import IzinBisnis from './FormGrouping/IzinBisnis/IzinBisnis';
 import { apiRequest } from '../../../utils/api';
 import debounce from 'lodash/debounce';
+import LegalitasPP from './FormGrouping/Create/PendirianPerusahaan/LegalitasPP';
+import IzinBisnis from './FormGrouping/Create/IzinBisnis/IzinBisnis';
 
 const FormOrder = () => {
   const { Option } = Select;

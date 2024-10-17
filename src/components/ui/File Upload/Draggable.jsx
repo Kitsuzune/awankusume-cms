@@ -4,7 +4,7 @@ import { message, Upload } from 'antd';
 
 const { Dragger } = Upload;
 
-const Draggable = ({ icon = <InboxOutlined />, topText = "Click or drag file to this area to upload", bottomText = "Support for a single or bulk upload. Strictly prohibited from uploading company data or other banned files.", onFileChange }) => {
+const Draggable = ({ icon = <InboxOutlined />, topText = "Click or drag file to this area to upload", bottomText = "Support for a single or bulk upload. Strictly prohibited from uploading company data or other banned files.", onFileChange, disabled = false  }) => {
   const [fileList, setFileList] = useState([]);
 
   const props = {
@@ -33,7 +33,7 @@ const Draggable = ({ icon = <InboxOutlined />, topText = "Click or drag file to 
   };
 
   return (
-    <Dragger {...props}>
+    <Dragger {...props} disabled={disabled}>
       <div className="flex flex-col items-center justify-center text-[60px]">
         {icon}
       </div>

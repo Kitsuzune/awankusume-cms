@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { HashLoader } from 'react-spinners';
 import messages from '../../list/loading_message';
 
-const Loading = ({ isLoading }) => {
+const Loading = ({ isLoading, className = '' }) => {
     const [message, setMessage] = useState("");
 
     useEffect(() => {
@@ -15,7 +15,7 @@ const Loading = ({ isLoading }) => {
     let color = "#ffffff";
 
     return (
-        <div className={`absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center bg-black bg-opacity-50 ${isLoading ? 'z-50' : 'hidden'}`}>
+        <div className={`absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center bg-black bg-opacity-50 ${isLoading ? 'z-50' : 'hidden'} ${className}`}>
             <HashLoader
                 color={color}
                 loading={isLoading}

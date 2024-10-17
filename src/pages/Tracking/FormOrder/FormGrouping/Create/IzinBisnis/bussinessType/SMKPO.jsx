@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { Col, Input, Row, Select, Form, Typography, Button, Radio, message } from 'antd'
-import Draggable from '../../../../../../components/ui/File Upload/Draggable';
+import Draggable from '../../../../../../../components/ui/File Upload/Draggable';
 import { PiBuildingOfficeDuotone, PiCalendarDuotone, PiCardholderDuotone, PiIdentificationBadgeDuotone } from 'react-icons/pi';
-import { apiRequest } from '../../../../../../utils/api';
+import { apiRequest } from '../../../../../../../utils/api';
 
 const { Option } = Select;
 

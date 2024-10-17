@@ -1,8 +1,8 @@
 import React, { useState, useCallback } from 'react'
 import { Col, Input, Row, Select, Form, Typography, Button, message } from 'antd'
-import Draggable from '../../../../../components/ui/File Upload/Draggable';
 import { PiIdentificationBadgeDuotone, PiIdentificationCardDuotone } from 'react-icons/pi';
-import { apiRequest } from '../../../../../utils/api';
+import { apiRequest } from '../../../../../../utils/api';
+import Draggable from '../../../../../../components/ui/File Upload/Draggable';
 
 const { Option } = Select;
 const { Title } = Typography;
