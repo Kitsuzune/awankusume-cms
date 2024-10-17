@@ -8,6 +8,7 @@ import { CiEdit, CiTrash } from 'react-icons/ci';
 import { useNavigate } from 'react-router-dom';
 import Loading from '../../../components/ui/Loading/Loading';
 import { apiRequest } from '../../../utils/api';
+import { FaRegEye } from 'react-icons/fa';
 
 const TrackingOnGoing = () => {
   const { Option } = Select;
@@ -125,6 +126,14 @@ const TrackingOnGoing = () => {
                 ),
                 footer: null,
               });
+            }}
+          />
+          <FaRegEye
+            className="text-2xl text-center text-second cursor-pointer hover:text-main"
+            onClick={() => {
+              // navigate to app/tracking/form-oder/:id
+              // window.location.href = `/app/tracking/form-order/${record.id}`;
+              navigate(`/app/tracking/form-order/${record.id}`);
             }}
           />
           {/* <CiTrash

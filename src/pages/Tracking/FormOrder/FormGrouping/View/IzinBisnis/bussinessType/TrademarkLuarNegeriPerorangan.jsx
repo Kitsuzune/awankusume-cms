@@ -55,7 +55,7 @@ const TrademarkLuarNegeriPerorangan = ({ dataView }) => {
                             disabled
                         />
                         <Button className='mt-2 w-full' onClick={() => {
-                            window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.passportPemohon}`, '_blank');
+                            window.open(`${import.meta.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.passportPemohon}`, '_blank');
                         }}>
                             <DownSquareTwoTone />
                             Download
@@ -74,7 +74,7 @@ const TrademarkLuarNegeriPerorangan = ({ dataView }) => {
                             disabled
                         />
                         <Button className='mt-2 w-full' onClick={() => {
-                            window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.etiketLogo}`, '_blank');
+                            window.open(`${import.meta.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.etiketLogo}`, '_blank');
                         }}>
                             <DownSquareTwoTone />
                             Download
@@ -96,7 +96,7 @@ const TrademarkLuarNegeriPerorangan = ({ dataView }) => {
                             disabled
                         />
                         <Button className='mt-2 w-full' onClick={() => {
-                            window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.tandaTanganPemohon}`, '_blank');
+                            window.open(`${import.meta.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.tandaTanganPemohon}`, '_blank');
                         }}>
                             <DownSquareTwoTone />
                             Download
@@ -118,7 +118,7 @@ const TrademarkLuarNegeriPerorangan = ({ dataView }) => {
                             disabled
                         />
                         <Button className='mt-2 w-full' onClick={() => {
-                            window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.penjelasanBisnis}`, '_blank');
+                            window.open(`${import.meta.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.penjelasanBisnis}`, '_blank');
                         }}>
                             <DownSquareTwoTone />
                             Download

@@ -22,7 +22,7 @@ const AKL = ({ dataView }) => {
                                 disabled={true}
                             />
                             <Button className='mt-2 w-full' onClick={() => {
-                                window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView.businessOrder.material[i].material}`, '_blank');
+                                window.open(`${import.meta.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView.businessOrder.material[i].material}`, '_blank');
                             }}>
                                 <DownSquareTwoTone />
                                 Download
@@ -80,7 +80,7 @@ const AKL = ({ dataView }) => {
                             disabled
                         />
                         <Button className='mt-2 w-full' onClick={() => {
-                            window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.loa}`, '_blank');
+                            window.open(`${import.meta.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.loa}`, '_blank');
                         }}>
                             <DownSquareTwoTone />
                             Download
@@ -100,7 +100,7 @@ const AKL = ({ dataView }) => {
                             disabled
                         />
                         <Button className='mt-2 w-full' onClick={() => {
-                            window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.cfs}`, '_blank');
+                            window.open(`${import.meta.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.cfs}`, '_blank');
                         }}>
                             <DownSquareTwoTone />
                             Download
@@ -123,7 +123,7 @@ const AKL = ({ dataView }) => {
                                 disabled
                             />
                             <Button className='mt-2 w-full' onClick={() => {
-                                window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.iso13485}`, '_blank');
+                                window.open(`${import.meta.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.iso13485}`, '_blank');
                             }}>
                                 <DownSquareTwoTone />
                                 Download
@@ -148,7 +148,7 @@ const AKL = ({ dataView }) => {
                             disabled
                         />
                         <Button className='mt-2 w-full' onClick={() => {
-                            window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.flowProductionChart}`, '_blank');
+                            window.open(`${import.meta.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.flowProductionChart}`, '_blank');
                         }}>
                             <DownSquareTwoTone />
                             Download
@@ -168,7 +168,7 @@ const AKL = ({ dataView }) => {
                             disabled
                         />
                         <Button className='mt-2 w-full' onClick={() => {
-                            window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.clinicalTrial}`, '_blank');
+                            window.open(`${import.meta.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.clinicalTrial}`, '_blank');
                         }}>
                             <DownSquareTwoTone />
                             Download
@@ -190,7 +190,7 @@ const AKL = ({ dataView }) => {
                             disabled
                         />
                         <Button className='mt-2 w-full' onClick={() => {
-                            window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.spesificationAndBrosshure}`, '_blank');
+                            window.open(`${import.meta.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.spesificationAndBrosshure}`, '_blank');
                         }}>
                             <DownSquareTwoTone />
                             Download
@@ -210,7 +210,7 @@ const AKL = ({ dataView }) => {
                             disabled
                         />
                         <Button className='mt-2 w-full' onClick={() => {
-                            window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.documentVerificationAndValidation}`, '_blank');
+                            window.open(`${import.meta.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.documentVerificationAndValidation}`, '_blank');
                         }}>
                             <DownSquareTwoTone />
                             Download
@@ -232,7 +232,7 @@ const AKL = ({ dataView }) => {
                             disabled
                         />
                         <Button className='mt-2 w-full' onClick={() => {
-                            window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.biocompatibility}`, '_blank');
+                            window.open(`${import.meta.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.biocompatibility}`, '_blank');
                         }}>
                             <DownSquareTwoTone />
                             Download
@@ -252,7 +252,7 @@ const AKL = ({ dataView }) => {
                             disabled
                         />
                         <Button className='mt-2 w-full' onClick={() => {
-                            window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.preclinicalTrial}`, '_blank');
+                            window.open(`${import.meta.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.preclinicalTrial}`, '_blank');
                         }}>
                             <DownSquareTwoTone />
                             Download
@@ -274,7 +274,7 @@ const AKL = ({ dataView }) => {
                             disabled
                         />
                         <Button className='mt-2 w-full' onClick={() => {
-                            window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.clinicalEvaluation}`, '_blank');
+                            window.open(`${import.meta.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.clinicalEvaluation}`, '_blank');
                         }}>
                             <DownSquareTwoTone />
                             Download
@@ -296,7 +296,7 @@ const AKL = ({ dataView }) => {
                             disabled
                         />
                         <Button className='mt-2 w-full' onClick={() => {
-                            window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.iso14971}`, '_blank');
+                            window.open(`${import.meta.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.iso14971}`, '_blank');
                         }}>
                             <DownSquareTwoTone />
                             Download
@@ -316,7 +316,7 @@ const AKL = ({ dataView }) => {
                             disabled
                         />
                         <Button className='mt-2 w-full' onClick={() => {
-                            window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.coa}`, '_blank');
+                            window.open(`${import.meta.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.coa}`, '_blank');
                         }}>
                             <DownSquareTwoTone />
                             Download
@@ -338,7 +338,7 @@ const AKL = ({ dataView }) => {
                             disabled
                         />
                         <Button className='mt-2 w-full' onClick={() => {
-                            window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.penandaLuarIndonesia}`, '_blank');
+                            window.open(`${import.meta.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.penandaLuarIndonesia}`, '_blank');
                         }}>
                             <DownSquareTwoTone />
                             Download
@@ -358,7 +358,7 @@ const AKL = ({ dataView }) => {
                             disabled
                         />
                         <Button className='mt-2 w-full' onClick={() => {
-                            window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.simbolPackagingLuar}`, '_blank');
+                            window.open(`${import.meta.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.simbolPackagingLuar}`, '_blank');
                         }}>
                             <DownSquareTwoTone />
                             Download
@@ -380,7 +380,7 @@ const AKL = ({ dataView }) => {
                             disabled
                         />
                         <Button className='mt-2 w-full' onClick={() => {
-                            window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.tandaExpiredDate}`, '_blank');
+                            window.open(`${import.meta.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.tandaExpiredDate}`, '_blank');
                         }}>
                             <DownSquareTwoTone />
                             Download
@@ -403,7 +403,7 @@ const AKL = ({ dataView }) => {
                             disabled
                         />
                         <Button className='mt-2 w-full' onClick={() => {
-                            window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.manualGuideline}`, '_blank');
+                            window.open(`${import.meta.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.manualGuideline}`, '_blank');
                         }}>
                             <DownSquareTwoTone />
                             Download
@@ -423,7 +423,7 @@ const AKL = ({ dataView }) => {
                             disabled
                         />
                         <Button className='mt-2 w-full' onClick={() => {
-                            window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.aksesorisDisertakan}`, '_blank');
+                            window.open(`${import.meta.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.aksesorisDisertakan}`, '_blank');
                         }}>
                             <DownSquareTwoTone />
                             Download

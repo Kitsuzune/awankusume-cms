@@ -29,8 +29,8 @@ const Showcase = () => {
         video: dataLanguage.image,  
       });
 
-      setVideo(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataLanguage.image}`);
-      setVideoCurrent(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataLanguage.image}`);
+      setVideo(`${import.meta.env.REACT_APP_API_URL_CSM}/public/showcase/${dataLanguage.image}`);
+      setVideoCurrent(`${import.meta.env.REACT_APP_API_URL_CSM}/public/showcase/${dataLanguage.image}`);
 
       setLoading(false);
     } catch (error) {

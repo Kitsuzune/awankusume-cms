@@ -34,8 +34,8 @@ const PartnershipEdit = () => {
             });
 
             setActive(dataLanguage.show == '1' ? true : false);
-            setImage(`${process.env.REACT_APP_API_URL_CSM}/public/partner/${dataLanguage.image}`);
-            setImageCurrent(`${process.env.REACT_APP_API_URL_CSM}/public/partner/${dataLanguage.image}`);
+            setImage(`${import.meta.env.REACT_APP_API_URL_CSM}/public/partner/${dataLanguage.image}`);
+            setImageCurrent(`${import.meta.env.REACT_APP_API_URL_CSM}/public/partner/${dataLanguage.image}`);
             setLoading(false);
         } catch (error) {
             setLoading(false);

@@ -75,7 +75,7 @@ const LegalitasPP = ({ dataView }) => {
                 disabled
               />
               <Button className='mt-2 w-full' onClick={() => {
-                window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${administrator.ktp}`, '_blank');
+                window.open(`${import.meta.env.REACT_APP_API_URL_CSM}/public/showcase/${administrator.ktp}`, '_blank');
               }}>
                 <DownSquareTwoTone />
                 Download
@@ -94,7 +94,7 @@ const LegalitasPP = ({ dataView }) => {
                 disabled
               />
               <Button className='mt-2 w-full' onClick={() => {
-                window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${administrator.npwp}`, '_blank');
+                window.open(`${import.meta.env.REACT_APP_API_URL_CSM}/public/showcase/${administrator.npwp}`, '_blank');
               }}>
                 <DownSquareTwoTone />
                 Download

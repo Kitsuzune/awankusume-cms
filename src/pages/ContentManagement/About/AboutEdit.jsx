@@ -36,8 +36,8 @@ const AboutEdit = () => {
                 show: dataLanguage.show == '1' ? true : false,
             });
             setActive(dataLanguage.show == '1' ? true : false);
-            setImage(`${process.env.REACT_APP_API_URL_CSM}/public/about/${dataLanguage.image}`);
-            setImageCurrent(`${process.env.REACT_APP_API_URL_CSM}/public/about/${dataLanguage.image}`);
+            setImage(`${import.meta.env.REACT_APP_API_URL_CSM}/public/about/${dataLanguage.image}`);
+            setImageCurrent(`${import.meta.env.REACT_APP_API_URL_CSM}/public/about/${dataLanguage.image}`);
             setLoading(false);
         } catch (error) {
             setLoading(false);
@@ -155,7 +155,7 @@ const AboutEdit = () => {
                                                         rules={[{ required: true, message: 'Please upload an image' }]}
                                                     >
                                                         <ImagePreviewUploader image={image} setImage={setImage} name="image" disabled={!isEditing} />
-                                                        {/* <img src={process.env.REACT_APP_API_URL_CSM + '/about/' + data[0]?.image } />
+                                                        {/* <img src={import.meta.env.REACT_APP_API_URL_CSM + '/about/' + data[0]?.image } />
                                                         <Draggable
                                                             topText="Click or drag file SK to this area to upload"
                                                             bottomText="Supported Format : PDF, Max Size : 10 MB"

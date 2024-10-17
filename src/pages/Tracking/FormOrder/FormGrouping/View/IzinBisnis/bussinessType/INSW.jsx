@@ -53,7 +53,7 @@ const INSW = ({ dataView }) => {
                             disabled
                         />
                         <Button className='mt-2 w-full' onClick={() => {
-                            window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.tandaTanganDirektur}`, '_blank');
+                            window.open(`${import.meta.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.tandaTanganDirektur}`, '_blank');
                         }}>
                             <DownSquareTwoTone />
                             Download
@@ -72,7 +72,7 @@ const INSW = ({ dataView }) => {
                             disabled
                         />
                         <Button className='mt-2 w-full' onClick={() => {
-                            window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.tandaTanganPenanggungJawab}`, '_blank');
+                            window.open(`${import.meta.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.tandaTanganPenanggungJawab}`, '_blank');
                         }}>
                             <DownSquareTwoTone />
                             Download
@@ -94,7 +94,7 @@ const INSW = ({ dataView }) => {
                             disabled
                         />
                         <Button className='mt-2 w-full' onClick={() => {
-                            window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.capPerusahaan}`, '_blank');
+                            window.open(`${import.meta.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.capPerusahaan}`, '_blank');
                         }}>
                             <DownSquareTwoTone />
                             Download

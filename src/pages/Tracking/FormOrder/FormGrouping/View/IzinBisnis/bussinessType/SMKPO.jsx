@@ -111,7 +111,7 @@ const SMKPO = ({ dataView }) => {
                             disabled
                         />
                         <Button className='mt-2 w-full' onClick={() => {
-                            window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.akta}`, '_blank');
+                            window.open(`${import.meta.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.akta}`, '_blank');
                         }}>
                             <DownSquareTwoTone />
                             Download
@@ -130,7 +130,7 @@ const SMKPO = ({ dataView }) => {
                             disabled
                         />
                         <Button className='mt-2 w-full' onClick={() => {
-                            window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.sk}`, '_blank');
+                            window.open(`${import.meta.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.sk}`, '_blank');
                         }}>
                             <DownSquareTwoTone />
                             Download
@@ -152,7 +152,7 @@ const SMKPO = ({ dataView }) => {
                             disabled
                         />
                         <Button className='mt-2 w-full' onClick={() => {
-                            window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.npwp}`, '_blank');
+                            window.open(`${import.meta.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.npwp}`, '_blank');
                         }}>
                             <DownSquareTwoTone />
                             Download
@@ -199,7 +199,7 @@ const SMKPO = ({ dataView }) => {
                             disabled
                         />
                         <Button className='mt-2 w-full' onClick={() => {
-                            window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.rukoImage}`, '_blank');
+                            window.open(`${import.meta.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.rukoImage}`, '_blank');
                         }}>
                             <DownSquareTwoTone />
                             Download

@@ -2,7 +2,7 @@ import { message } from 'antd';
 import axios from 'axios';
 
 const apiClient = axios.create({
-	baseURL: process.env.REACT_APP_API_URL_CSM,
+	baseURL: import.meta.env.REACT_APP_API_URL_CSM,
 	withCredentials: true,
 });
 

@@ -96,7 +96,7 @@ const KlinikPratamaKecantikan = ({ dataView }) => {
                             disabled
                         />
                         <Button className='mt-2 w-full' onClick={() => {
-                            window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.buktiStr}`, '_blank');
+                            window.open(`${import.meta.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.buktiStr}`, '_blank');
                         }}>
                             <DownSquareTwoTone />
                             Download
@@ -118,7 +118,7 @@ const KlinikPratamaKecantikan = ({ dataView }) => {
                             disabled
                         />
                         <Button className='mt-2 w-full' onClick={() => {
-                            window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.rukoRumah}`, '_blank');
+                            window.open(`${import.meta.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.rukoRumah}`, '_blank');
                         }}>
                             <DownSquareTwoTone />
                             Download
@@ -140,7 +140,7 @@ const KlinikPratamaKecantikan = ({ dataView }) => {
                             disabled
                         />
                         <Button className='mt-2 w-full' onClick={() => {
-                            window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.lahanParkir}`, '_blank');
+                            window.open(`${import.meta.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.lahanParkir}`, '_blank');
                         }}>
                             <DownSquareTwoTone />
                             Download

@@ -39,6 +39,7 @@ import LogOut from "./pages/LogOut/LogOut";
 import TrackingPending from "./pages/Tracking/Pending/TrackingPending";
 import FaqNew from "./pages/Faq/FaqNew";
 import PengajuanPending from "./pages/Pengajuan/Pending/PengajuanPending";
+import React, { Suspense, lazy } from "react";
 
 const iconClasses = `h-6 w-6`;
 const submenuIconClasses = `h-5 w-5`;
@@ -236,7 +237,9 @@ export default function AppRootRoutes() {
   return (
     isAdminRoute ? (
       <AdminLayout>
-        <AdditionalRoutes />
+        <Suspense fallback={<div>Loading...</div>}>
+          <AdditionalRoutes />
+        </Suspense>
         <Routes>
           {routes.map((route, index) => (
             route.group ? (
@@ -256,9 +259,9 @@ export default function AppRootRoutes() {
         </Routes>
       </AdminLayout>
     ) : (
-      
-      <ExpandedRoutes />
-
+      <Suspense fallback={<div>Loading...</div>}>
+        <ExpandedRoutes />
+      </Suspense>
     )
   );
 }
