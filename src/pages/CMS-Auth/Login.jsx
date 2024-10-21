@@ -41,6 +41,7 @@ const Page = () => {
         try {
             const response = await apiRequest('post', '/auth/login', data);
             if (response.status === 200) {
+                localStorage.setItem('role', response.data.role);
                 message.success('Login success');
                 window.location.href = '/app/dashboard';
             }

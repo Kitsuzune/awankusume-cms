@@ -39,6 +39,7 @@ import LogOut from "./pages/LogOut/LogOut";
 import TrackingPending from "./pages/Tracking/Pending/TrackingPending";
 import FaqNew from "./pages/Faq/FaqNew";
 import PengajuanPending from "./pages/Pengajuan/Pending/PengajuanPending";
+import ComissionSetting from "./pages/CommisionSetting/ComissionSetting";
 
 const iconClasses = `h-6 w-6`;
 const submenuIconClasses = `h-5 w-5`;
@@ -206,7 +207,7 @@ export const routes = [
         path: '/app/commission-setting',
         icon: <IoFlash className={iconClasses} />,
         name: 'Commission Setting',
-        component: NotFound,
+        component: ComissionSetting,
       },
     ],
   },
