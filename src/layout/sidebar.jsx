@@ -2,10 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { routes } from '../FormattedRoutes';
 import { IoChevronDown, IoChevronUp } from "react-icons/io5";
+import { getAccessibleRoutes } from '../RoleController';
 
 const Sidebar = ({ isCollapsed, toggleSidebarCollapse }) => {
     const location = useLocation();
     const [expandedMenus, setExpandedMenus] = useState({});
+    const role = localStorage.getItem('role'); // Get role from localStorage
+    const accessibleRoutes = getAccessibleRoutes(routes, role); // Filter routes based on role
 
     const isActive = (path) => {
         return location.pathname.startsWith(path);
@@ -25,7 +28,7 @@ const Sidebar = ({ isCollapsed, toggleSidebarCollapse }) => {
 
     useEffect(() => {
         const newExpandedMenus = {};
-        routes.forEach((route, index) => {
+        accessibleRoutes.forEach((route, index) => {
           if (route.group) {
             route.components.forEach((subRoute, subIndex) => {
               if (subRoute.submenu) {
@@ -59,7 +62,7 @@ const Sidebar = ({ isCollapsed, toggleSidebarCollapse }) => {
                 </div>
             </div>
             <ul className="space-y-2">
-                {routes.map((route, index) => (
+                {accessibleRoutes.map((route, index) => (
                     route.group ? (
                         <div key={index}>
                             <div className={`text-gray-500 uppercase text-xs mb-2 ${isCollapsed ? 'hidden' : 'block'}`}>{route.group}</div>

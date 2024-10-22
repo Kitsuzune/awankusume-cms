@@ -12,6 +12,7 @@ const LogOut = () => {
                 const response = await apiRequest('post', '/auth/logout');
                 console.log(response);
                 message.success('Logout Success');
+                localStorage.removeItem('role');
                 navigate('/web/login');
             } catch (error) {
                 console.log(error);

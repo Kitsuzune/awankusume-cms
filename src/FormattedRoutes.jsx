@@ -40,6 +40,7 @@ import TrackingPending from "./pages/Tracking/Pending/TrackingPending";
 import FaqNew from "./pages/Faq/FaqNew";
 import PengajuanPending from "./pages/Pengajuan/Pending/PengajuanPending";
 import ComissionSetting from "./pages/CommisionSetting/ComissionSetting";
+import RoleController, { getAccessibleRoutes } from "./RoleController";
 
 const iconClasses = `h-6 w-6`;
 const submenuIconClasses = `h-5 w-5`;
@@ -232,34 +233,35 @@ export const routes = [
 
 export default function AppRootRoutes() {
   const location = useLocation();
+
+  const role = localStorage.getItem('role');
+  const accessibleRoutes = getAccessibleRoutes(routes, role);
   const isAdminRoute = location.pathname.startsWith('/app');
 
   return (
     isAdminRoute ? (
-      <AdminLayout>
-        <AdditionalRoutes />
-        <Routes>
-          {routes.map((route, index) => (
-            route.group ? (
-              route.components.map((subRoute, subIndex) => (
-                subRoute.submenu ? (
-                  subRoute.submenu.map((nestedRoute, nestedIndex) => (
-                    <Route key={`${index}-${subIndex}-${nestedIndex}`} path={nestedRoute.path} element={<nestedRoute.component />} />
-                  ))
-                ) : (
-                  <Route key={`${index}-${subIndex}`} path={subRoute.path} element={<subRoute.component />} />
-                )
-              ))
-            ) : (
-              <Route key={index} path={route.path} element={<route.component />} />
-            )
-          ))}
-        </Routes>
-      </AdminLayout>
+    <AdminLayout>
+      <AdditionalRoutes />
+      <Routes>
+        {accessibleRoutes.map((route, index) => (
+          route.group ? (
+            route.components.map((subRoute, subIndex) => (
+              subRoute.submenu ? (
+                subRoute.submenu.map((nestedRoute, nestedIndex) => (
+                  <Route key={`${index}-${subIndex}-${nestedIndex}`} path={nestedRoute.path} element={<nestedRoute.component />} />
+                ))
+              ) : (
+                <Route key={`${index}-${subIndex}`} path={subRoute.path} element={<subRoute.component />} />
+              )
+            ))
+          ) : (
+            <Route key={index} path={route.path} element={<route.component />} />
+          )
+        ))}
+      </Routes>
+    </AdminLayout>
     ) : (
-      
       <ExpandedRoutes />
-
     )
   );
 }
