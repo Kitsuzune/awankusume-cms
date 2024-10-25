@@ -8,9 +8,9 @@ import { DownSquareTwoTone } from '@ant-design/icons';
 const { Option } = Select;
 
 const KlinikPratamaKecantikan = ({ dataView, handleDownload, handleDownloadZip }) => {
-
+    console.log(dataView);
     const renderDokterForms = () => {
-        return dataView.businessOrder.dokter.map((dokter, i) => (
+        return dataView?.businessOrder?.doctor?.map((dokter, i) => (
             <div key={i}>
                     <Row gutter={16}>
                         <Col span={20}>
