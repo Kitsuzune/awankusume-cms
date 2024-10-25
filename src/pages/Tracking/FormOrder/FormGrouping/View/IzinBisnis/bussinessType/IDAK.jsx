@@ -7,7 +7,7 @@ import { DownSquareTwoTone } from '@ant-design/icons';
 
 const { Option } = Select;
 
-const IDAK = ({ dataView }) => {
+const IDAK = ({ dataView, handleDownload, handleDownloadZip }) => {
 
     const renderPenanggungJawab = () => {
         return dataView.businessOrder.responsible.map((responsible, i) => (
@@ -97,7 +97,7 @@ const IDAK = ({ dataView }) => {
                             disabled
                         />
                         <Button className='mt-2 w-full' onClick={() => {
-                            window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.akta}`, '_blank');
+                            handleDownload(dataView?.businessOrder?.akta);
                         }}>
                             <DownSquareTwoTone />
                             Download
@@ -116,7 +116,7 @@ const IDAK = ({ dataView }) => {
                             disabled
                         />
                         <Button className='mt-2 w-full' onClick={() => {
-                            window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.sk}`, '_blank');
+                            handleDownload(dataView?.businessOrder?.sk);
                         }}>
                             <DownSquareTwoTone />
                             Download
@@ -138,7 +138,7 @@ const IDAK = ({ dataView }) => {
                             disabled
                         />
                         <Button className='mt-2 w-full' onClick={() => {
-                            window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.npwp}`, '_blank');
+                            handleDownload(dataView?.businessOrder?.npwp);
                         }}>
                             <DownSquareTwoTone />
                             Download
@@ -185,7 +185,7 @@ const IDAK = ({ dataView }) => {
                             disabled
                         />
                         <Button className='mt-2 w-full' onClick={() => {
-                            window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.rukoImage}`, '_blank');
+                            handleDownload(dataView?.businessOrder?.rukoImage);
                         }}>
                             <DownSquareTwoTone />
                             Download
@@ -198,7 +198,7 @@ const IDAK = ({ dataView }) => {
 
             {renderPeralatanKantor()}
 
-            <Button className='mt-4 w-full'>
+            <Button className='mt-4 w-full' onClick={handleDownloadZip}>
                 <DownSquareTwoTone />
                 Download All File In This Form As Zip
             </Button>

@@ -80,7 +80,7 @@ const PostEdit = () => {
             // Insert the uploaded image into the Quill editor with custom styles
             const quill = quillRef.current.getEditor();
             const range = quill.getSelection();
-            quill.insertEmbed(range.index, 'image', `${process.env.REACT_APP_API_URL_CSM}/public/blog/${response.data.data}`);
+            quill.insertEmbed(range.index, 'image', `${process.env.REACT_APP_API_URL_CSM}/public/blog/${id}/${response.data.data}`);
             quill.formatText(range.index, range.index + 1, { 'width': '100px' });
         };
     };
@@ -113,13 +113,13 @@ const PostEdit = () => {
             setData(response.data.data);
             form.setFieldsValue({
                 title: response.data.data.title,
-                content: response.data.data.content,
+                content: response.data.data.content == 'default_content' ? '' : response.data.data.content,
                 show: response.data.data.show === '1' ? true : false,
             });
             setValue(response.data.data.content);
             setActive(response.data.data.show === '1' ? true : false);
-            setImage(`${process.env.REACT_APP_API_URL_CSM}/public/blog/${response.data.data.image}`);
-            setImageCurrent(`${process.env.REACT_APP_API_URL_CSM}/public/blog/${response.data.data.image}`);
+            setImage(`${process.env.REACT_APP_API_URL_CSM}/public/blog/${response.data.data.id}/${response.data.data.image}`);
+            setImageCurrent(`${process.env.REACT_APP_API_URL_CSM}/public/blog/${response.data.data.id}/${response.data.data.image}`);
             setLoading(false);
         } catch (error) {
             setLoading(false);
@@ -135,7 +135,7 @@ const PostEdit = () => {
 
             const sendData = {
                 title: form.getFieldValue('title'),
-                content: value,
+                content: value || 'default_content',
                 show: active ? '1' : '0',
             };
 
@@ -162,7 +162,7 @@ const PostEdit = () => {
 
                 let newUuid = null;
                 if (!id) {
-                    newUuid = response.data.data[0].uuid;
+                    newUuid = response.data.data.id;
                     navigate('/app/post/' + newUuid);
                     setId(newUuid);
                 }
@@ -244,31 +244,33 @@ const PostEdit = () => {
                                                     </Form.Item>
                                                 </Col>
                                             </Row>
-                                            <Row>
-                                                <Col span={24}>
-                                                    <Form.Item
-                                                        name="content"
-                                                        label="Content"
-                                                        rules={[{ required: true, message: 'Please input the content' }]}
-                                                    >
-                                                        <ReactQuill
-                                                            ref={quillRef} // Attach the Quill ref here
-                                                            className="h-[50vh] min-h-[30vh] md:min-h-[50vh]"
-                                                            theme="snow"
-                                                            value={value}
-                                                            onChange={setValue}
-                                                            placeholder="Write your post here..."
-                                                            modules={modules}
+                                            {id && (
+                                                <Row>
+                                                    <Col span={24}>
+                                                        <Form.Item
+                                                            name="content"
+                                                            label="Content"
+                                                            rules={[{ required: true, message: 'Please input the content' }]}
+                                                        >
+                                                            <ReactQuill
+                                                                ref={quillRef} // Attach the Quill ref here
+                                                                className="h-[50vh] min-h-[30vh] md:min-h-[50vh]"
+                                                                theme="snow"
+                                                                value={value}
+                                                                onChange={setValue}
+                                                                placeholder="Write your post here..."
+                                                                modules={modules}
                                                             // formats={[
                                                             //     "align", "width", "bold", "italic", "underline", "blockquote", "header", 
                                                             //     "script", "code-block", "strike", "size", "color", "background", "font", 
                                                             //     "image", "align", "calltoaction", "link", "height", "float", "imagewithstyle",
                                                             //     "style"
                                                             // ]}
-                                                        />
-                                                    </Form.Item>
-                                                </Col>
-                                            </Row>
+                                                            />
+                                                        </Form.Item>
+                                                    </Col>
+                                                </Row>
+                                            )}
 
                                             <div className="mt-10 flex justify-end">
                                                 <Button type="default" className="mr-2" >Cancel</Button>

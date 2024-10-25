@@ -117,7 +117,7 @@ const Post = () => {
 
                     {data.map((item) => (
                       <div className="flex items-center p-4 border-2 bg-white rounded-lg shadow-md mb-2 cursor-pointer hover:bg-gray-50 transition-all duration-300 hover:shadow-none">
-                        <img src={`${process.env.REACT_APP_API_URL_CSM}/public/blog/${item.image}`} alt={item.title} className="w-16 h-16 rounded-md mr-4" />
+                        <img src={`${process.env.REACT_APP_API_URL_CSM}/public/blog/${item.id}/${item.image}`} alt={item.title} className="w-16 h-16 rounded-md mr-4" />
                         <div className="flex-1">
                           <h3 className="text-lg font-semibold">{item.title}</h3>
                           <p className="text-sm text-gray-500">Published By {item.createdAt}</p>

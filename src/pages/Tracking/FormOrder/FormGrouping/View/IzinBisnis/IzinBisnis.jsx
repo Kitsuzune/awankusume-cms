@@ -14,7 +14,7 @@ import AKL from './bussinessType/AKL';
 
 
 
-const IzinBisnis = ({ dataView }) => {
+const IzinBisnis = ({ dataView, handleDownload, handleDownloadZip }) => {
     const { Option } = Select;
     const [businessType, setBusinessType] = useState(dataView.businessOrder.businessTypeId);
 
@@ -46,43 +46,43 @@ const IzinBisnis = ({ dataView }) => {
 
 
             {businessType == 1 && (
-                <IDAK dataView={dataView} />
+                <IDAK dataView={dataView} handleDownload={handleDownload} handleDownloadZip={handleDownloadZip} />
             )}
 
             {businessType === 2 && (
-                <BPOM dataView={dataView} />
+                <BPOM dataView={dataView} handleDownload={handleDownload} handleDownloadZip={handleDownloadZip} />
             )}
 
             {businessType === 3 && (
-                <TrademarkLokalPerorangan dataView={dataView} />
+                <TrademarkLokalPerorangan dataView={dataView} handleDownload={handleDownload} handleDownloadZip={handleDownloadZip} />
             )}
 
             {businessType === 4 && (
-                <TrademarkBadanUsaha dataView={dataView} />
+                <TrademarkBadanUsaha dataView={dataView} handleDownload={handleDownload} handleDownloadZip={handleDownloadZip} />
             )}
 
             {businessType === 5 && (
-                <TrademarkLuarNegeriPerorangan dataView={dataView} />
+                <TrademarkLuarNegeriPerorangan dataView={dataView} handleDownload={handleDownload} handleDownloadZip={handleDownloadZip} />
             )}
 
             {businessType === 6 && (
-                <TrademarkBadanUsahaLuarNegeri dataView={dataView} />
+                <TrademarkBadanUsahaLuarNegeri dataView={dataView} handleDownload={handleDownload} handleDownloadZip={handleDownloadZip} />
             )}
 
             {businessType === 7 && (
-                <SMKPO dataView={dataView} />
+                <SMKPO dataView={dataView} handleDownload={handleDownload} handleDownloadZip={handleDownloadZip} />
             )}
 
             {businessType === 8 && (
-                <KlinikPratamaKecantikan dataView={dataView} />
+                <KlinikPratamaKecantikan dataView={dataView} handleDownload={handleDownload} handleDownloadZip={handleDownloadZip} />
             )}
 
             {businessType === 9 && (
-                <INSW dataView={dataView} />
+                <INSW dataView={dataView} handleDownload={handleDownload} handleDownloadZip={handleDownloadZip} />
             )}
 
             {businessType === 10 && (
-                <AKL dataView={dataView} />
+                <AKL dataView={dataView} handleDownload={handleDownload} handleDownloadZip={handleDownloadZip} />
             )}
         </>
     )

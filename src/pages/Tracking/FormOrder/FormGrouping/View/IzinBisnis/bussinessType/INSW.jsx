@@ -7,7 +7,7 @@ import { DownSquareTwoTone } from '@ant-design/icons';
 
 const { Option } = Select;
 
-const INSW = ({ dataView }) => {
+const INSW = ({ dataView, handleDownload, handleDownloadZip }) => {
     return (
         <Form layout="vertical">
             <Row gutter={16}>
@@ -53,7 +53,7 @@ const INSW = ({ dataView }) => {
                             disabled
                         />
                         <Button className='mt-2 w-full' onClick={() => {
-                            window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.tandaTanganDirektur}`, '_blank');
+                            handleDownload(dataView?.businessOrder?.tandaTanganDirektur);
                         }}>
                             <DownSquareTwoTone />
                             Download
@@ -72,7 +72,7 @@ const INSW = ({ dataView }) => {
                             disabled
                         />
                         <Button className='mt-2 w-full' onClick={() => {
-                            window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.tandaTanganPenanggungJawab}`, '_blank');
+                            handleDownload(dataView?.businessOrder?.tandaTanganPenanggungJawab);
                         }}>
                             <DownSquareTwoTone />
                             Download
@@ -94,7 +94,7 @@ const INSW = ({ dataView }) => {
                             disabled
                         />
                         <Button className='mt-2 w-full' onClick={() => {
-                            window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.capPerusahaan}`, '_blank');
+                            handleDownload(dataView?.businessOrder?.capPerusahaan);
                         }}>
                             <DownSquareTwoTone />
                             Download
@@ -122,7 +122,7 @@ const INSW = ({ dataView }) => {
                 </Col>
             </Row>
 
-            <Button className='mt-4 w-full'>
+            <Button className='mt-4 w-full' onClick={handleDownloadZip}>
                 <DownSquareTwoTone />
                 Download All File In This Form As Zip
             </Button>

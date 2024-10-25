@@ -8,7 +8,7 @@ const { Option } = Select;
 const { Title } = Typography;
 const { TextArea } = Input;
 
-const LegalitasPP = ({ dataView }) => {
+const LegalitasPP = ({ dataView, handleDownload, handleDownloadZip }) => {
 
   const renderPengurusForms = () => {
     return dataView.companyOrder.administrator.map((administrator, i) => (
@@ -75,7 +75,7 @@ const LegalitasPP = ({ dataView }) => {
                 disabled
               />
               <Button className='mt-2 w-full' onClick={() => {
-                window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${administrator.ktp}`, '_blank');
+                handleDownload(administrator.ktp);
               }}>
                 <DownSquareTwoTone />
                 Download
@@ -94,7 +94,7 @@ const LegalitasPP = ({ dataView }) => {
                 disabled
               />
               <Button className='mt-2 w-full' onClick={() => {
-                window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${administrator.npwp}`, '_blank');
+                handleDownload(administrator.npwp);
               }}>
                 <DownSquareTwoTone />
                 Download
@@ -264,7 +264,7 @@ const LegalitasPP = ({ dataView }) => {
         </Col>
       </Row>
 
-      <Button className='mt-4 w-full'>
+      <Button className='mt-4 w-full' onClick={handleDownloadZip}>
         <DownSquareTwoTone />
         Download All File In This Form As Zip
       </Button>

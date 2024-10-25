@@ -4,7 +4,7 @@ import Draggable from '../../../../../../../components/ui/File Upload/Draggable'
 import { PiFoldersDuotone } from 'react-icons/pi';
 import { DownSquareTwoTone } from '@ant-design/icons';
 
-const AKL = ({ dataView }) => {
+const AKL = ({ dataView, handleDownload, handleDownloadZip }) => {
 
     const renderMaterialMSDS = () => {
         return dataView.businessOrder.material.map((material, i) => (
@@ -22,7 +22,7 @@ const AKL = ({ dataView }) => {
                                 disabled={true}
                             />
                             <Button className='mt-2 w-full' onClick={() => {
-                                window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView.businessOrder.material[i].material}`, '_blank');
+                                handleDownload(dataView.businessOrder.material[i].material);
                             }}>
                                 <DownSquareTwoTone />
                                 Download
@@ -80,7 +80,7 @@ const AKL = ({ dataView }) => {
                             disabled
                         />
                         <Button className='mt-2 w-full' onClick={() => {
-                            window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.loa}`, '_blank');
+                            handleDownload(dataView?.businessOrder?.loa);
                         }}>
                             <DownSquareTwoTone />
                             Download
@@ -100,7 +100,7 @@ const AKL = ({ dataView }) => {
                             disabled
                         />
                         <Button className='mt-2 w-full' onClick={() => {
-                            window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.cfs}`, '_blank');
+                            handleDownload(dataView?.businessOrder?.cfs);
                         }}>
                             <DownSquareTwoTone />
                             Download
@@ -123,7 +123,7 @@ const AKL = ({ dataView }) => {
                                 disabled
                             />
                             <Button className='mt-2 w-full' onClick={() => {
-                                window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.iso13485}`, '_blank');
+                                handleDownload(dataView?.businessOrder?.iso13485);
                             }}>
                                 <DownSquareTwoTone />
                                 Download
@@ -148,7 +148,7 @@ const AKL = ({ dataView }) => {
                             disabled
                         />
                         <Button className='mt-2 w-full' onClick={() => {
-                            window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.flowProductionChart}`, '_blank');
+                            handleDownload(dataView?.businessOrder?.flowProductionChart);
                         }}>
                             <DownSquareTwoTone />
                             Download
@@ -168,7 +168,7 @@ const AKL = ({ dataView }) => {
                             disabled
                         />
                         <Button className='mt-2 w-full' onClick={() => {
-                            window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.clinicalTrial}`, '_blank');
+                            handleDownload(dataView?.businessOrder?.clinicalTrial);
                         }}>
                             <DownSquareTwoTone />
                             Download
@@ -190,7 +190,7 @@ const AKL = ({ dataView }) => {
                             disabled
                         />
                         <Button className='mt-2 w-full' onClick={() => {
-                            window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.spesificationAndBrosshure}`, '_blank');
+                            handleDownload(dataView?.businessOrder?.spesificationAndBrosshure);
                         }}>
                             <DownSquareTwoTone />
                             Download
@@ -210,7 +210,7 @@ const AKL = ({ dataView }) => {
                             disabled
                         />
                         <Button className='mt-2 w-full' onClick={() => {
-                            window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.documentVerificationAndValidation}`, '_blank');
+                            handleDownload(dataView?.businessOrder?.documentVerificationAndValidation);
                         }}>
                             <DownSquareTwoTone />
                             Download
@@ -232,7 +232,7 @@ const AKL = ({ dataView }) => {
                             disabled
                         />
                         <Button className='mt-2 w-full' onClick={() => {
-                            window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.biocompatibility}`, '_blank');
+                            handleDownload(dataView?.businessOrder?.biocompatibility);
                         }}>
                             <DownSquareTwoTone />
                             Download
@@ -252,7 +252,7 @@ const AKL = ({ dataView }) => {
                             disabled
                         />
                         <Button className='mt-2 w-full' onClick={() => {
-                            window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.preclinicalTrial}`, '_blank');
+                            handleDownload(dataView?.businessOrder?.preclinicalTrial);
                         }}>
                             <DownSquareTwoTone />
                             Download
@@ -274,7 +274,7 @@ const AKL = ({ dataView }) => {
                             disabled
                         />
                         <Button className='mt-2 w-full' onClick={() => {
-                            window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.clinicalEvaluation}`, '_blank');
+                            handleDownload(dataView?.businessOrder?.clinicalEvaluation);
                         }}>
                             <DownSquareTwoTone />
                             Download
@@ -296,7 +296,7 @@ const AKL = ({ dataView }) => {
                             disabled
                         />
                         <Button className='mt-2 w-full' onClick={() => {
-                            window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.iso14971}`, '_blank');
+                            handleDownload(dataView?.businessOrder?.iso14971);
                         }}>
                             <DownSquareTwoTone />
                             Download
@@ -316,7 +316,7 @@ const AKL = ({ dataView }) => {
                             disabled
                         />
                         <Button className='mt-2 w-full' onClick={() => {
-                            window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.coa}`, '_blank');
+                            handleDownload(dataView?.businessOrder?.coa);
                         }}>
                             <DownSquareTwoTone />
                             Download
@@ -338,7 +338,7 @@ const AKL = ({ dataView }) => {
                             disabled
                         />
                         <Button className='mt-2 w-full' onClick={() => {
-                            window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.penandaLuarIndonesia}`, '_blank');
+                            handleDownload(dataView?.businessOrder?.penandaLuarIndonesia);
                         }}>
                             <DownSquareTwoTone />
                             Download
@@ -358,7 +358,7 @@ const AKL = ({ dataView }) => {
                             disabled
                         />
                         <Button className='mt-2 w-full' onClick={() => {
-                            window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.simbolPackagingLuar}`, '_blank');
+                            handleDownload(dataView?.businessOrder?.simbolPackagingLuar);
                         }}>
                             <DownSquareTwoTone />
                             Download
@@ -380,7 +380,7 @@ const AKL = ({ dataView }) => {
                             disabled
                         />
                         <Button className='mt-2 w-full' onClick={() => {
-                            window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.tandaExpiredDate}`, '_blank');
+                            handleDownload(dataView?.businessOrder?.tandaExpiredDate);
                         }}>
                             <DownSquareTwoTone />
                             Download
@@ -403,7 +403,7 @@ const AKL = ({ dataView }) => {
                             disabled
                         />
                         <Button className='mt-2 w-full' onClick={() => {
-                            window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.manualGuideline}`, '_blank');
+                            handleDownload(dataView?.businessOrder?.manualGuideline);
                         }}>
                             <DownSquareTwoTone />
                             Download
@@ -423,7 +423,7 @@ const AKL = ({ dataView }) => {
                             disabled
                         />
                         <Button className='mt-2 w-full' onClick={() => {
-                            window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.aksesorisDisertakan}`, '_blank');
+                            handleDownload(dataView?.businessOrder?.aksesorisDisertakan);
                         }}>
                             <DownSquareTwoTone />
                             Download
@@ -432,7 +432,7 @@ const AKL = ({ dataView }) => {
                 </Col>
             </Row>
 
-            <Button className='mt-4 w-full'>
+            <Button className='mt-4 w-full' onClick={handleDownloadZip}>
                 <DownSquareTwoTone />
                 Download All File In This Form As Zip
             </Button>

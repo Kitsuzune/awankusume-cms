@@ -8,6 +8,7 @@ import { CiEdit } from 'react-icons/ci';
 import { useNavigate } from 'react-router-dom';
 import Loading from '../../../components/ui/Loading/Loading';
 import { apiRequest } from '../../../utils/api';
+import { EyeOutlined } from '@ant-design/icons';
 
 const TrackingCompleted = () => {
   const { Option } = Select;
@@ -91,7 +92,7 @@ const TrackingCompleted = () => {
                   <Form
                     form={form}
                     initialValues={{ status: record.status }}
-                    onFinish={(values) => {handleEdit(record.id, values)}}
+                    onFinish={(values) => { handleEdit(record.id, values) }}
                   >
                     <Row>
                       <Col span={24}>
@@ -127,6 +128,13 @@ const TrackingCompleted = () => {
               });
             }}
           />
+
+          <EyeOutlined
+            className="text-2xl text-center text-second cursor-pointer hover:text-main"
+            onClick={() => {
+              navigate(`/app/tracking/form-order/${record.id}`);
+            }}
+          />
         </div>
       ),
     },
@@ -159,15 +167,15 @@ const TrackingCompleted = () => {
                               <span className="text-[24px] inline-block">Finish</span>
                             </Col>
                             <Col className="flex gap-2">
-                            <Input.Search placeholder="Search..."
-                                                            onSearch={(value) => {
-                                                                setSearch(value);
-                                                                setPagination({
-                                                                    ...pagination,
-                                                                    page: 1,
-                                                                });
-                                                            }}
-                                                        />
+                              <Input.Search placeholder="Search..."
+                                onSearch={(value) => {
+                                  setSearch(value);
+                                  setPagination({
+                                    ...pagination,
+                                    page: 1,
+                                  });
+                                }}
+                              />
                               <Button
                                 type="primary"
                                 onClick={() => {

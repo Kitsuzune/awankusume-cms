@@ -7,7 +7,7 @@ import { DownSquareTwoTone } from '@ant-design/icons';
 
 const { Option } = Select;
 
-const TrademarkBadanUsahaLuarNegeri = ({ dataView }) => {
+const TrademarkBadanUsahaLuarNegeri = ({ dataView, handleDownload, handleDownloadZip }) => {
 
     return (
         <Form layout="vertical">
@@ -55,7 +55,7 @@ const TrademarkBadanUsahaLuarNegeri = ({ dataView }) => {
                             disabled
                         />
                         <Button className='mt-2 w-full' onClick={() => {
-                            window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.sertifikatPendirian}`, '_blank');
+                            handleDownload(dataView?.businessOrder?.sertifikatPendirian);
                         }}>
                             <DownSquareTwoTone />
                             Download
@@ -77,7 +77,7 @@ const TrademarkBadanUsahaLuarNegeri = ({ dataView }) => {
                             disabled
                         />
                         <Button className='mt-2 w-full' onClick={() => {
-                            window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.etiketLogo}`, '_blank');
+                            handleDownload(dataView?.businessOrder?.etiketLogo);
                         }}>
                             <DownSquareTwoTone />
                             Download
@@ -99,7 +99,7 @@ const TrademarkBadanUsahaLuarNegeri = ({ dataView }) => {
                             disabled
                         />
                         <Button className='mt-2 w-full' onClick={() => {
-                            window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.tandaTanganDirektur}`, '_blank');
+                            handleDownload(dataView?.businessOrder?.tandaTanganDirektur);
                         }}>
                             <DownSquareTwoTone />
                             Download
@@ -121,7 +121,7 @@ const TrademarkBadanUsahaLuarNegeri = ({ dataView }) => {
                             disabled
                         />
                         <Button className='mt-2 w-full' onClick={() => {
-                            window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.penjelasanBisnis}`, '_blank');
+                            handleDownload(dataView?.businessOrder?.penjelasanBisnis);
                         }}>
                             <DownSquareTwoTone />
                             Download
@@ -130,7 +130,7 @@ const TrademarkBadanUsahaLuarNegeri = ({ dataView }) => {
                 </Col>
             </Row>
 
-            <Button className='mt-4 w-full'>
+            <Button className='mt-4 w-full' onClick={handleDownloadZip}>
                 <DownSquareTwoTone />
                 Download All File In This Form As Zip
             </Button>

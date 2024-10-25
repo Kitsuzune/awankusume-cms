@@ -29,6 +29,36 @@ const FormView = () => {
         fetchFormData();
     }, []);
 
+    const handleDownload = async (fileName) => {
+        try{
+            const response = await apiRequest('GET', `/order/download-file/${dataView?.serialCode}/${fileName}`, {}, {}, 'blob');
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', fileName);
+            document.body.appendChild(link);
+            link.click();
+        } catch (error) {
+            message.error('Failed to download file');
+            console.error('Failed to download file', error);
+        }
+    }
+
+    const handleDownloadZip = async () => {
+        try{
+            const response = await apiRequest('GET', `/order/download-files/${dataView?.serialCode}`, {}, {}, 'blob');
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', `${dataView?.serialCode}.zip`);
+            document.body.appendChild(link);
+            link.click();
+        } catch (error) {
+            message.error('Failed to download zip file');
+            console.error('Failed to download zip file', error);
+        }
+    }
+
     return (
         <React.Fragment>
 
@@ -72,11 +102,11 @@ const FormView = () => {
                                         </Row>
 
                                         {dataView?.serviceType === 'IZIN_BISNIS' && (
-                                            <IzinBisnis dataView={dataView} />
+                                            <IzinBisnis dataView={dataView} handleDownload={handleDownload} handleDownloadZip={handleDownloadZip} />
                                         )}
 
                                         {dataView?.serviceType === 'PENDIRIAN_PERUSAHAAN' && (
-                                            <LegalitasPP dataView={dataView} />
+                                            <LegalitasPP dataView={dataView} handleDownload={handleDownload} handleDownloadZip={handleDownloadZip} />
                                         )}
 
                                     </Form>

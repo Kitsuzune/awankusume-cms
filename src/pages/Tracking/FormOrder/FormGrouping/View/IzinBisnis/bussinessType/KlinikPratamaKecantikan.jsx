@@ -7,7 +7,7 @@ import { DownSquareTwoTone } from '@ant-design/icons';
 
 const { Option } = Select;
 
-const KlinikPratamaKecantikan = ({ dataView }) => {
+const KlinikPratamaKecantikan = ({ dataView, handleDownload, handleDownloadZip }) => {
 
     const renderDokterForms = () => {
         return dataView.businessOrder.dokter.map((dokter, i) => (
@@ -96,7 +96,7 @@ const KlinikPratamaKecantikan = ({ dataView }) => {
                             disabled
                         />
                         <Button className='mt-2 w-full' onClick={() => {
-                            window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.buktiStr}`, '_blank');
+                            handleDownload(dataView?.businessOrder?.buktiStr);
                         }}>
                             <DownSquareTwoTone />
                             Download
@@ -118,7 +118,7 @@ const KlinikPratamaKecantikan = ({ dataView }) => {
                             disabled
                         />
                         <Button className='mt-2 w-full' onClick={() => {
-                            window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.rukoRumah}`, '_blank');
+                            handleDownload(dataView?.businessOrder?.rukoRumah);
                         }}>
                             <DownSquareTwoTone />
                             Download
@@ -140,7 +140,7 @@ const KlinikPratamaKecantikan = ({ dataView }) => {
                             disabled
                         />
                         <Button className='mt-2 w-full' onClick={() => {
-                            window.open(`${process.env.REACT_APP_API_URL_CSM}/public/showcase/${dataView?.businessOrder?.lahanParkir}`, '_blank');
+                            handleDownload(dataView?.businessOrder?.lahanParkir);
                         }}>
                             <DownSquareTwoTone />
                             Download
@@ -149,7 +149,7 @@ const KlinikPratamaKecantikan = ({ dataView }) => {
                 </Col>
             </Row>
 
-            <Button className='mt-4 w-full'>
+            <Button className='mt-4 w-full' onClick={handleDownloadZip}>
                 <DownSquareTwoTone />
                 Download All File In This Form As Zip
             </Button>
