@@ -3,7 +3,7 @@ import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import Loading from '../../components/ui/Loading/Loading';
 import { Button, Col, Form, Input, message, Modal, Row, Switch } from 'antd';
-import { useParams, useLocation } from 'react-router-dom';
+import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import QuillResizeImage from 'quill-resize-image';
 import ImagePreviewUploader from '../../components/ui/File Upload/ImagePreview';
 import { apiRequest } from '../../utils/api';
@@ -50,7 +50,8 @@ const PostEdit = () => {
     const [id, setId] = useState(useParams().id);
     const [form] = Form.useForm();
     const [active, setActive] = useState(false);
-    const quillRef = useRef(null); // Create a ref for Quill
+    const quillRef = useRef(null);
+    const navigate = useNavigate();
 
     const handleImageUpload = () => {
         const input = document.createElement('input');
@@ -73,7 +74,8 @@ const PostEdit = () => {
                 file: newFile,
             };
 
-            const response = await apiRequest('POST', '/blog/upload/image', sendData);
+            // const response = await apiRequest('POST', '/blog/upload/image', sendData);
+            const response = await apiRequest('POST', `/blog/upload/image/${id}`, sendData);
 
             // Insert the uploaded image into the Quill editor with custom styles
             const quill = quillRef.current.getEditor();
