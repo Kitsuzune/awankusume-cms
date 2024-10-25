@@ -1,7 +1,7 @@
-import { Col, Input, message, Row, Select } from 'antd'
+import { Col, Input, message, Modal, Row, Select } from 'antd'
 import React, { useEffect, useState } from 'react'
 import Button from '../../components/ui/Button/Button';
-import { EditOutlined, EyeInvisibleTwoTone, EyeTwoTone, PlusOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined, EyeInvisibleTwoTone, EyeTwoTone, PlusOutlined } from '@ant-design/icons';
 import { CustomPagination } from '../../components/ui/Table/CustomPagination';
 import Loading from '../../components/ui/Loading/Loading';
 import { useNavigate } from 'react-router-dom';
@@ -26,8 +26,8 @@ const Post = () => {
       const response = await apiRequest('get', '/blog', {}, {
         page: pagination.page,
         perPage: pagination.perPage,
-        where: search,
-        orderBy: `${order.key}:${order.order}`,
+        where: "",
+        orderBy: "id:desc"
       });
 
       setData(response.data.data.map((item) => ({
@@ -51,6 +51,17 @@ const Post = () => {
   useEffect(() => {
     fetchData();
   }, [pagination.page, pagination.perPage, search]);
+
+  const deleteData = async (id) => {
+    try {
+      const response = await apiRequest('delete', `/blog/${id}`);
+      message.success(response.data.message);
+      fetchData();
+      Modal.destroyAll();
+    } catch (error) {
+      message.error(error.response?.data?.message ? error.response?.data?.message : 'Error While Deleting Data');
+    }
+  }
 
   return (
     <React.Fragment>
@@ -105,13 +116,13 @@ const Post = () => {
                     </Row>
 
                     {data.map((item) => (
-                      <div className="flex items-center p-4 border-2 bg-white rounded-lg shadow-md mb-2 cursor-pointer hover:bg-gray-50 transition-all duration-300 hover:shadow-none" onClick={() => navigate(`/app/post/${item.id}`)}>
+                      <div className="flex items-center p-4 border-2 bg-white rounded-lg shadow-md mb-2 cursor-pointer hover:bg-gray-50 transition-all duration-300 hover:shadow-none">
                         <img src={`${process.env.REACT_APP_API_URL_CSM}/public/blog/${item.image}`} alt={item.title} className="w-16 h-16 rounded-md mr-4" />
                         <div className="flex-1">
                           <h3 className="text-lg font-semibold">{item.title}</h3>
                           <p className="text-sm text-gray-500">Published By {item.createdAt}</p>
                         </div>
-                        <div className="flex items-center justify-end gap-5">
+                        <div className="flex items-center justify-end gap-3">
                           {/* <span className="mr-2">⭐</span>
                           <span>{item.view}</span> */}
 
@@ -121,9 +132,45 @@ const Post = () => {
                             <BsEyeSlashFill className="text-2xl text-second cursor-pointer hover:text-main transition-all duration-300" />
                           )}
 
-                          <Button type="primary" onClick={() => navigate(`/app/post/edit/${item.id}`)}>
+                          <Button type="primary" onClick={() => navigate(`/app/post/${item.id}`)}>
                             Edit
                             <EditOutlined />
+                          </Button>
+
+                          <Button
+                            onClick={() => {
+                              Modal.info({
+                                title: 'Delete Data',
+                                centered: true,
+                                content: (
+                                  <React.Fragment>
+                                    <div>Are you sure you want to delete this data?</div>
+                                    <div className="mt-5 flex justify-end">
+                                      <Button
+                                        type="default"
+                                        className="mr-2"
+                                        onClick={() => {
+                                          Modal.destroyAll();
+                                        }}
+                                      >
+                                        Cancel
+                                      </Button>
+                                      <Button
+                                        type="primary"
+                                        className="bg-main"
+                                        onClick={() => deleteData(item.id)}
+                                      >
+                                        Delete
+                                      </Button>
+                                    </div>
+                                  </React.Fragment>
+                                ),
+                                footer: null,
+                              });
+                            }}
+                          >
+                            Delete
+                            <DeleteOutlined />
                           </Button>
                         </div>
                       </div>
