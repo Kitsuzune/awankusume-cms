@@ -83,6 +83,16 @@ const FaqNew = () => {
             ),
         },
         {
+            title: 'Category',
+            dataIndex: 'category',
+            key: 'category',
+            render: (text, record) => (
+                <div className='cursor-pointer'>
+                    {text}
+                </div>
+            ),
+        },
+        {
             title: 'Question',
             dataIndex: 'question',
             key: 'question',

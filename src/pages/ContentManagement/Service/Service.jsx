@@ -70,6 +70,16 @@ const Service = () => {
             ),
         },
         {
+            title: 'Type',
+            dataIndex: 'status',
+            key: 'status',
+            render: (text, record) => (
+                <div className='cursor-pointer'>
+                    {text}
+                </div>
+            ),
+        },
+        {
             title: 'Sub Title',
             dataIndex: 'subTitle',
             key: 'subTitle',

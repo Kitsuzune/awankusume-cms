@@ -109,7 +109,7 @@ const TrackingFailed = () => {
                         <Form.Item name="paymentStatus" label="Payment Status">
                           <Select value={record.paymentStatus}>
                             <Option value="FULL_PAYMENT">FULL PAYMENT</Option>
-                            <Option value="FRONTEND_PAYMENT">FRONTEND PAYMENT</Option>
+                            <Option value="FRONTEND_PAYMENT">PREPAID</Option>
                             <Option value="UNPAID">UNPAID</Option>
                           </Select>
                         </Form.Item>

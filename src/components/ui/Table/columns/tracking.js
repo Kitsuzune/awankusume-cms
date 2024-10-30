@@ -28,5 +28,10 @@ export const trackingColumns = [
         title: 'Payment Status',
         dataIndex: 'paymentStatus',
         key: 'paymentStatus',
+        render: (text, record) => (
+            <div className='cursor-pointer'>
+                {text === 'FRONTEND_PAYMENT' ? 'PREPAID' : text}
+            </div>
+        ),
     },
 ];

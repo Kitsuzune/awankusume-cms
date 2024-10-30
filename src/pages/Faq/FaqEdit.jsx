@@ -30,6 +30,7 @@ const FaqEdit = () => {
             form.setFieldsValue({
                 title: dataLanguage.title,
                 subTitle: dataLanguage.subTitle,
+                category: dataLanguage.category,
                 question: dataLanguage.question,
                 answer: dataLanguage.answer,
                 show: dataLanguage.show == '1' ? true : false,
@@ -60,6 +61,7 @@ const FaqEdit = () => {
             const sendData = {
                 title: form.getFieldValue('title'),
                 subTitle: form.getFieldValue('subTitle'),
+                category: form.getFieldValue('category'),
                 question: form.getFieldValue('question'),
                 answer: form.getFieldValue('answer'),
                 show: active ? '1' : '0',
@@ -226,6 +228,23 @@ const FaqEdit = () => {
                                                     rules={[{ required: true, message: 'Please enter a sub title' }]}
                                                 >
                                                     <Input placeholder="Enter sub title" disabled={!isEditing} />
+                                                </Form.Item>
+                                            </Col>
+                                        </Row>
+
+                                        <Row>
+                                            <Col span={24}>
+                                                <Form.Item
+                                                    name="category"
+                                                    label="Category"
+                                                    rules={[{ required: true, message: 'Please enter a category' }]}
+                                                >
+                                                    {/* <Input placeholder="Enter category" disabled={!isEditing} /> */}
+                                                    <Select placeholder="Select Category" disabled={!isEditing}>
+                                                        <Option value="ALL">FAQ (ALL / Core)</Option>
+                                                        <Option value="ABOUT_US">About Us</Option>
+                                                        <Option value="KBLI">KBLI</Option>
+                                                    </Select>
                                                 </Form.Item>
                                             </Col>
                                         </Row>
