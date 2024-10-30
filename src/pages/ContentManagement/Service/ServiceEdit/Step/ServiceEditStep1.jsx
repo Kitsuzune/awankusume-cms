@@ -29,6 +29,7 @@ const ServiceEditStep1 = ({ image, setImage, onNext, id, setId, data, setData, l
                 title: dataLanguage.title,
                 subTitle: dataLanguage.subTitle,
                 show: dataLanguage.show === '1' ? true : false,
+                status: dataLanguage.status,
             });
 
             setActive(dataLanguage.show == '1' ? true : false);
@@ -62,6 +63,7 @@ const ServiceEditStep1 = ({ image, setImage, onNext, id, setId, data, setData, l
                 title: form.getFieldValue('title'),
                 subTitle: form.getFieldValue('subTitle'),
                 show: active ? '1' : '0',
+                status: form.getFieldValue('status'),
             }
 
             if (fileToSend) {
@@ -217,6 +219,24 @@ const ServiceEditStep1 = ({ image, setImage, onNext, id, setId, data, setData, l
                             rules={[{ required: true, message: 'Please enter a sub title' }]}
                         >
                             <Input placeholder="Enter subtitle" disabled={!isEditing} />
+                        </Form.Item>
+                    </Col>
+                </Row>
+
+                <Row>
+                    <Col span={24}>
+                        <Form.Item
+                            name="status"
+                            label="Type"
+                        >
+                            <Select
+                                disabled={!isEditing}
+                                placeholder="Select Status"
+                                options={[
+                                    { value: 'PT', label: 'PT' },
+                                    { value: 'CV', label: 'CV' },
+                                ]}
+                            />
                         </Form.Item>
                     </Col>
                 </Row>
