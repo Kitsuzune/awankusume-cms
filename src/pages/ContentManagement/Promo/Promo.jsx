@@ -4,10 +4,18 @@ import ImagePreviewUploader from '../../../components/ui/File Upload/ImagePrevie
 import Loading from '../../../components/ui/Loading/Loading';
 import Flag from 'react-world-flags';
 import { apiRequest } from '../../../utils/api';
+import { useLocation, useNavigate } from 'react-router-dom';
+
 
 const Promo = () => {
     const [form] = Form.useForm();
     const [loading, setLoading] = useState(false);
+    const [image, setImage] = useState(null);
+    const [imageCurrent, setImageCurrent] = useState(null);
+    const location = useLocation();
+    const [isEditing, setIsEditing] = useState(location.state?.edit || false);
+    const navigate = useNavigate();
+
 
     const fetchData = async () => {
         setLoading(true);
@@ -18,6 +26,9 @@ const Promo = () => {
                     name: response.data.data.name,
                     link: response.data.data.link
                 });
+
+                setImage(`${process.env.REACT_APP_API_URL_CSM}/public/social-promotion/${response.data.data.image}`);
+                setImageCurrent(`${process.env.REACT_APP_API_URL_CSM}/public/social-promotion/${response.data.data.image}`);
             }
         } catch (error) {
             console.log(error);
@@ -27,12 +38,18 @@ const Promo = () => {
 
     const handleSubmit = async () => {
         setLoading(true);
-
-        const sendData = {
-            link: form.getFieldValue('link')
-        }
-
         try {
+            const fileToSend = image !== imageCurrent ? image : undefined;
+
+            const sendData = {
+                link: form.getFieldValue('link')
+            }
+
+            if (fileToSend) {
+                sendData.file = fileToSend;
+            }
+
+
             const response = await apiRequest('PATCH', '/content/promotion', sendData);
             if (response.status === 200) {
                 message.success('Promo Updated Successfully');
@@ -42,6 +59,15 @@ const Promo = () => {
         }
         setLoading(false);
     }
+
+    const handleEdit = () => {
+        setIsEditing(true);
+    };
+
+    const handleCancel = () => {
+        setIsEditing(false);
+        navigate(0);
+    };
 
 
     React.useEffect(() => {
@@ -68,6 +94,17 @@ const Promo = () => {
 
                                     <div className="mt-5 p-10 bg-white border rounded-lg">
                                         <Form layout="vertical" form={form}>
+                                            <Row>
+                                                <Col span={24}>
+                                                    <Form.Item
+                                                        name="image"
+                                                        label="Image"
+                                                        rules={[{ required: true, message: 'Please upload an image' }]}
+                                                    >
+                                                        <ImagePreviewUploader image={image} setImage={setImage} name="image" disabled={!isEditing} />
+                                                    </Form.Item>
+                                                </Col>
+                                            </Row>
 
                                             <Row>
                                                 <Col span={24}>
@@ -89,15 +126,22 @@ const Promo = () => {
                                                         name="link"
                                                         label="link Promo"
                                                         rules={[{ required: true, message: 'Please enter a URL' }]}
+                                                        
                                                     >
-                                                        <Input placeholder="Enter URL" />
+                                                        <Input placeholder="Enter URL" disabled={!isEditing}/>
                                                     </Form.Item>
                                                 </Col>
                                             </Row>
 
                                             <div className="mt-5 flex justify-end">
-                                                <Button type="default" className="mr-2" onClick={() => form.resetFields()}>Reset</Button>
-                                                <Button type="primary" className='bg-main' onClick={handleSubmit}>Save</Button>
+                                                {isEditing ? (
+                                                    <>
+                                                        <Button type="default" className="mr-2" onClick={handleCancel}>Cancel</Button>
+                                                        <Button type="primary" className='bg-main' onClick={handleSubmit}>Save</Button>
+                                                    </>
+                                                ) : (
+                                                    <Button type="primary" className='bg-main px-10 py-5' onClick={handleEdit}>Edit</Button>
+                                                )}
                                             </div>
                                         </Form>
                                     </div>
