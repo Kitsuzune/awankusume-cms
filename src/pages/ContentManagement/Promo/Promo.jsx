@@ -42,6 +42,7 @@ const Promo = () => {
             const fileToSend = image !== imageCurrent ? image : undefined;
 
             const sendData = {
+                name: form.getFieldValue('name'),
                 link: form.getFieldValue('link')
             }
 
@@ -113,7 +114,7 @@ const Promo = () => {
                                                         label="Name"
                                                         rules={[{ required: true, message: 'Please enter a title' }]}
                                                     >
-                                                        <Input disabled
+                                                        <Input
                                                             placeholder="Enter title" />
 
                                                     </Form.Item>
