@@ -55,7 +55,8 @@ const TrackingFailed = () => {
     setLoading(true);
     try {
       const response = await apiRequest('patch', `/order/${id}`, {
-        status: values.status,
+        status: values.status || undefined,
+        paymentStatus: values.paymentStatus || undefined,
       });
       if (response.status === 200) {
         message.success('Data Updated');
@@ -90,7 +91,7 @@ const TrackingFailed = () => {
                 content: (
                   <Form
                     form={form}
-                    initialValues={{ status: record.status }}
+                    initialValues={{ status: record.status, paymentStatus: record.paymentStatus }}
                     onFinish={(values) => { handleEdit(record.id, values) }}
                   >
                     <Row>
@@ -101,6 +102,15 @@ const TrackingFailed = () => {
                             <Option value="PROCESS">ON GOING</Option>
                             <Option value="FINISH">FINISH</Option>
                             <Option value="CANCEL">FAILED</Option>
+                          </Select>
+                        </Form.Item>
+                      </Col>
+                      <Col span={24}>
+                        <Form.Item name="paymentStatus" label="Payment Status">
+                          <Select value={record.paymentStatus}>
+                            <Option value="FULL_PAYMENT">FULL PAYMENT</Option>
+                            <Option value="FRONTEND_PAYMENT">FRONTEND PAYMENT</Option>
+                            <Option value="UNPAID">UNPAID</Option>
                           </Select>
                         </Form.Item>
                       </Col>

@@ -24,4 +24,9 @@ export const trackingColumns = [
         dataIndex: 'createdAt',
         key: 'createdAt',
     },
+    {
+        title: 'Payment Status',
+        dataIndex: 'paymentStatus',
+        key: 'paymentStatus',
+    },
 ];
