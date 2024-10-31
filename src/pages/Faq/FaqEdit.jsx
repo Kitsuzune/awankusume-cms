@@ -8,6 +8,8 @@ import Loading from '../../components/ui/Loading/Loading';
 import Draggable from '../../components/ui/File Upload/Draggable';
 import { useNavigate } from 'react-router-dom';
 
+const { Option } = Select;
+
 const FaqEdit = () => {
     const [ id, setId ] = useState(useParams().id);
     const [form] = Form.useForm();
