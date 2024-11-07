@@ -15,6 +15,7 @@ const ServiceEditStep1 = ({ image, setImage, onNext, id, setId, data, setData, l
     const navigate = useNavigate();
     const [nextPageType, setNextPageType] = useState(false);
     const [active, setActive] = useState(false);
+    const [typeList, setTypeList] = useState([]);
 
     const fetchData = async (localId) => {
         try {
@@ -30,6 +31,7 @@ const ServiceEditStep1 = ({ image, setImage, onNext, id, setId, data, setData, l
                 subTitle: dataLanguage.subTitle,
                 show: dataLanguage.show === '1' ? true : false,
                 status: dataLanguage.status,
+                type: dataLanguage.type,
             });
 
             setActive(dataLanguage.show == '1' ? true : false);
@@ -64,6 +66,7 @@ const ServiceEditStep1 = ({ image, setImage, onNext, id, setId, data, setData, l
                 subTitle: form.getFieldValue('subTitle'),
                 show: active ? '1' : '0',
                 status: form.getFieldValue('status'),
+                type: form.getFieldValue('type'),
             }
 
             if (fileToSend) {
@@ -104,11 +107,22 @@ const ServiceEditStep1 = ({ image, setImage, onNext, id, setId, data, setData, l
         }
     }
 
+    const fetchTypeList = async () => {
+        try {
+            const response = await apiRequest('get', '/order/business-type/all');
+            setTypeList(response.data.data);
+        } catch (error) {
+            console.log(error);
+            message.error(error.response?.data?.message || 'Something went wrong');
+        }
+    }
+
     useEffect(() => {
         if (id) {
             setNextPageType(true);
             fetchData(id)
         }
+        fetchTypeList();
     }, [])
 
     useEffect(() => {
@@ -119,6 +133,7 @@ const ServiceEditStep1 = ({ image, setImage, onNext, id, setId, data, setData, l
             title: dataLanguage.title,
             subTitle: dataLanguage.subTitle,
             show: dataLanguage.show === '1' ? true : false,
+            type: dataLanguage.type,
         });
 
     }, [language])
@@ -194,6 +209,27 @@ const ServiceEditStep1 = ({ image, setImage, onNext, id, setId, data, setData, l
                                         ),
                                     },
                                 ]}
+                            />
+                        </Form.Item>
+                    </Col>
+                </Row>
+
+                <Row>
+                    <Col span={24}>
+                        <Form.Item
+                            name="type"
+                            label="Select Type"
+                            rules={[{ required: true, message: 'Please select a type' }]}
+                        >
+                            <Select
+                                showSearch
+                                placeholder="Select Type"
+                                optionFilterProp="label"
+                                disabled={!isEditing}
+                                options={typeList.map((item) => ({
+                                    value: item.id,
+                                    label: item.name,
+                                }))}
                             />
                         </Form.Item>
                     </Col>
