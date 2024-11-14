@@ -66,7 +66,7 @@ const ServiceEditStep1 = ({ image, setImage, onNext, id, setId, data, setData, l
                 subTitle: form.getFieldValue('subTitle'),
                 show: active ? '1' : '0',
                 status: form.getFieldValue('status'),
-                type: form.getFieldValue('type'),
+                type: String(form.getFieldValue('type')),
             }
 
             if (fileToSend) {
