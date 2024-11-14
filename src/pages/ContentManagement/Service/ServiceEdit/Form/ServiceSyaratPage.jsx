@@ -215,6 +215,7 @@ const ServiceSyaratPage = ({ data, language, setData }) => {
                                         style={{ width: '100%' }}
                                         tokenSeparators={[',']}
                                         onChange={(value) => handleInputChange(index, 'syarat', value)}
+                                        maxCount={7}
                                         options={[
                                             { value: 'Option 1', label: 'Option 1' },
                                             { value: 'Option 2', label: 'Option 2' },
