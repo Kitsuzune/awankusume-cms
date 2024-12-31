@@ -11,16 +11,42 @@ import SMKPO from './bussinessType/SMKPO';
 import KlinikPratamaKecantikan from './bussinessType/KlinikPratamaKecantikan';
 import INSW from './bussinessType/INSW';
 import AKL from './bussinessType/AKL';
-
-
+import { apiRequest } from '../../../../../../utils/api';
 
 const IzinBisnis = ({ customerId, makelarId }) => {
     const { Option } = Select;
     const [businessType, setBusinessType] = useState(null);
+    const [businessTypeList, setBusinessTypeList] = useState([]);
+
+    const businessComponents = {
+        1: IDAK,
+        2: BPOM,
+        3: TrademarkLokalPerorangan,
+        4: TrademarkBadanUsaha,
+        5: TrademarkLuarNegeriPerorangan,
+        6: TrademarkBadanUsahaLuarNegeri,
+        7: SMKPO,
+        8: KlinikPratamaKecantikan,
+        9: INSW,
+        10: AKL,
+    };
 
     const handleBusinessTypeChange = (value) => {
         setBusinessType(value);
     };
+
+    const fetchBusinessTypeList = async () => {
+        try {
+            const response = await apiRequest('get', '/order/business-type/all?type=bisnis');
+            setBusinessTypeList(response.data.data);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    useEffect(() => {
+        fetchBusinessTypeList();
+    }, []);
 
     return (
         <>
@@ -32,7 +58,10 @@ const IzinBisnis = ({ customerId, makelarId }) => {
                         rules={[{ required: true, message: 'Please enter the business type' }]}
                     >
                         <Select placeholder="Select a business type" onChange={handleBusinessTypeChange}>
-                            <Option value="IDAK">IDAK</Option>
+                            {businessTypeList.map((item) => (
+                                <Option value={item.id}>{item.name}</Option>
+                            ))}
+                            {/* <Option value="IDAK">IDAK</Option>
                             <Option value="BPOM">BPOM</Option>
                             <Option value="Trademark Untuk Lokal Perorangan">Trademark Untuk Lokal Perorangan</Option>
                             <Option value="Trademark Untuk Badan Usaha">Trademark Untuk Badan Usaha</Option>
@@ -41,51 +70,54 @@ const IzinBisnis = ({ customerId, makelarId }) => {
                             <Option value="SMKPO">SMKPO</Option>
                             <Option value="Klinik Pratama atau Klinik Kecantikan">Klinik Pratama atau Klinik Kecantikan</Option>
                             <Option value="INSW">INSW</Option>
-                            <Option value="AKL">AKL</Option>
+                            <Option value="AKL">AKL</Option> */}
                         </Select>
                     </Form.Item>
                 </Col>
             </Row>
 
-            {businessType == 'IDAK' && (
+            {/* {businessType == 1 && (
                 <IDAK customerId={customerId} makelarId={makelarId} />
             )}
 
-            {businessType === 'BPOM' && (
+            {businessType === 2 && (
                 <BPOM customerId={customerId} makelarId={makelarId} />
             )}
 
-            {businessType === 'Trademark Untuk Lokal Perorangan' && (
+            {businessType === 3 && (
                 <TrademarkLokalPerorangan customerId={customerId} makelarId={makelarId} />
             )}
 
-            {businessType === 'Trademark Untuk Badan Usaha' && (
+            {businessType === 4 && (
                 <TrademarkBadanUsaha customerId={customerId} makelarId={makelarId} />
             )}
 
-            {businessType === 'Trademark Untuk Luar Negeri Perorangan' && (
+            {businessType === 5 && (
                 <TrademarkLuarNegeriPerorangan customerId={customerId} makelarId={makelarId} />
             )}
 
-            {businessType === 'Trademark Untuk Badan Usaha Luar Negeri' && (
+            {businessType === 6 && (
                 <TrademarkBadanUsahaLuarNegeri customerId={customerId} makelarId={makelarId} />
             )}
 
-            {businessType === 'SMKPO' && (
+            {businessType === 7 && (
                 <SMKPO customerId={customerId} makelarId={makelarId} />
             )}
 
-            {businessType === 'Klinik Pratama atau Klinik Kecantikan' && (
+            {businessType === 8 && (
                 <KlinikPratamaKecantikan customerId={customerId} makelarId={makelarId} />
             )}
 
-            {businessType === 'INSW' && (
+            {businessType === 9 && (
                 <INSW customerId={customerId} makelarId={makelarId} />
             )}
 
-            {businessType === 'AKL' && (
+            {businessType === 10 && (
                 <AKL customerId={customerId} makelarId={makelarId} />
-            )}
+            )} */}
+
+            {businessType && React.createElement(businessComponents[businessType], { customerId, makelarId })}
+
         </>
     )
 
